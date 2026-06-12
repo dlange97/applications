@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV ATS Analyzer — Senior PHP Intelligence</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════════════════════════ TOP NAV ══ -->
+    <nav class="topnav">
+      <div class="logo">
+        <span class="logo-icon">🎯</span>
+        <span class="logo-text">CV ATS Analyzer</span>
+        <span class="logo-badge">Senior PHP · ATS Intelligence Engine</span>
+      </div>
+      <div id="appStatus" class="nav-status">Ready</div>
+    </nav>
+
+    <!-- ═════════════════════════════════════════════════════ UPLOAD PANEL ══ -->
+    <section id="uploadPanel" class="panel upload-panel">
+      <div class="upload-card">
+        <div class="upload-header">
+          <h1>Analiza CV pod ogłoszenie ATS</h1>
+          <p>
+            Wgraj swoje CV, uruchom analizę dopasowania i wygeneruj
+            profesjonalny szablon
+          </p>
+        </div>
+
+        <!-- Drop Zone -->
+        <div id="uploadZone" class="upload-zone">
+          <div class="upload-zone-inner">
+            <div class="upload-icon">📄</div>
+            <p class="upload-title">Przeciągnij CV tutaj lub kliknij</p>
+            <p class="upload-sub">PDF, DOCX, TXT · Maks. 16 MB</p>
+          </div>
+          <input
+            id="fileInput"
+            type="file"
+            accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png"
+            hidden
+          />
+        </div>
+
+        <!-- File Info (visible after upload) -->
+        <div id="fileInfo" class="file-info hidden">
+          <span class="fi-icon">✅</span>
+          <div class="fi-details">
+            <div id="fileName" class="fi-name"></div>
+            <div id="fileSize" class="fi-size"></div>
+          </div>
+          <button class="btn btn-clear" onclick="clearFile()" title="Usuń plik">
+            ✕
+          </button>
+        </div>
+
+        <!-- Actions (visible after upload) -->
+        <div id="actionButtons" class="action-buttons hidden">
+          <div class="job-desc-block">
+            <label for="jobDescriptionInput" class="job-desc-label"
+              >Treść ogłoszenia (opcjonalnie, zalecane)</label
+            >
+            <textarea
+              id="jobDescriptionInput"
+              class="job-desc-input"
+              placeholder="Wklej treść ogłoszenia, aby analiza ATS była dopasowana do konkretnej oferty."
+              rows="7"
+            ></textarea>
+          </div>
+
+          <button id="analyzeBtn" class="btn btn-analyze" onclick="analyzeCV()">
+            <span>🔍</span> Analizuj CV (ATS)
+          </button>
+
+          <div class="divider-label">— lub nowy feature: konwersja 1:1 —</div>
+          <div class="template-row">
+            <select
+              id="convertFormatSelect"
+              class="template-select"
+              aria-label="Wybierz format konwersji"
+            >
+              <option value="html">HTML</option>
+              <option value="docx">DOCX</option>
+              <option value="canva">Canva (HTML)</option>
+            </select>
+            <button
+              id="convertBtn"
+              class="btn btn-generate"
+              onclick="convertCvTemplate()"
+            >
+              <span>🧬</span> Konwertuj CV 1:1
+            </button>
+          </div>
+          <p class="template-hint">
+            Obsługiwane wejście: PDF/JPG/PNG. Konwersja zachowuje layout 1:1 i
+            zapisuje podgląd do historii HTML.
+          </p>
+
+          <div class="divider-label">— lub wygeneruj szablon CV —</div>
+
+          <div class="template-row">
+            <select
+              id="templateSelect"
+              class="template-select"
+              aria-label="Wybierz szablon"
+            ></select>
+            <button
+              id="generateBtn"
+              class="btn btn-generate"
+              onclick="generateTemplate()"
+            >
+              <span>📥</span> Generuj &amp; Pobierz Szablon PDF
+            </button>
+          </div>
+          <p class="template-hint">
+            Szablon zostanie wygenerowany na podstawie Twojego CV — możesz go
+            edytować i dostosować.
+          </p>
+        </div>
+
+        <div class="divider-label">— historia podglądów html —</div>
+        <div class="preview-history-block always-visible">
+          <div class="preview-history-head">
+            <span>Lista podglądów (folder html-previews)</span>
+            <button
+              class="btn btn-sm"
+              type="button"
+              onclick="loadHtmlPreviews()"
+            >
+              Odśwież
+            </button>
+          </div>
+          <div id="htmlPreviewsList" class="preview-history-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ ANALYSIS PANEL ══ -->
+    <section id="analysisPanel" class="panel analysis-panel hidden">
+      <div class="analysis-header">
+        <button class="btn btn-back" onclick="backToUpload()">← Wróć</button>
+        <div class="analysis-header-title">
+          <span id="headerFileName" class="header-filename"></span>
+          <span id="matchBadge" class="match-badge hidden"></span>
+        </div>
+        <div class="header-actions">
+          <select
+            id="templateSelect2"
+            class="template-select small"
+            aria-label="Szablon"
+          ></select>
+          <button
+            class="btn btn-sm btn-generate"
+            onclick="generateTemplateFromAnalysis()"
+          >
+            <span>📥</span> Generuj Szablon
+          </button>
+        </div>
+      </div>
+
+      <div class="analysis-layout">
+        <!-- LEFT: CV Preview -->
+        <div class="cv-pane">
+          <div class="pane-header">
+            <span class="pane-title">📄 Podgląd CV</span>
+            <label
+              class="toggle-highlights"
+              title="Włącz/wyłącz zaznaczenia miejsc do poprawy"
+            >
+              <input id="highlightToggle" type="checkbox" checked />
+              <span>Zaznaczenia poprawek</span>
+            </label>
+            <div id="pdfControls" class="pdf-controls hidden">
+              <button onclick="prevPage()" title="Poprzednia strona">◀</button>
+              <span id="pageInfo" class="page-info">1 / 1</span>
+              <button onclick="nextPage()" title="Następna strona">▶</button>
+              <button onclick="zoomOut()" title="Pomniejsz">−</button>
+              <button onclick="zoomIn()" title="Powiększ">+</button>
+            </div>
+          </div>
+          <div class="cv-pane-content" id="cvPaneContent">
+            <canvas id="pdfCanvas"></canvas>
+            <pre id="textPreview" class="text-preview hidden"></pre>
+            <div
+              id="improvementMarkers"
+              class="improvement-markers hidden"
+            ></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Analysis Results -->
+        <div class="results-pane">
+          <div class="pane-header">
+            <span class="pane-title">🎯 Wyniki Analizy ATS</span>
+            <span id="analysisTimestamp" class="pane-meta"></span>
+          </div>
+          <div class="results-pane-content" id="analysisContent">
+            <div id="loadingSpinner" class="loading-box">
+              <div class="spinner"></div>
+              <p>Analizuję CV…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <section id="htmlPreviewModal" class="html-modal hidden" aria-hidden="true">
+      <div class="html-modal-backdrop" onclick="closeHtmlPreviewModal()"></div>
+      <div class="html-modal-panel">
+        <div class="html-modal-header">
+          <div class="html-modal-title-wrap">
+            <h2 id="htmlModalTitle" class="html-modal-title">Podgląd HTML</h2>
+            <div id="htmlModalMeta" class="html-modal-meta"></div>
+          </div>
+          <div class="html-modal-actions">
+            <select
+              id="htmlDownloadFormat"
+              class="template-select small"
+              aria-label="Format pobrania preview"
+            >
+              <option value="html">HTML</option>
+              <option value="pdf">PDF</option>
+              <option value="docx">DOCX</option>
+            </select>
+            <button
+              id="htmlModalDownloadBtn"
+              class="btn btn-sm btn-generate"
+              type="button"
+              onclick="downloadActivePreview()"
+            >
+              Pobierz
+            </button>
+            <button
+              id="htmlModalEditBtn"
+              class="btn btn-sm"
+              type="button"
+              onclick="toggleHtmlEditor()"
+            >
+              Edytuj
+            </button>
+            <button
+              class="btn btn-sm"
+              type="button"
+              onclick="closeHtmlPreviewModal()"
+            >
+              Zamknij
+            </button>
+          </div>
+        </div>
+
+        <div class="html-modal-body">
+          <iframe
+            id="htmlPreviewFrame"
+            class="html-preview-frame"
+            title="Podgląd HTML"
+          ></iframe>
+
+          <aside id="htmlEditorPanel" class="html-editor-panel hidden">
+            <div class="editor-toolbar">
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="wrapSelection('<strong>', '</strong>')"
+              >
+                Bold
+              </button>
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="wrapSelection('<em>', '</em>')"
+              >
+                Italic
+              </button>
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="wrapSelection('<h2>', '</h2>')"
+              >
+                H2
+              </button>
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="wrapSelection('<p>', '</p>')"
+              >
+                P
+              </button>
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="convertLinesToList()"
+              >
+                Lista
+              </button>
+            </div>
+            <div class="editor-find-row">
+              <input
+                id="editorFindText"
+                type="text"
+                placeholder="Szukaj tekstu"
+              />
+              <input
+                id="editorReplaceText"
+                type="text"
+                placeholder="Podmień na"
+              />
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="replaceAllInEditor()"
+              >
+                Podmień wszystko
+              </button>
+            </div>
+            <textarea
+              id="htmlEditorTextarea"
+              class="html-editor-textarea"
+              spellcheck="false"
+            ></textarea>
+            <div class="editor-actions">
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="formatEditorHtml()"
+              >
+                Formatuj
+              </button>
+              <button
+                class="btn btn-sm btn-analyze"
+                type="button"
+                onclick="saveHtmlPreviewEdits()"
+              >
+                Zapisz zmiany
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "total_answered": 2,
+  "correct_answers": 1,
+  "incorrect_answers": 1,
+  "streak": 0,
+  "max_streak": 0,
+  "completed_quizzes_count": 0,
+  "last_activity": "2026-06-01 00:26:53",
+  "category_stats": {
+    "python:basics": {
+      "answered": 0,
+      "correct": 0
+    },
+    "python:frameworks": {
+      "answered": 0,
+      "correct": 0
+    },
+    "php:basics": {
+      "answered": 0,
+      "correct": 0
+    },
+    "php:frameworks": {
+      "answered": 0,
+      "correct": 0
+    },
+    "python:recruitment": {
+      "answered": 0,
+      "correct": 0
+    },
+    "php:recruitment": {
+      "answered": 0,
+      "correct": 0
+    }
+  },
+  "by_question_id": {},
+  "history": []
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "py_ch_1",
+    "language": "python",
+    "difficulty": "junior",
+    "title": "Odfiltrowanie liczb parzystych (Filter Even Numbers)",
+    "description": "Napisz funkcję `filter_even(numbers: list[int]) -> list[int]`, która przyjmuje jako argument listę liczb całkowitych i zwraca nową listę, zawierającą wyłącznie liczby parzyste zachowując ich oryginalną kolejność.",
+    "boilerplate": "def filter_even(numbers: list[int]) -> list[int]:\n    # Wpisz swój kod tutaj\n    pass\n",
+    "validation_code": "assert filter_even([1, 2, 3, 4, 5, 6]) == [2, 4, 6]\nassert filter_even([1, 3, 5]) == []\nassert filter_even([]) == []\nassert filter_even([100, 101, -2]) == [100, -2]\n"
+  },
+  {
+    "id": "py_ch_2",
+    "language": "python",
+    "difficulty": "mid",
+    "title": "Weryfikacja zbalansowanych nawiasów",
+    "description": "Napisz funkcję `is_balanced(s: str) -> bool`, która sprawdza, czy nawiasy w podanym ciągu znaków są zbalansowane (odpowiednio otwierane i zamykane). Obsługuj nawiasy okrągłe `()`, kwadratowe `[]` oraz klamrowe `{}`.",
+    "boilerplate": "def is_balanced(s: str) -> bool:\n    # Wpisz swój kod tutaj\n    pass\n",
+    "validation_code": "assert is_balanced(\"()\") is True\nassert is_balanced(\"()[]{}\") is True\nassert is_balanced(\"(]\") is False\nassert is_balanced(\"([{}])\") is True\nassert is_balanced(\"((((\") is False\n"
+  },
+  {
+    "id": "py_ch_3",
+    "language": "python",
+    "difficulty": "senior",
+    "title": "Custom LRU Cache (Własne buforowanie pamięci)",
+    "description": "Zaimplementuj najprostszą klasę `LRUCache` z limitem pojemności `capacity`. Powinna oferować dwie metody:\n- `get(key)`: pobiera wartość klucza lub zwraca `-1` jeśli go nie ma\n- `put(key, value)`: wstawia klucz. Jeśli przekroczono `capacity`, usuwa najdawniej używany element (Least Recently Used).",
+    "boilerplate": "class LRUCache:\n    def __init__(self, capacity: int):\n        # Wpisz swój kod tutaj\n        pass\n\n    def get(self, key: int) -> int:\n        return -1\n\n    def put(self, key: int, value: int) -> None:\n        pass\n",
+    "validation_code": "cache = LRUCache(2)\ncache.put(1, 1)\ncache.put(2, 2)\nassert cache.get(1) == 1\ncache.put(3, 3) # usuwa klucz 2\nassert cache.get(2) == -1\ncache.put(4, 4) # usuwa klucz 1\nassert cache.get(1) == -1\nassert cache.get(3) == 3\nassert cache.get(4) == 4\n"
+  },
+  {
+    "id": "php_ch_1",
+    "language": "php",
+    "difficulty": "junior",
+    "title": "Wyszukiwanie najdłuższego słowa",
+    "description": "Napisz funkcję `findLongestWord(string $sentence): string`, która przyjmuje zdanie i zwraca najdłuższe słowo w tym zdaniu. Zignoruj znaki interpunkcyjne (kropki, przecinki itp.). Jeśli jest kilka słów o tej samej długości, zwróć pierwsze z nich.",
+    "boilerplate": "function findLongestWord(string $sentence): string {\n    // Wpisz swój kod tutaj\n    return \"\";\n}\n",
+    "validation_code": "assert(findLongestWord('PHP is awesome, right?') === 'awesome');\nassert(findLongestWord('Hello world') === 'Hello');\nassert(findLongestWord('') === '');\n"
+  },
+  {
+    "id": "php_ch_2",
+    "language": "php",
+    "difficulty": "mid",
+    "title": "Weryfikacja anagramów",
+    "description": "Napisz funkcję `isAnagram(string $a, string $b): bool`, która sprawdza czy dwa ciągi znaków są anagramami (zawierają dokładnie te same litery, niezależnie od wielkości liter i spacji).",
+    "boilerplate": "function isAnagram(string $a, string $b): bool {\n    // Wpisz swój kod tutaj\n    return false;\n}\n",
+    "validation_code": "assert(isAnagram('silent', 'listen') === true);\nassert(isAnagram('Hello', 'Olleh') === true);\nassert(isAnagram('foo', 'bar') === false);\nassert(isAnagram('Astronomer', 'Moon starer') === true);\n"
+  },
+  {
+    "id": "php_ch_3",
+    "language": "php",
+    "difficulty": "senior",
+    "title": "Mini Kontener Dependency Injection (DI Container)",
+    "description": "Twój cel to zaimplementowanie uproszczonej klasy `DIContainer`, która umożliwia rejestrowanie serwisów (zarówno gotowych instancji, jak i domknięć `Closure` tworzących instancje) oraz ich automatyczne rozwiązywanie.\nZaimplementuj dwie metody:\n- `register(string $name, $resolver)`: rejestruje serwis.\n- `get(string $name)`: zwraca instancję. Jeśli zarejestrowano Closure, wywołaj go przy pierwszym pobraniu i zapisz instancję (Singleton) i zwracaj ją za każdym kolejnym wywołaniem get.",
+    "boilerplate": "class DIContainer {\n    // Wpisz odpowiednie pola i kod tutaj\n\n    public function register(string $name, $resolver): void {\n        // ...\n    }\n\n    public function get(string $name) {\n        // ...\n    }\n}\n",
+    "validation_code": "class Database {\n    public $id;\n    public function __construct() { $this->id = uniqid(); }\n}\n$container = new DIContainer();\n$container->register('config', 'db_value');\nassert($container->get('config') === 'db_value');\n\n$container->register('db', function() {\n    return new Database();\n});\n$db1 = $container->get('db');\n$db2 = $container->get('db');\nassert($db1 instanceof Database);\nassert($db1->id === $db2->id); // Singleton pattern validation\n"
+  }
+]

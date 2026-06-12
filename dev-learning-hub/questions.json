@@ -1,0 +1,1818 @@
+{
+  "python": {
+    "basics": [
+      {
+        "id": "py_basics_1",
+        "question": "Jaki będzie wynik poniższego kodu w Pythonie?\n```python\na = [1, 2, 3]\nb = a\nb.append(4)\nprint(len(a))\n```",
+        "options": [
+          "3",
+          "4",
+          "Błąd AttributeError",
+          "Błąd IndexError"
+        ],
+        "answer": 1,
+        "explanation": "W Pythonie listy są obiektami mutowalnymi. Przypisanie `b = a` nie kopiuje zawartości listy, lecz tworzy referencję do tego samego obiektu w pamięci. Zmiana `b` wpływa więc bezpośrednio na `a`."
+      },
+      {
+        "id": "py_basics_2",
+        "question": "Który ze sposobów tworzenia słownika (dict) jest niepoprawny i wywoła błąd?",
+        "options": [
+          "d = dict([('a', 1), ('b', 2)])",
+          "d = { 'a': 1, 'b': 2 }",
+          "d = dict(a=1, b=2)",
+          "d = dict({ [1, 2]: 'val' })"
+        ],
+        "answer": 3,
+        "explanation": "Klucze słownika w Pythonie muszą być obiektami niezmiennymi (immutable) i hashowalnymi (hashable). Lista `[1, 2]` jest obiektem mutowalnym, więc nie może być użyta jako klucz słownika, co wywoła `TypeError: unhashable type: 'list'`."
+      },
+      {
+        "id": "py_basics_3",
+        "question": "Do czego służy słowo kluczowe `yield` w Pythonie?",
+        "options": [
+          "Do natychmiastowego zakończenia pętli i zwrócenia ostatniej wartości.",
+          "Do przekonwertowania funkcji w generator, zwracający kolejno wartości bez utraty stanu lokalnego.",
+          "Do zwolnienia zasobów i wyczyszczenia pamięci po wykonaniu funkcji.",
+          "Do obsługi asynchronicznych wątków w tradycyjnych klasach."
+        ],
+        "answer": 1,
+        "explanation": "`yield` zawiesza stan wykonania funkcji i zwraca wartość do wywołującego. Przy kolejnym wywołaniu (np. w pętli `next()`) funkcja wznawia działanie dokładnie od miejsca, w którym została zawieszona. Tworzy to generator."
+      },
+      {
+        "id": "py_basics_4",
+        "question": "W jaki sposób zaimplementować bezpieczne otwieranie plików, gwarantujące ich zamknięcie nawet przy wystąpieniu błędu?",
+        "options": [
+          "Używając bloku `with open('file.txt') as f:`",
+          "Używając standardowego wywołania `open('file.txt')` bez parametrów.",
+          "Dodając dyrektywę systemową `#close` na końcu pliku skryptu.",
+          "Używając procedury `f = file('file.txt')`"
+        ],
+        "answer": 0,
+        "explanation": "Menedżer kontekstu (blok `with`) automatycznie i bezpiecznie obsługuje zwolnienie zasobów (wywołanie metody `__exit__`), co gwarantuje zamknięcie strumienia pliku, nawet jeśli wewnątrz bloku wystąpi błąd."
+      },
+      {
+        "id": "py_basics_5",
+        "question": "Jaka jest różnica między operatorami `is` a `==` w Pythonie?",
+        "options": [
+          "Nie ma żadnej różnicy, są całkowicie tożsame.",
+          "`==` porównuje tożsamość obiektów w pamięci (adresy), a `is` porównuje ich wartości.",
+          "`is` porównuje identyczność (czy to ten sam obiekt w pamięci), natomiast `==` porównuje ich wartości (równość).",
+          "`is` służy wyłącznie do porównywania łańcuchów tekstowych, a `==` do liczb."
+        ],
+        "answer": 2,
+        "explanation": "Dla przykładu: `a = [1, 2]` oraz `b = [1, 2]` da wynik `a == b` jako `True` (takie same wartości), ale `a is b` zwróci `False` (różne obiekty i adresy w pamięci)."
+      },
+      {
+        "id": "py_basics_6",
+        "question": "Jaki będzie wynik poniższego kodu opartego na domyślnych argumentach motywowanych listą?\n```python\ndef append_to(element, target=[]):\n    target.append(element)\n    return target\n\nprint(append_to(1))\nprint(append_to(2))\n```",
+        "options": [
+          "[1]\n[2]",
+          "[1]\n[1, 2]",
+          "[1, 2]\n[1, 2]",
+          "Błąd ValueError"
+        ],
+        "answer": 1,
+        "explanation": "W Pythonie domyślne argumenty funkcji są oceniane (ewaluowane) tylko raz - w momencie definicji funkcji. Jeśli użyjesz obiektu mutowalnego (np. listy) jako wartości domyślnej, ta sama lista będzie współdzielona przy każdym kolejnym wywołaniu bez przekazanego argumentu."
+      },
+      {
+        "id": "py_basics_7",
+        "question": "Które z poniższych stwierdzeń na temat krotek (tuple) w Pythonie jest prawdziwe?",
+        "options": [
+          "Krotki są w pełni mutowalne i można modyfikować ich elementy.",
+          "Krotki są niezmienne (immutable), co pozwala na używanie ich jako kluczy w słownikach (jeśli ich elementy również są hashowalne).",
+          "Krotki mogą zawierać wyłącznie elementy tego samego typu danych.",
+          "Krotki zajmują znacznie więcej pamięci niż listy o tym samym rozmiarze."
+        ],
+        "answer": 1,
+        "explanation": "Krotka jest strukturą niemodyfikowalną, dzięki czemu po utworzeniu jej zawartość nie może ulec zmianie. To pozwala na jej bezpieczne hashowanie i użycie w roli klucza w strukturach typu `dict`."
+      },
+      {
+        "id": "py_basics_8",
+        "question": "Czym jest dekorator (decorator) w Pythonie?",
+        "options": [
+          "Specjalną składnią służącą wyłącznie do tworzenia dokumentacji modułów.",
+          "Klasą z biblioteki graficznej służącą do upiększania interfejsów użytkownika.",
+          "Funkcją przyjmującą inną funkcję jako argument i zwracającą zmodyfikowaną lub rozszerzoną wersję tej funkcji.",
+          "Mechanizmem służącym wyłącznie do asynchronicznego pobierania danych HTTP."
+        ],
+        "answer": 2,
+        "explanation": "Dekoratory pozwalają na wygodną modyfikację i rozszerzanie zachowania funkcji lub metod bez bezpośredniej edycji ich kodu źródłowego (zasada Open/Closed z SOLID). Oznacza się je symbolem `@`."
+      },
+      {
+        "id": "py_basics_9",
+        "question": "Jak działa mechanizm czyszczenia pamięci (Garbage Collection) w Pythonie?",
+        "options": [
+          "Bazując wyłącznie na ręcznym uruchamianiu metody `sys.clean()` przez dewelopera.",
+          "Opiera się przede wszystkim na zliczaniu referencji (Reference Counting) oraz pomocniczo na detekcji cykli referencyjnych.",
+          "Nie istnieje - Python nie posiada automatycznego zarządzania pamięcią.",
+          "Czyści pamięć cyklicznie co dokładnie 5 sekund od uruchomienia interpretatora."
+        ],
+        "answer": 1,
+        "explanation": "Główny silnik Pythona (CPython) inkrementuje licznik referencji, gdy obiekt jest przypisywany, i dekrementuje przy usuwaniu zmiennej. Gdy licznik spada do zera, pamięć jest od razu zwalniana. Dodatkowo moduł `gc` wychwytuje cykle referencyjne (gdzie obiekty wskazują na siebie nawzajem)."
+      },
+      {
+        "id": "py_basics_10",
+        "question": "Co oznacza i do czego służy `__slots__` zdefiniowane w klasie Pythona?",
+        "options": [
+          "Służy wyłącznie do definiowania zmiennych prywatnych klasy.",
+          "Optymalizuje pamięć instancji klas przez zablokowanie automatycznego tworzenia słownika `__dict__` dynamicznych atrybutów.",
+          "Pozwala na asynchroniczne wywoływanie wszystkich metod w klasie.",
+          "Jest to interfejs do obsługi bazodanowych połączeń ORM."
+        ],
+        "answer": 1,
+        "explanation": "Zdefiniowanie `__slots__` jako krotki z nazwami pól pozwala Pythonowi zarezerwować stałą ilość pamięci dla instancji, eliminując spory narzut słownika dynamicznego `__dict__`. Przydatne przy milionach instancji klas w pamięci."
+      },
+      {
+        "id": "py_basics_11",
+        "question": "Jak zachowuje się zmienna zdefiniowana wewnątrz list comprehension w Pythonie 3 w porównaniu z Pythonem 2?",
+        "options": [
+          "W Pythonie 3 zmienna ta ma zasięg globalny.",
+          "W Pythonie 3 zmienna ta nie przecieka do otaczającego zakresu (scope), ponieważ list comprehension ma dedykowany zakres lokalny (jak funkcja).",
+          "W Pythonie 3 list comprehension w ogóle nie pozwala na definiowanie nowych zmiennych.",
+          "W obu wersjach zmienna zawsze nadpisuje zmienne w otaczającej funkcji."
+        ],
+        "answer": 1,
+        "explanation": "W Pythonie 3 wprowadzono osobną przestrzeń zmiennych dla list comprehension. Zmienna sterująca pętlą wewnątrz nawiasów `[...]` nie wpływa na zmienne zdefiniowane poza nimi, co eliminuje błędy ze starszych wersji Pythona."
+      },
+      {
+        "id": "py_basics_12",
+        "question": "Na czym polega mechanizm 'String Interning' (pooling stringów) w Pythonie?",
+        "options": [
+          "Na automatycznym szyfrowaniu każdego stringu w pamięci RAM.",
+          "Na współdzieleniu tej samej referencji w pamięci dla identycznych, krótkich łańcuchów znaków (np. stałych literowych) w celu optymalizacji pamięci.",
+          "Na automatycznym usuwaniu zbędnych spacji ze wszystkich ciągów znaków.",
+          "Na zamianie stringów w tablice liczb całkowitych przed wykonaniem programu."
+        ],
+        "answer": 1,
+        "explanation": "W celu zaoszczędzenia pamięci i przyspieszenia porównań, CPython automatycznie 'internuje' krótkie napisy (wyglądające jak identyfikatory). Dzięki temu `a = 'hello'` oraz `b = 'hello'` wskazują na ten sam adres, więc `a is b` daje `True`."
+      },
+      {
+        "id": "py_basics_13",
+        "question": "Jaka jest główna różnica przeznaczenia między metodami magicznymi `__str__` a `__repr__` w Pythonie?",
+        "options": [
+          "`__str__` służy wyłącznie do zapisu pliku na dysk, a `__repr__` do wyświetlenia na ekranie.",
+          "`__str__` ma dostarczyć czytelną, ładną reprezentację tekstową przyjazną dla użytkownika, podczas gdy `__repr__` ma dostarczyć jednoznaczną, szczegółową reprezentację techniczną (najlepiej poprawny kod w Pythonie służący do odtworzenia obiektu) przydatną przy debugowaniu.",
+          "Metoda `__str__` jest asynchroniczna, a `__repr__` zawsze synchroniczna.",
+          "Nie ma żadnej różnicy, `__str__` wywołuje się w klasach, a `__repr__` w strukturach generatorów."
+        ],
+        "answer": 1,
+        "explanation": "`__str__` wywołujemy np. przez `print(obj)` lub `str(obj)`. `__repr__` jest wywoływana przy odpytywaniu w konsoli interaktywnej lub przez `repr(obj)`. Dobrą zasadą jest, aby `repr` ułatwiało odtworzenie obiektu."
+      },
+      {
+        "id": "py_basics_14",
+        "question": "Co zwracają funkcje wbudowane `locals()` oraz `globals()` w Pythonie?",
+        "options": [
+          "Adresy IP lokalnego i zdalnego serwera bazodanowego.",
+          "Słowniki (dicts) zawierające odpowiednio: aktualne zmienne w lokalnym zasięgu (np. wewnątrz aktualnej funkcji) oraz zmienne w zasięgu obecnego modułu.",
+          "Nazwy plików i folderów znajdujących się w katalogu roboczym.",
+          "Listy wszystkich zainstalowanych modułów pip."
+        ],
+        "answer": 1,
+        "explanation": "`locals()` zwraca słownik reprezentujący aktualną przestrzeń lokalną (jej modyfikacja wewnątrz funkcji standardowo nie ma wpływu na rzeczywiste lokalne zmienne), a `globals()` reprezentuje zmienne globalne na poziomie modułu (którego modyfikacje są rzeczywiste)."
+      },
+      {
+        "id": "py_basics_15",
+        "question": "Która magiczna metoda (dunder method) odpowiada za przeciążenie zachowania funkcji wbudowanej `len()` na instancji naszej klasy?",
+        "options": [
+          "`__count__`",
+          "`__size__`",
+          "`__len__`",
+          "`__length__`"
+        ],
+        "answer": 2,
+        "explanation": "Wywołanie `len(my_object)` pod maską odpytuje metodę magiczną `my_object.__len__()`. Musi ona zwracać nieujemną liczbę całkowitą (`int`), inaczej Python rzuci `TypeError`."
+      },
+      {
+        "id": "py_basics_16",
+        "question": "Do czego służy operator Walrus (`:=`) wprowadzony w Pythonie 3.8?",
+        "options": [
+          "Do porównywania dwóch obiektów pod kątem identyczności referencji.",
+          "Pozwala na przypisanie wartości do zmiennej wewnątrz wyrażenia (np. w warunku `if` lub pętli `while`), eliminując konieczność oddzielnej linii przypisania.",
+          "Jest to operator bitowy równoważny operatorowi AND.",
+          "Rzuca wyjątek, gdy wartość nie istnieje w pamięci podręcznej."
+        ],
+        "answer": 1,
+        "explanation": "Operator Walrus (`:=`) to tzw. wyrażenie przypisania. Przykład użycia: `while chunk := f.read(8192):` odczytuje plik porcjami i jednocześnie przypisuje wynik do `chunk`, zatrzymując pętlę gdy osiągniemy koniec pliku."
+      },
+      {
+        "id": "py_basics_17",
+        "question": "Które wywołanie poprawnie sformatuje liczbę zmiennoprzecinkową do 2 miejsc po przecinku używając f-stringa?",
+        "options": [
+          "`f\"{value:.2d}\"`",
+          "`f\"{value:2f}\"`",
+          "`f\"{value:.2f}\"`",
+          "`f\"{value|round(2)}\"`"
+        ],
+        "answer": 2,
+        "explanation": "Format specyfikator w f-stringach ma postać `{wartość:format}`. Zapis `:.2f` oznacza 'float z dokładnością do 2 miejsc po przecinku'. Przykładowo `f\"{3.14159:.2f}\"` daje wynik `'3.14'`."
+      },
+      {
+        "id": "py_basics_18",
+        "question": "Jaki jest wynik poniższego kodu?\n```python\na = [10, 20, 30]\nb = [1, 2, 3]\nresult = list(zip(a, b))\nprint(result)\n```",
+        "options": [
+          "[11, 22, 33]",
+          "[(10, 1), (20, 2), (30, 3)]",
+          "[10, 20, 30, 1, 2, 3]",
+          "{10: 1, 20: 2, 30: 3}"
+        ],
+        "answer": 1,
+        "explanation": "`zip()` scala równoległe iterowalne zestawy w krotki (pary). Gdy jedna z list jest krótsza, iteracja jest ucinana do długości krótszej sekwencji."
+      },
+      {
+        "id": "py_basics_19",
+        "question": "Co zwróci wyrażenie `{1, 2, 3} & {2, 3, 4}` w Pythonie?",
+        "options": [
+          "{1, 2, 3, 4}",
+          "{2, 3}",
+          "{1, 4}",
+          "True"
+        ],
+        "answer": 1,
+        "explanation": "Operator `&` na zbiorach (`set`) zwraca część wspólną (intersection). `{1,2,3} & {2,3,4}` da `{2, 3}`. Alternatywnie można użyć metody `.intersection()`."
+      },
+      {
+        "id": "py_basics_20",
+        "question": "Jak poprawnie zdefiniować wyjątek niestandardowy dziedziczący po wbudowanym wyjątku ValueError?",
+        "options": [
+          "`class MyError: raise ValueError`",
+          "`class MyError(ValueError): pass`",
+          "`exception MyError from ValueError`",
+          "`def MyError(ValueError): super().__init__()`"
+        ],
+        "answer": 1,
+        "explanation": "Własne wyjątki definiuje się jako klasy dziedziczące po istniejących klasach wyjątków (np. `Exception`, `ValueError`, `TypeError`). Konwencja nakazuje dodanie przyrostka `Error` do nazwy. Metoda `__init__` może przekazać wiadomość do konstruktora klasy bazowej."
+      },
+      {
+        "id": "py_basics_21",
+        "question": "Jaki będzie wynik poniższego kodu z rozszerzonymi wyrażeniami rozpakowywania?\n```python\nfirst, *rest = [10, 20, 30, 40]\nprint(first, rest)\n```",
+        "options": [
+          "10 (20, 30, 40)",
+          "10 [20, 30, 40]",
+          "[10] [20, 30, 40]",
+          "Błąd SyntaxError"
+        ],
+        "answer": 1,
+        "explanation": "Operator `*` w rozpakowywaniu (starred assignment) zbiera 'pozostałe' elementy do listy. `first` dostaje wartość `10`, a `rest` dostaje listę `[20, 30, 40]`."
+      },
+      {
+        "id": "py_basics_22",
+        "question": "Czym jest `@dataclass` z modułu `dataclasses` i jaką wartość przynosi?",
+        "options": [
+          "Dekoratorem do automatycznego dodawania bazodanowych operacji CRUD na klasie.",
+          "Dekoratorem generującym automatycznie metody `__init__`, `__repr__`, `__eq__` i inne na podstawie zdefiniowanych pól klasy z adnotacjami typów.",
+          "Mechanizmem do szyfrowania pól obiektu przed ich wyświetleniem.",
+          "Dekoratorem zastępującym metodę `__new__` w klasach dziedziczących."
+        ],
+        "answer": 1,
+        "explanation": "`@dataclass` eliminuje pisanie szablonowych metod inicjalizacji i porównania. Wystarczy zadeklarować pola z typami, a Python automatycznie wygeneruje odpowiedni kod. Opcjonalnie parametr `frozen=True` tworzy niemutowalny dataclass (podobny do namedtuple)."
+      },
+      {
+        "id": "py_basics_23",
+        "question": "Jaka jest kluczowa różnica między `@classmethod` a `@staticmethod`?",
+        "options": [
+          "Nie ma żadnej różnicy - są to równoważne aliasy.",
+          "`@classmethod` otrzymuje klasę (`cls`) jako pierwszy argument (ma dostęp do klasy i jej stanu), natomiast `@staticmethod` nie otrzymuje żadnego niejawnego argumentu (jest zwykłą funkcją w przestrzeni nazw klasy).",
+          "`@staticmethod` może być wywoływany bez instancji, a `@classmethod` wymaga jej.",
+          "`@classmethod` tworzy statyczne zmienne klasy, a `@staticmethod` je usuwa."
+        ],
+        "answer": 1,
+        "explanation": "`@classmethod` przyjmuje `cls` jako pierwszy parametr i może być używany np. w alternatywnych konstruktorach (wzorzec fabryczny). `@staticmethod` to zwykła funkcja logicznie powiązana z klasą, ale nieznająca stanu klasy ani instancji."
+      },
+      {
+        "id": "py_basics_24",
+        "question": "Co robi funkcja `enumerate()` i jak typowo się jej używa?",
+        "options": [
+          "Zwraca liczbę wszystkich iteracji w pętli for bez ich wykonania.",
+          "Otacza iterowalny obiekt generatorem zwracającym krotki (indeks, wartość), dzięki czemu można jednocześnie iterować po elementach i śledzić ich pozycje.",
+          "Konwertuje iterowalny obiekt na typ słownikowy z kluczami numerycznymi.",
+          "Służy do ręcznego zarządzania iteratorami w pętlach asynchronicznych."
+        ],
+        "answer": 1,
+        "explanation": "Typowe użycie: `for i, val in enumerate(my_list, start=1):`. Parametr `start` określa wartość startową licznika. Eliminuje potrzebę ręcznego tworzenia licznika `i = 0` i inkrementowania go wewnątrz pętli."
+      },
+      {
+        "id": "py_basics_25",
+        "question": "Jaki typ wyjątku rzuci próba iterowania po obiekcie, który nie implementuje protokołu iteratora (metod `__iter__` lub `__getitem__`)?",
+        "options": [
+          "ValueError",
+          "AttributeError",
+          "TypeError",
+          "NotImplementedError"
+        ],
+        "answer": 2,
+        "explanation": "Python rzuca `TypeError: 'X' object is not iterable`, gdy próbujemy iterować po obiekcie nie posiadającym zdefiniowanego protokołu iteratora. Aby klasa była iterowalna, musi implementować `__iter__()` zwracający iterator lub `__getitem__()`."
+      }
+    ],
+    "frameworks": [
+      {
+        "id": "py_fw_1",
+        "question": "W FastAPI, do czego służy integracja z Pydantic?",
+        "options": [
+          "Do renderowania szablonów graficznych HTML.",
+          "Do walidacji danych wejściowych i wyjściowych (Type Hinting) oraz automatycznego generowania dokumentacji OpenAPI/Swagger.",
+          "Do asynchronicznego łączenia się z relacyjnymi bazami danych.",
+          "Do obsługi szyfrowania haseł i autoryzacji sesji JWT."
+        ],
+        "answer": 1,
+        "explanation": "FastAPI opiera się bezpośrednio o bibliotekę Pydantic. Dzięki podaniu typów (type hints) w postaci modeli Pydantic, framework waliduje JSON (np. w POST-requestach) i automatycznie buduje dokumentację OpenAPI pod adresem `/docs`."
+      },
+      {
+        "id": "py_fw_2",
+        "question": "Która komenda pozwala na produkcyjne i asynchroniczne uruchomienie aplikacji FastAPI przy użyciu serwera ASGI?",
+        "options": [
+          "python run app.py",
+          "uvicorn main:app --host 0.0.0.0",
+          "gunicorn --sync app.py",
+          "fastapi-start-service"
+        ],
+        "answer": 1,
+        "explanation": "Uvicorn jest niezwykle szybkim i lekkim serwerem standardu ASGI kompatybilnym z FastAPI. Polecenie `uvicorn nazwa_pliku:instancja_fastapi` uruchamia aplikację na wskazanym porcie w pętli asynchronicznej."
+      },
+      {
+        "id": "py_fw_3",
+        "question": "W jaki sposób w Flasku realizuje się podział aplikacji na mniejsze moduły i separację rutingu?",
+        "options": [
+          "Wykorzystując mechanizm `Blueprints`.",
+          "Należy zdefiniować wiele niezależnych instancji modułu `app = Flask(__name__)`.",
+          "Ruting we Flasku nie pozwala na podział i wszystkie endpointy muszą być zdefiniowane w jednym pliku.",
+          "Używając zewnętrznych bibliotek procesowych, ponieważ Flask natywnie tego nie obsługuje."
+        ],
+        "answer": 0,
+        "explanation": "`Blueprints` (blueprinty) we Flasku ułatwiają tworzenie modularnych aplikacji. Pozwalają rejestrować trasy, szablony i pliki statyczne dla pod-modułów, a następnie spinać je razem w głównej aplikacji za pomocą `app.register_blueprint()`."
+      },
+      {
+        "id": "py_fw_4",
+        "question": "Który z poniższych dekoratorów we Flasku służy do wykonywania logiki bezpośrednio przed obsłużeniem żądania HTTP?",
+        "options": [
+          "@app.pre_request",
+          "@app.before_request",
+          "@app.onload",
+          "@app.init_request"
+        ],
+        "answer": 1,
+        "explanation": "Metoda dekorowana `@app.before_request` zostanie uruchomiona przed każdym żądaniem przechodzącym przez serwer Flask. Idealne miejsce m.in. na nawiązywanie połączenia z bazą, sprawdzanie nagłówków autoryzacji czy logowanie telemetryczne."
+      },
+      {
+        "id": "py_fw_5",
+        "question": "Jak nazywa się domyślny, niezwykle popularny system szablonów (templating engine) wykorzystywany we Flasku?",
+        "options": [
+          "Blade",
+          "Twig",
+          "Jinja2",
+          "Thymeleaf"
+        ],
+        "answer": 2,
+        "explanation": "Jinja2 stanowi domyślny silnik renderowania stron HTML wbudowany we Flaska. Pozwala na dynamiczne pętle, warunki, dziedziczenie szablonów oraz bezpieczną filtrację danych wejściowych."
+      },
+      {
+        "id": "py_fw_6",
+        "question": "Jaką architekturę i wzorzec projektowy wdraża framework Django?",
+        "options": [
+          "Natywny Microservices Mesh",
+          "MVT (Model-View-Template)",
+          "MVVM (Model-View-ViewModel)",
+          "CQRS"
+        ],
+        "answer": 1,
+        "explanation": "Django opiera się na architekturze MVT (Model-View-Template). Jest to odmiana klasycznego MVC: Model zarządza bazą (ORM), View odpowiada za logikę biznesową i ruting, a Template obsługuje strukturę prezentacji (HTML)."
+      },
+      {
+        "id": "py_fw_7",
+        "question": "Do czego służy plik `manage.py` w projektach opartych o Django?",
+        "options": [
+          "Jest to plik z konfiguracją zmiennych środowiskowych i sekretów produkcyjnych.",
+          "To pomocniczy skrypt CLI realizujący zadania administracyjne np. migracje, tworzenie superużytkownika czy start serwera deweloperskiego.",
+          "Zawiera logikę orkiestrowania kontenerów Docker.",
+          "Służy wyłącznie do testów automatycznych modułu mock"
+        ],
+        "answer": 1,
+        "explanation": "`manage.py` to owijka nad djangowym narzędziem `django-admin`. Pozwala na uruchamianie komend administracyjnych w kontekście bieżącego projektu (pobiera właściwy moduł `settings.py`)."
+      },
+      {
+        "id": "py_fw_8",
+        "question": "W jaki sposób w Django zabezpiecza się aplikacje przed atakami Cross-Site Request Forgery (CSRF) w formularzach POST?",
+        "options": [
+          "Formularze automatycznie filtrują dane przez algorytm MD5.",
+          "Należy dodać tag `{% csrf_token %}` wewnątrz formularza HTML szablonu.",
+          "Zabezpieczeń nie wdraża się na poziomie widoków, lecz w bazie danych.",
+          "Trzeba zablokować metody POST w całym serwisie korzystając z API."
+        ],
+        "answer": 1,
+        "explanation": "Django wymaga unikalnego tokenu CSRF w zapytaniach zmieniających stan (POST, PUT, DELETE). Tag `{% csrf_token %}` renderuje ukryte pole z wygenerowanym jednorazowym kluczem, który jest weryfikowany przez wbudowany middleware."
+      },
+      {
+        "id": "py_fw_9",
+        "question": "Do czego służy mechanizm Dependency Injection w FastAPI?",
+        "options": [
+          "Służy do automatycznej deinstalacji pakietów pip w tle.",
+          "Pozwala na deklarowanie zależności (np. połączeń do bazy, praw dostępu) w funkcjach ścieżek za pomocą deklaratywnego wywołania `Depends(...)`.",
+          "Jest to interfejs do asynchronicznego kompilowania skryptów JS.",
+          "W FastAPI nie ma wbudowanego mechanizmu wstrzykiwania zależności."
+        ],
+        "answer": 1,
+        "explanation": "Wstrzykiwanie zależności w FastAPI realizowane poprzez `Depends()` jest niezwykle zaawansowane. Pozwala na hierarchiczne i proste współdzielenie parametrów, logiki DB czy ról bezpieczeństwa w funkcjach obsługujących trasy."
+      },
+      {
+        "id": "py_fw_10",
+        "question": "Co oznacza termin 'Middleware' we frameworku Django?",
+        "options": [
+          "System tworzenia tabel bazodanowych na podstawie modeli.",
+          "Lekka wtyczka uruchamiana globalnie przed przetworzeniem widoku i/lub po wyrenderowaniu odpowiedzi HTTP.",
+          "Klasa odpowiedzialna za uwierzytelnianie użytkowników przez API.",
+          "Narzędzie do automatycznego stylowania formularzy"
+        ],
+        "answer": 1,
+        "explanation": "Middleware w Django to potokowy zestaw filtrów sieciowych. Każde żądanie HTTP przechodzi przez listę zdefiniowanych klas middleware (np. obsługa sesji, uwierzytelnianie, nagłówki bezpieczeństwa, kompresja) zarówno w drodze 'do' widoku, jak i 'z' powrotem."
+      },
+      {
+        "id": "py_fw_11",
+        "question": "W jaki sposób nowsze wersje Django (3.0+) obsługują asynchroniczność?",
+        "options": [
+          "Django nie obsługuje i nigdy nie będzie obsługiwać asynchroniczności.",
+          "Poprzez pełne przejście na standard ASGI, umożliwiając pisanie asynchronicznych widoków (`async def`), używanie asynchronicznych middleware oraz asynchronicznych zapytań ORM.",
+          "Ogranicza się wyłącznie do asynchronicznego wysyłania e-maili przez aplikację celery.",
+          "Wymaga zewnętrznej integracji z Node.js, aby asynchronicznie odpytywać bazę danych."
+        ],
+        "answer": 1,
+        "explanation": "Począwszy od Django 3.0, framework sukcesywnie wdraża natywne wsparcie dla asynchroniczności (standard ASGI). Programiści mogą definiować asynchroniczne widoki, middleware oraz bezpiecznie wykonywać operacje bazodanowe przy pomocy asynchronicznych metod ORM (np. `aget()` lub `acreate()`)."
+      },
+      {
+        "id": "py_fw_12",
+        "question": "Do czego służą i jakie zakresy życia (scopes) mogą mieć 'Fixtures' w popularnym frameworku testowym pytest?",
+        "options": [
+          "Służą wyłącznie do mierzenia czasu wykonywania testów; ich zakresy to minuty i godziny.",
+          "Służą do dostarczania stałego kodu pomocniczego, mocków lub danych wejściowych do testów; ich zakresy życia to: function (domyślny), class, module, package oraz session.",
+          "To elementy służące do kolorowania błędów w konsoli systemowej.",
+          "Służą do kompilowania kodu Pythona do języka C przed uruchomieniem testów."
+        ],
+        "answer": 1,
+        "explanation": "Fixture w pytest pozwala na przygotowanie środowiska pod testy (np. połączenie z DB, ładowanie konfiguracji). Zakres określa, jak często fixture jest ponownie tworzona: 'function' (dla każdego testu), 'class' (raz na klasę testową), 'module' (raz na moduł/plik), 'session' (raz na całe uruchomienie pytest)."
+      },
+      {
+        "id": "py_fw_13",
+        "question": "W integracji Flask-SQLAlchemy (lub czystym SQLAlchemy), jaka jest zasadnicza różnica między wywołaniem `db.session.flush()` a `db.session.commit()`?",
+        "options": [
+          "`flush()` zapisuje dane trwale w pliku, a `commit()` wysyła je na serwer FTP.",
+          "`flush()` przesyła zaległe operacje zapisu do bazy danych (generuje rzeczywiste zapytania SQL, np. INSERT i przydziela ID autoincrement), ale nie zamyka transakcji. `commit()` zapisuje zmiany trwale na dysku bazy i zamyka bieżącą transakcję.",
+          "Nie ma żadnej różnicy, oba wywołania są identycznymi aliasami.",
+          "`commit()` cofa wszystkie dotychczasowe operacje, a `flush()` je zatwierdza."
+        ],
+        "answer": 1,
+        "explanation": "`flush()` pozwala bazie danych dowiedzieć się o planowanych operacjach i uzyskać np. wygenerowane klucze główne dla nowych rekordów. Zmiany nie są jednak widoczne dla innych transakcji i mogą być cofnięte (rollback) dopóki nie zostanie wywołane ostateczne zatwierdzenie `commit()`."
+      },
+      {
+        "id": "py_fw_14",
+        "question": "W jaki sposób w FastAPI przy użyciu Pydantic V2 definiuje się niestandardową walidację konkretnego pola modelu klasy?",
+        "options": [
+          "Używając starej metody `@validator` z modułu `pydantic.deprecated`.",
+          "Stosując dekorator `@field_validator` importowany z `pydantic` nad metodą klasy oznaczającą wybrane pole.",
+          "Dodając instrukcję warunkową `if` wewnątrz konstruktora klasy routera.",
+          "Pydantic nie obsługuje niestandardowych walidacji pól - dopuszczalne są tylko gotowe typy danych."
+        ],
+        "answer": 1,
+        "explanation": "W nowym Pydantic V2 (używanym w nowoczesnych wersjach FastAPI) standardem do walidacji pojedynczego pola jest dekorator `@field_validator('nazwa_pola')`. Metoda dekorowana musi być metodą klasową (`@classmethod`) przyjmującą m.in. sprawdzaną wartość."
+      },
+      {
+        "id": "py_fw_15",
+        "question": "W jaki sposób najprościej uruchomić serwer deweloperski Flask w trybie debugowania (Debug Mode) z automatycznym przeładowaniem po zmianie kodu?",
+        "options": [
+          "Dodając kod `app.run(debug=True)` i uruchamiając skrypt, lub ustawiając zmienną środowiskową `FLASK_DEBUG=1` i wywołując `flask run`.",
+          "Wpisując polecenie `flask debug-start` w konsoli.",
+          "Uruchamiając skrypt za pomocą kompilatora `python-debug app.py`.",
+          "Tryb debugowania we Flasku wymaga zainstalowania dodatkowego, płatnego serwera Apache."
+        ],
+        "answer": 0,
+        "explanation": "Tryb debugowania (`debug=True` lub `FLASK_DEBUG=1`) aktywuje niezwykle poręczną konsolę debugowania bezpośrednio w przeglądarce (przy błędach) oraz uruchamia mechanizm 'hot-reload' (serwer automatycznie restartuje się, gdy odnotuje zmiany w plikach skryptu)."
+      },
+      {
+        "id": "py_fw_16",
+        "question": "Jak w SQLAlchemy 2.0 poprawnie wykonać asynchroniczne zapytanie do bazy danych używając `AsyncSession`?",
+        "options": [
+          "Używając standardowego `session.execute()` bez żadnych modyfikacji.",
+          "Importując `AsyncSession` z `sqlalchemy.ext.asyncio` i wykonując zapytania przez `await session.execute(select(Model))`.",
+          "Uruchamiając synchroniczny kod w oddzielnym wątku za pomocą `threading.Thread`.",
+          "SQLAlchemy nie obsługuje asynchronicznych sesji."
+        ],
+        "answer": 1,
+        "explanation": "SQLAlchemy 2.0 wprowadza pełne wsparcie dla asynchroniczności. `AsyncSession` umożliwia używanie `async/await` z operacjami bazodanowymi. Wymaga sterownika bazodanowego obsługującego async, np. `asyncpg` dla PostgreSQL lub `aiomysql` dla MySQL."
+      },
+      {
+        "id": "py_fw_17",
+        "question": "Do czego służy Celery i w jakim scenariuszu jest najczęściej stosowany w projektach Django/Flask?",
+        "options": [
+          "Do obsługi renderowania szablonów HTML po stronie serwera.",
+          "Do delegowania kosztownych lub długotrwałych operacji (np. wysyłka e-maili, generowanie raportów, integracje API) do asynchronicznych kolejek zadań w tle (workers), odciążając główny wątek HTTP.",
+          "Do automatycznego skalowania instancji serwera w chmurze AWS.",
+          "Służy wyłącznie do serializacji i kompresji odpowiedzi HTTP."
+        ],
+        "answer": 1,
+        "explanation": "Celery to system kolejkowania zadań (task queue) używający brokera wiadomości (np. Redis, RabbitMQ). Pracownicy (workers) odbierają zadania z kolejki i przetwarzają je asynchronicznie, bez blokowania odpowiedzi HTTP dla użytkownika."
+      },
+      {
+        "id": "py_fw_18",
+        "question": "Jak w pytest wielokrotnie uruchomić ten sam test z różnymi zestawami danych wejściowych?",
+        "options": [
+          "Kopiując tę samą funkcję testową kilkukrotnie ze zmienionymi danymi.",
+          "Używając dekoratora `@pytest.mark.parametrize('argument', [wartość1, wartość2])` nad funkcją testową.",
+          "Tworząc osobną klasę testową dla każdego zestawu danych.",
+          "pytest nie obsługuje parametryzacji - każdy test jest zawsze izolowany."
+        ],
+        "answer": 1,
+        "explanation": "`@pytest.mark.parametrize` jest niezwykle wydajną techniką. Przyjmuje nazwy argumentów i listę wartości (lub krotek dla wielu argumentów). Pytest generuje osobny test dla każdego zestawu danych, pokazując je jako niezależne przypadki testowe."
+      },
+      {
+        "id": "py_fw_19",
+        "question": "Czym są Sygnały (Signals) we frameworku Django i do czego służą?",
+        "options": [
+          "Są to specjalne pliki konfiguracyjne systemu automatyzacji deploy.",
+          "Pozwalają pewnym komponentom informować inne o wystąpieniu określonego zdarzenia (np. `post_save` po zapisie modelu), umożliwiając luźno sprzężoną komunikację między modułami aplikacji.",
+          "Są to asynchroniczne procesy obsługujące połączenia WebSocket.",
+          "Sygnały Django wymagają zewnętrznej instalacji pakietu i nie są częścią rdzenia frameworka."
+        ],
+        "answer": 1,
+        "explanation": "Sygnały (`django.db.models.signals`) implementują wzorzec Observer. Popularne sygnały: `pre_save`, `post_save`, `pre_delete`, `post_delete`. Można rejestrować funkcje (handlery) wywoływane automatycznie, gdy dany sygnał jest wyzwalany."
+      },
+      {
+        "id": "py_fw_20",
+        "question": "Jak w FastAPI zrealizować operację w tle (background task), która nie blokuje odpowiedzi HTTP?",
+        "options": [
+          "Uruchamiając zadanie w osobnym procesie Python z `subprocess.Popen`.",
+          "Używając klasy `BackgroundTasks` jako parametru w funkcji ścieżki i wywołując `.add_task(func, *args)` przed zwróceniem odpowiedzi.",
+          "FastAPI nie wspiera zadań w tle bez zewnętrznej biblioteki Celery.",
+          "Używając dekoratora `@app.background` nad asynchroniczną funkcją."
+        ],
+        "answer": 1,
+        "explanation": "`BackgroundTasks` z FastAPI pozwala dodawać funkcje do wykonania po wysłaniu odpowiedzi do klienta. Idealne dla prostych zadań jak logowanie lub wysyłka powiadomień. Dla złożonych zadań i klastrów warto wybrać Celery."
+      },
+      {
+        "id": "py_fw_21",
+        "question": "Na czym polega wzorzec 'Application Factory' we Flasku i dlaczego jest rekomendowany?",
+        "options": [
+          "Polega na tworzeniu jednej globalnej instancji `app = Flask(__name__)` dostępnej w każdym pliku.",
+          "Polega na definiowaniu funkcji (np. `create_app(config)`) zwracającej nową, świeżo skonfigurowaną instancję aplikacji Flask, co umożliwia łatwe tworzenie różnych konfiguracji (produkcja, testowanie) i unikanie problemów z cyklicznymi importami.",
+          "Polega na automatycznym generowaniu tras URL bez jawnej rejestracji.",
+          "Jest to wzorzec wyłącznie do testowania modeli bazodanowych."
+        ],
+        "answer": 1,
+        "explanation": "Application Factory (`create_app`) daje pełną kontrolę nad konfiguracja. W testach możesz wywołać `create_app({'TESTING': True, 'DATABASE': ':memory:'})` bez ingerencji w środowisko produkcyjne."
+      },
+      {
+        "id": "py_fw_22",
+        "question": "Do czego służy plik `conftest.py` w strukturze projektu testowego pytest?",
+        "options": [
+          "Do konfiguracji edytora kodu i kolorowania składni.",
+          "Do definiowania wspólnych fixture i wtyczek (hooks/plugins) dostępnych dla wszystkich testów w danym katalogu i jego podkatalogach, bez konieczności importowania ich ręcznie.",
+          "Do automatycznego generowania raportów HTML z pokrycia testowego.",
+          "Plik `conftest.py` jest częścią systemu migracji SQLAlchemy."
+        ],
+        "answer": 1,
+        "explanation": "Pytest automatycznie wykrywa i wczytuje `conftest.py`. Fixture zdefiniowane w tym pliku są globalnie dostępne dla wszystkich plików testowych w tym samym katalogu i podkatalogach. Używany do sharingowania klientów HTTP, połączeń z bazą czy konfiguracji środowiska."
+      },
+      {
+        "id": "py_fw_23",
+        "question": "Jak w pytest zamockować zewnętrzne wywołanie HTTP `requests.get()`, aby test nie wymagał dostępu do sieci?",
+        "options": [
+          "Nie da się tego zrobić - testy wymagające żądań HTTP zawsze muszą trafić do prawdziwego serwera.",
+          "Używając `unittest.mock.patch('requests.get')` jako dekoratora lub kontekstowego menedżera, lub używając biblioteki `responses` do mockowania HTTP.",
+          "Uruchamiając lokalny serwer HTTP w osobnym wątku pytest.",
+          "Dodając `@pytest.mark.no_network` nad funkcją testową."
+        ],
+        "answer": 1,
+        "explanation": "`unittest.mock.patch('moduł.requests.get')` podmieniając funkcję na `MagicMock`. Możemy ustawić `.return_value` na pożądany obiekt-odpowiedź. Biblioteka `responses` lub `httpretty` oferuje bardziej komfortowe API dla złożonych scenariuszy."
+      },
+      {
+        "id": "py_fw_24",
+        "question": "W jaki sposób w Pydantic V2 skonfigurować model, aby akceptował dodatkowe pola w JSON, które nie są zadeklarowane jako pola klasy?",
+        "options": [
+          "Pydantic V2 zawsze rzuca błąd walidacji dla nieznanych pól i nie można tego zmienić.",
+          "Używając konfiguracji `model_config = ConfigDict(extra='allow')` lub `extra='ignore'` w ciele klasy modelu.",
+          "Dodając `**kwargs` do konstruktora klasy modelu.",
+          "Dekorując klasę atrybutem `@pydantic.allow_extra`."
+        ],
+        "answer": 1,
+        "explanation": "W Pydantic V2 konfigurację modelu ustawia się przez `model_config = ConfigDict(...)`. Opcja `extra='allow'` przechowuje nieznane pola, `extra='ignore'` (domyślnie) je pomija, a `extra='forbid'` powoduje błąd walidacji."
+      },
+      {
+        "id": "py_fw_25",
+        "question": "Czym jest Django REST Framework (DRF) i jaką jego kluczową klasę używamy do definiowania struktury danych API?",
+        "options": [
+          "DRF to zewnętrzna wersja Django zastępująca cały silnik szablonów.",
+          "DRF to biblioteka rozszerzająca Django o budowę REST API. Kluczową klasą jest `Serializer` (lub `ModelSerializer`), która mapuje obiekty Python/ORM na format JSON/XML i z powrotem.",
+          "Jest to narzędzie do automatycznego generowania frontendu React na bazie modeli Django.",
+          "DRF to narzędzie migracji baz danych alternatywne dla django ORM migrations."
+        ],
+        "answer": 1,
+        "explanation": "`ModelSerializer` z DRF automatycznie generuje pola na podstawie Django modelu. Viewsety (`ViewSet`, `ModelViewSet`) i routery (`DefaultRouter`) razem dostarczają pełny CRUD w zaledwie kilku liniach kodu."
+      }
+    ],
+    "recruitment": [
+      {
+        "id": "py_rec_1",
+        "question": "[REKRUTACJA - JUNIOR] Czym jest GIL (Global Interpreter Lock) w CPythonie i jaki ma wpływ na wielowątkowość (Multithreading)?",
+        "options": [
+          "Jest to system optymalizacji bazy danych sqlite wbudowanej w standard.",
+          "To globalny mechanizm blokujący, który pozwala tylko jednemu wątkowi na wykonywanie kodu bajtowego Pythona w danej chwili.",
+          "Mechanizm kompresujący moduły w celu zaoszczędzenia pamięci operacyjnej.",
+          "Wirtualna piaskownica uniemożliwiająca działanie złośliwego oprogramowania."
+        ],
+        "answer": 1,
+        "explanation": "Global Interpreter Lock (GIL) w CPython gwarantuje bezpieczne zarządzanie pamięcią (zliczanie referencji nie jest thread-safe). W rezultacie wątki w Pythonie nie mogą wykonywać kodu CPU współbieżnie na wielu rdzeniach (dla zadań CPU-bound lepiej użyć multiprocessing)."
+      },
+      {
+        "id": "py_rec_2",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jaka jest kluczowa różnica między `copy.copy()` (płytkie kopiowanie) a `copy.deepcopy()` (głębokie kopiowanie)?",
+        "options": [
+          "`copy.copy()` kopiuje tylko obiekty liczbowe, a `deepcopy()` kopiuje także łańcuchy znaków i słowniki.",
+          "`copy.copy()` tworzy nowy obiekt, ale umieszcza w nim referencje do elementów oryginalnych; `copy.deepcopy()` rekurencyjnie kopiuje wszystkie obiekty nadrzędne i zależne.",
+          "Głębokie kopiowanie automatycznie zapisuje plik kopii na dysku twardym.",
+          "Nie ma żadnej różnicy, oba wywołania są aliasami do tej samej funkcji w kompilatorze."
+        ],
+        "answer": 1,
+        "explanation": "Płytka kopia (`copy()`) duplikuje strukturę zewnętrzną, ale elementy wewnątrz (np. listy wewnątrz listy) pozostają tymi samymi obiektami w pamięci. Głęboka kopia (`deepcopy()`) tworzy całkowicie niezależny klon całego drzewa obiektów."
+      },
+      {
+        "id": "py_rec_3",
+        "question": "[REKRUTACJA - MID] Jakie metody magiczne (dno-under methods) musi implementować klasa, aby mogła działać jako menedżer kontekstu w instrukcji `with`?",
+        "options": [
+          "`__init__` oraz `__del__`",
+          "`__open__` oraz `__close__`",
+          "`__enter__` oraz `__exit__`",
+          "`__start__` oraz `__stop__`"
+        ],
+        "answer": 2,
+        "explanation": "Instrukcja `with` oczekuje obiektu realizującego protokół menedżera kontekstu. Metoda `__enter__` jest wywoływana na początku i może zwracać zasób, natomiast `__exit__` wykonuje się na końcu, obsługując również ewentualne wyjątki."
+      },
+      {
+        "id": "py_rec_4",
+        "question": "[REKRUTACJA - MID/SENIOR] Jak działa mechanizm hierarchii dziedziczenia MRO (Method Resolution Order) w przypadku dziedziczenia wielokrotnego w Pythonie?",
+        "options": [
+          "Wybiera losowo metodę z jednej z klas nadrzędnych.",
+          "Wykorzystuje algorytm linearyzacji C3, aby jednoznacznie ustalić kolejność przeszukiwania klas bez powtórzeń i zachowując relacje nadrzędności.",
+          "Zawsze przeszukuje wyłącznie bezpośrednią klasę po lewej stronie, ignorując pozostałe.",
+          "Rzuca błąd kompilacji, ponieważ dziedziczenie wielokrotne jest w Pythonie zabronione."
+        ],
+        "answer": 1,
+        "explanation": "Python rozwiązuje problem diamentowy i dziedziczenie wielokrotne za pomocą algorytmu przeszukiwania C3. Możesz sprawdzić tę kolejność wywołując atrybut `__mro__` lub metodę `mro()` na klasie."
+      },
+      {
+        "id": "py_rec_5",
+        "question": "[REKRUTACJA - SENIOR] Czym jest metaklasa (metaclass) w Pythonie i do czego służy?",
+        "options": [
+          "Klasą nadrzędną dla wszystkich modułów wbudowanych w bibliotekę standardową.",
+          "Klasą, której instancjami są same klasy; służy do kontrolowania procesu tworzenia i modyfikowania klas na etapie ich definicji.",
+          "Klasą optymalizującą zużycie pamięci cache w procesorze.",
+          "Wzorcem projektowym zastępującym tradycyjny interfejs API."
+        ],
+        "answer": 1,
+        "explanation": "Tak jak obiekt jest instancją klasy, tak klasa (w standardowym Pythonie) jest instancją klasy `type`. Metaklasa dziedziczy po `type` i pozwala przechwycić i zmodyfikować proces tworzenia nowej klasy w metodzie `__new__` lub `__init__`."
+      },
+      {
+        "id": "py_rec_6",
+        "question": "[REKRUTACJA - MID] W jaki sposób poprawnie zdefiniować dekorator funkcji, który sam przyjmuje argumenty konfiguracyjne (np. `@repeat(num=3)`)?",
+        "options": [
+          "Tworząc klasę dziedziczącą bezpośrednio z modułu `sys.decorators`.",
+          "Tworząc funkcję zwracającą kolejną funkcję, która dopiero jest właściwym dekoratorem zwracającym opakowaną funkcję (tzw. trójpoziomowa closures).",
+          "Używając parametru `global` wewnątrz dekorowanej metody.",
+          "Jest to niemożliwe, dekoratory w Pythonie nie mogą przyjmować własnych parametrów."
+        ],
+        "answer": 1,
+        "explanation": "Dekorator z parametrami to fabryka dekoratorów. Zewnętrzna funkcja przyjmuje argumenty startowe, zwraca właściwy dekorator (przyjmujący dekorowaną funkcję), a ten zwraca wrapper (przyjmujący argumenty dekorowanej funkcji)."
+      },
+      {
+        "id": "py_rec_7",
+        "question": "[REKRUTACJA - SENIOR] Za co odpowiada protokół deskryptorów (Descriptor Protocol) w Pythonie?",
+        "options": [
+          "Służy wyłącznie do asynchronicznego przesyłania pakietów TCP.",
+          "Pozwala obiektowi kontrolować zachowanie pobierania, ustawiania lub usuwania swoich atrybutów w innych klasach poprzez implementację metod `__get__`, `__set__` lub `__delete__`.",
+          "Zaimplementowano go w celach generowania plików dokumentacji technicznej.",
+          "Odpowiada za automatyczne mapowanie modeli ORM w bazie SQL."
+        ],
+        "answer": 1,
+        "explanation": "Deskryptory leżą u podstaw wielu mechanizmów Pythona (np. `@property`, `@classmethod`, `@staticmethod`). Dowolny obiekt implementujący przynajmniej jedną z metod deskryptora może dostosowywać dostęp do atrybutów."
+      },
+      {
+        "id": "py_rec_8",
+        "question": "[REKRUTACJA - SENIOR] Jaki wpływ na pętlę zdarzeń (Event Loop) w `asyncio` ma wywołanie kodu synchronicznie blokującego (np. `time.sleep(5)`) wewnątrz coroutine?",
+        "options": [
+          "Pętla zdarzeń automatycznie przeniesie to zadanie do nowego rdzenia procesora.",
+          "Zablokuje całą pętlę zdarzeń i wstrzyma wykonywanie wszystkich innych współbieżnych coroutines na 5 sekund.",
+          "Rzuci natychmiast wyjątek `AsyncioBlockedError` zatrzymujący interpreter.",
+          "Nie wywrze żadnego wpływu, ponieważ Python automatycznie asynchronizuje synchroniczne wywołania."
+        ],
+        "answer": 1,
+        "explanation": "Event Loop w `asyncio` działa jednowątkowo. Jeśli coroutine nie odda kontroli (poprzez `await`), lecz zablokuje wątek operacją CPU-bound lub blokującym I/O, cała logika asynchroniczna zostanie wstrzymana. Do takich zadań należy użyć `run_in_executor`."
+      },
+      {
+        "id": "py_rec_9",
+        "question": "[REKRUTACJA - JUNIOR] Jaka jest teoretyczna złożoność obliczeniowa wyszukiwania elementu (operacja `x in container`) dla `list` i `set` w Pythonie?",
+        "options": [
+          "Dla obu struktur wynosi średnio O(1).",
+          "Dla listy wynosi średnio O(1), a dla set O(n).",
+          "Dla listy wynosi średnio O(n), natomiast dla zbioru (set) wynosi O(1) dzięki tablicy mieszającej (hash table).",
+          "Złożoność zależy wyłącznie od ilości wolnej pamięci RAM."
+        ],
+        "answer": 2,
+        "explanation": "Wyszukiwanie w liście odbywa się przez przeszukanie liniowe (wyraz po wyrazie -> O(n)). Zbiór (`set`) bazuje na tablicy mieszającej - wylicza hash elementu i od razu wie, w której komórce pamięci go szukać, dając średnio czas stały O(1)."
+      },
+      {
+        "id": "py_rec_10",
+        "question": "[REKRUTACJA - SENIOR] Jak działa algorytm wykrywania cykli w Garbage Collectorze (moduł `gc`) w Pythonie, eliminujący wycieki pamięci spowodowane zapętleniem referencji?",
+        "options": [
+          "Algorytm usuwa losowe zmienne z pamięci co 10 minut jako środek zapobiegawczy.",
+          "Śledzi kontenery (listy, słowniki, obiekty klas) w podzielonych generacjach (0, 1, 2), próbując próbnym odejmowaniem referencji wykryć grupy obiektów, które wskazują wyłącznie na siebie nawzajem.",
+          "Ignoruje cykle i oczekuje, że programista sam wywoła metodę `del` dla każdego obiektu.",
+          "GC w Pythonie opiera się wyłącznie o system liczenia referencji i nie obsługuje cykli."
+        ],
+        "answer": 1,
+        "explanation": "Cykle referencyjne (np. A wskazuje na B, a B na A) nie mogą być zwolnione przez samo zliczanie referencji (ich licznik nigdy nie spadnie do 0). GC okresowo bada obiekty z podziałem na generacje (generational GC) i izoluje grupy nieosiągalne z zewnątrz."
+      },
+      {
+        "id": "py_rec_11",
+        "question": "[REKRUTACJA - MID/SENIOR] Do czego służy i jaki problem rozwiązuje dekorator `@functools.wraps` przy pisaniu własnych dekoratorów?",
+        "options": [
+          "Do kompresowania wywołań dekorowanej funkcji w pamięci cache.",
+          "Zapobiega utracie (nadpisaniu) metadanych oryginalnej funkcji (takich jak nazwa funkcji `__name__` oraz jej docstring `__doc__`), kopiując je na funkcję opakowującą (wrapper).",
+          "Wymusza na dekoratorze działanie pod pętlą asynchroniczną asyncio.",
+          "Zabezpiecza funkcję przed przepełnieniem stosu wywołań rekurencyjnych (Stack Overflow)."
+        ],
+        "answer": 1,
+        "explanation": "Bez użycia `@wraps(func)` nad funkcją wrapper wewnątrz dekoratora, udekorowana funkcja straci swoje pierwotne metadane — wywołanie `func.__name__` zwróci `'wrapper'` zamiast nazwy oryginalnej funkcji, co utrudnia debugowanie i psuje działanie narzędzi automatycznej dokumentacji."
+      },
+      {
+        "id": "py_rec_12",
+        "question": "[REKRUTACJA - SENIOR] Czym jest `ContextVar` wprowadzony w module `contextvars` w Pythonie i dlaczego zastępuje `threading.local()` w asynchronicznym kodzie?",
+        "options": [
+          "Służy wyłącznie do wymian danych między procesami systemowymi.",
+          "Przechowuje zmienne kontekstowe, które są izolowane na poziomie współbieżnego zadania asynchronicznego (asyncio Task), podczas gdy `threading.local()` izoluje stan tylko na poziomie fizycznego wątku OS (co zawodzi, gdy wiele tasków działa w jednym wątku).",
+          "Jest to interfejs do szyfrowania pamięci podręcznej typu memcached.",
+          "Służy do automatycznego zamykania socketów sieciowych po zakończeniu zapytania."
+        ],
+        "answer": 1,
+        "explanation": "W programowaniu asynchronicznym pętla zdarzeń uruchamia wiele niezależnych zadań (Tasks) współbieżnie w ramach jednego, tego samego wątku. Tradycyjny `threading.local` współdzieliłby wartości między nimi, prowadząc do wycieków danych. `ContextVar` dba o poprawną izolację kontekstu każdego Tasku."
+      },
+      {
+        "id": "py_rec_13",
+        "question": "[REKRUTACJA - MID/SENIOR] Jaka jest kluczowa różnica między metodami specjalnymi `__new__` a `__init__` podczas tworzenia instancji klasy w Pythonie?",
+        "options": [
+          "`__init__` rezerwuje pamięć RAM, a `__new__` usuwa stare obiekty z pamięci.",
+          "`__new__` jest rzeczywistym konstruktorem (metoda statyczna, która fizycznie alokuje pamięć i zwraca nową instancję klasy), natomiast `__init__` jest inicjalizatorem (metoda instancji służąca do ustawiania domyślnych wartości atrybutów już po utworzeniu obiektu).",
+          "Metodę `__new__` można zdefiniować tylko w klasach asynchronicznych.",
+          "Nie ma żadnej różnicy, wywoływane są naprzemiennie zależnie od systemu operacyjnego."
+        ],
+        "answer": 1,
+        "explanation": "Podczas wywołania `MyClass()`, najpierw wykonywana jest metoda `__new__(cls)`, której zadaniem jest stworzenie i zwrócenie czystego obiektu typu `cls` (zazwyczaj poprzez `super().__new__`). Dopiero gdy ta instancja zostanie zwrócona pomyślnie, Python automatycznie wywołuje `__init__(self)` do jej uzupełnienia."
+      },
+      {
+        "id": "py_rec_14",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jak działa rozpakowywanie argumentów za pomocą `*args` i `**kwargs` w definicjach funkcji w Pythonie?",
+        "options": [
+          "`*args` pakuje nadmiarowe argumenty pozycyjne do listy, a `**kwargs` pakuje argumenty nazwane do krotki.",
+          "`*args` pakuje nadmiarowe nienazwane (pozycyjne) argumenty do krotki (tuple), a `**kwargs` pakuje nadliczbowe argumenty nazwane (klucz-wartość) do słownika (dictionary).",
+          "Zamieniają one wszystkie parametry wejściowe w ciągi tekstowe przed wykonaniem kodu.",
+          "Służą wyłącznie do łączenia kodu Pythona ze skryptami języka C++."
+        ],
+        "answer": 1,
+        "explanation": "`*args` (arguments) i `**kwargs` (keyword arguments) dają funkcjom niesamowitą elastyczność w przyjmowaniu dowolnej, zmiennej liczby parametrów wywołania. `*` rozpakowuje/pakuje kolekcje sekwencyjne, a `**` słowniki."
+      },
+      {
+        "id": "py_rec_15",
+        "question": "[REKRUTACJA - SENIOR] Jaki problem projektowy może wywołać poniższa definicja funkcji i jak go poprawnie rozwiązać?\n```python\ndef get_user_logs(logs=[]):\n    return logs\n```",
+        "options": [
+          "Funkcja rzuci natychmiastowym błędem kompilacji ze względu na brak typu danych.",
+          "Domyślna lista `logs` jest tworzona tylko raz (przy definicji) i ponowne wywołania funkcji z modyfikacją tej listy będą współdzielić ten sam obiekt w pamięci. Rozwiązaniem jest: `def get_user_logs(logs=None):` i przypisanie `logs = []` jeśli parametr jest równy `None`.",
+          "Metoda ta doprowadzi do natychmiastowego przepełnienia pamięci RAM przy pierwszym wywołaniu.",
+          "Rozwiązaniem jest dodanie asynchronicznego operatora `await` przed parametrem domyślnym."
+        ],
+        "answer": 1,
+        "explanation": "Używanie mutowalnych wartości domyślnych (jak `[]` czy `{}`) to jedna z najczęstszych pułapek w Pythonie. Obiekt domyślny żyje tak długo jak sama funkcja w pamięci programu, co sprawia, że kolejne wywołania modyfikujące tę listę będą nakładać zmiany na wspólny stan. Prawidłowy wzorzec to użycie `None`."
+      },
+      {
+        "id": "py_rec_16",
+        "question": "[REKRUTACJA - MID/SENIOR] Jaka jest różnica między `@functools.lru_cache` a `@functools.cache` (Python 3.9+)?",
+        "options": [
+          "Nie ma różnicy - oba dekoratory są identyczne.",
+          "`lru_cache` implementuje buforowanie z LRU (Least Recently Used), usuwając najdawniej używane wpisy gdy cache osiągnie limit `maxsize`. `cache` (Python 3.9+) jest odpowiednikiem `lru_cache(maxsize=None)` - cache nieograniczony, rosnący bez końca.",
+          "`cache` jest szybszy, bo pomija sprawdzanie typów, a `lru_cache` weryfikuje typy.",
+          "`lru_cache` działa tylko na metodach klasy, a `cache` wyłącznie na funkcjach modułowych."
+        ],
+        "answer": 1,
+        "explanation": "Wybór zależy od kontekstu: `lru_cache(maxsize=128)` ogranicza użycie pamięci, co jest kluczowe przy długo działającym procesie. `@cache` bez limitu może prowadzić do nieograniczonego wzrostu pamięci. Oba nie działają z mutowalnymi argumentami (np. listami), ponieważ wymagają hashowalnych kluczy."
+      },
+      {
+        "id": "py_rec_17",
+        "question": "[REKRUTACJA - JUNIOR] Do czego służy narzędzie `venv` (lub `virtualenv`) i dlaczego jego użycie jest standardową praktyką?",
+        "options": [
+          "Do wirtualizacji systemu operacyjnego na potrzeby deweloperskie.",
+          "Tworzy izolowane środowisko Pythona z własnym interpreterem i zestawem pakietów dla konkretnego projektu, zapobiegając konfliktom wersji między projektami i zachowując czystość systemowego Pythona.",
+          "Jest to narzędzie do profilowania i mierzenia wydajności aplikacji Python.",
+          "Zarządza kluczami SSH do połączeń ze zdalnymi repozytoriami git."
+        ],
+        "answer": 1,
+        "explanation": "Bez virtualenv projekt A wymagający `requests==2.25` i projekt B wymagający `requests==2.31` kolidowałyby w obrębie jednej instalacji Pythona. `venv` tworzy izolowane kopie site-packages dla każdego projektu."
+      },
+      {
+        "id": "py_rec_18",
+        "question": "[REKRUTACJA - MID] Do czego służy moduł `abc` (Abstract Base Classes) i klasa `ABC` w Pythonie?",
+        "options": [
+          "Do szyfrowania klas z danymi wrażliwymi w systemach korporacyjnych.",
+          "Pozwala definiować klasy abstrakcyjne z metodami `@abstractmethod`, które muszą zostać zaimplementowane przez każdą klasę pochodną - wymusza kontrakt interfejsu.",
+          "Moduł `abc` służy do automatycznego tworzenia dokumentacji klas.",
+          "Jest to skrót od 'Automated Base Class' - zastępuje manualny `__init__`."
+        ],
+        "answer": 1,
+        "explanation": "Klasy oznaczone `@abstractmethod` nie mogą być bezpośrednio instancjowane. Każda podklasa musi zaimplementować te metody, inaczej Python rzuci `TypeError`. `ABCMeta` i `ABC` to fundamenty tworzenia interfejsów w Pythonie, podobnych do `interface` w Java/PHP."
+      },
+      {
+        "id": "py_rec_19",
+        "question": "[REKRUTACJA - MID] Jaki jest cel wywołania funkcji `id()` na obiekcie Pythona?",
+        "options": [
+          "Generuje unikalny klucz UUID dla obiektu na potrzeby baz danych.",
+          "Zwraca unikalny, numeryczny identyfikator obiektu (w CPython jest to jego adres fizyczny w pamięci RAM), przydatny do sprawdzenia, czy dwie zmienne wskazują na ten sam obiekt.",
+          "Zwraca hash (skrót) obiektu, taki sam jak `hash()`.",
+          "Identyfikuje numer wersji modułu, do którego należy obiekt."
+        ],
+        "answer": 1,
+        "explanation": "`id(obj)` zwraca tożsamość obiektu. W implementacji CPython odpowiada to adresowi pamięci. Operator `is` pod maską porównuje właśnie wartości `id()` dwóch obiektów: `a is b` jest równoważne `id(a) == id(b)`."
+      },
+      {
+        "id": "py_rec_20",
+        "question": "[REKRUTACJA - MID/SENIOR] Dlaczego `threading.Lock()` nie może być używany w `asyncio` i co jest jego poprawnym odpowiednikiem?",
+        "options": [
+          "`threading.Lock` działa identycznie w asyncio i nie ma problemu z jego użyciem.",
+          "`threading.Lock.acquire()` blokuje cały wątek OS, przez co zawiesza całą pętlę zdarzeń asyncio. Poprawnym odpowiednikiem jest `asyncio.Lock()`, który zawiesza tylko bieżący task zwalniając Event Loop dla innych.",
+          "Zamki (Locks) nie istnieją w programowaniu asynchronicznym - asyncio jest jednowątkowe.",
+          "Zamek wątku `threading.Lock` jest szybszy w asyncio niż dedykowany `asyncio.Lock`."
+        ],
+        "answer": 1,
+        "explanation": "`asyncio.Lock` jest typem synchronizacji świadomym pętli zdarzeń. Gdy task czeka na `await lock.acquire()`, oddaje kontrolę Event Loop pozwalając na wykonanie innych tasków. `threading.Lock` blokuje fizyczny wątek, przez co nikt inny nie może pracować przez cały czas oczekiwania."
+      },
+      {
+        "id": "py_rec_21",
+        "question": "[REKRUTACJA - SENIOR] Jakie poważne zagrożenie bezpieczeństwa niesie deserializacja danych za pomocą modułu `pickle` z niezaufanego źródła?",
+        "options": [
+          "Moduł pickle jest całkowicie bezpieczny - nie istnieje żaden wektor ataku.",
+          "Daje możliwość wykonania dowolnego kodu Pythona na serwerze - złośliwe dane pickle mogą zawierać instrukcję `__reduce__` uruchamiającą systemowe komendy (RCE - Remote Code Execution).",
+          "Deserializacja pickle może co najwyżej spowodować błąd parsowania, ale nie naruszenie bezpieczeństwa.",
+          "Pickle jest niebezpieczny wyłącznie przy danych binarnych zawierających znaki null."
+        ],
+        "answer": 1,
+        "explanation": "Nigdy nie należy deserializować (unpickling) danych z niezaufanego źródła! Moduł `pickle` umożliwia obiektom definiowanie metody `__reduce__` wykonywanej podczas deserializacji. Atakujący może wstrzyknąć payload, który uruchomi `os.system('rm -rf /')` lub otworzy reverse shell."
+      },
+      {
+        "id": "py_rec_22",
+        "question": "[REKRUTACJA - JUNIOR/MID] Co definiuje zmienna `__all__` w module Pythona i jaki ma wpływ na instrukcję `from module import *`?",
+        "options": [
+          "Przechowuje listę wszystkich zainstalowanych zewnętrznych zależności pip projektu.",
+          "Lista stringów definiująca publiczny interfejs modułu - zawiera nazwy symboli eksportowanych przy `from moduł import *`. Bez niej `import *` importuje wszystkie publiczne nazwy (bez prefiksu `_`).",
+          "Definiuje wersję modułu wyświetlaną przez menedżer pakietów.",
+          "Specjalna zmienna do nadpisywania domyślnej nazwy pliku w logach."
+        ],
+        "answer": 1,
+        "explanation": "Definiując `__all__ = ['MyClass', 'my_func']`, jawnie kontrolujesz API publiczne modułu. Symbolom poza `__all__` nie są importowane przez `*`, co zapobiega zanieczyszczaniu przestrzeni nazw i dokumentuje intencję autora co do publicznego interfejsu."
+      },
+      {
+        "id": "py_rec_23",
+        "question": "[REKRUTACJA - SENIOR] Jak działa protokół `__set_name__` u deskryptorów i kiedy jest wywoływany?",
+        "options": [
+          "Jest to alias dla `__init__`, wywoływany przy tworzeniu każdej nowej instancji klasy.",
+          "Metoda `__set_name__(self, owner, name)` jest wywoływana automatycznie przez Pythona gdy deskryptor jest przypisany do atrybutu klasy - otrzymuje klasę właściciela i nazwę atrybutu, co pozwala deskryptorowi 'wiedzieć' pod jaką nazwą jest używany.",
+          "Pozwala na dynamiczne dodawanie metod do klasy w trakcie działania programu.",
+          "Jest wywoływany zamiast `__repr__` gdy obiekt jest konwertowany na string."
+        ],
+        "answer": 1,
+        "explanation": "Przed Pythonem 3.6 deskryptory musiały otrzymywać nazwę atrybutu przez konstruktor: `PositiveInt('age')`. Dzięki `__set_name__` Python sam przekazuje tę informację: `class Profile: age = PositiveInt()` - deskryptor automatycznie dowie się, że jego nazwa to `'age'`."
+      },
+      {
+        "id": "py_rec_24",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jaki jest cel klauzuli `else` w bloku `try/except/else/finally` w Pythonie?",
+        "options": [
+          "Klauzula `else` w `try/except` wykonuje się zawsze - niezależnie od tego, czy wystąpił wyjątek.",
+          "Klauzula `else` wykonuje się wyłącznie wtedy, gdy blok `try` zakończył się bez rzucenia żadnego wyjątku - oddziela logikę 'success path' od logiki obsługi błędów.",
+          "Klauzula `else` zastępuje blok `finally` i gwarantuje zwolnienie zasobów.",
+          "Jest to niestandardowa składnia służąca tylko do komunikatów logowania."
+        ],
+        "answer": 1,
+        "explanation": "Blok `else` przy `try/except` jest rzadko używany ale bardzo elegancki. Kod w `else` nie jest otoczony obsługą wyjątków z `except`, co pozwala na precyzyjne wychwytywanie wyjątków tylko z bloku `try`, nie z logiki sukcesu."
+      },
+      {
+        "id": "py_rec_25",
+        "question": "[REKRUTACJA - SENIOR] Jak za pomocą modułu `dis` Pythona zbadać wygenerowany bytecode funkcji i do czego jest to przydatne?",
+        "options": [
+          "Moduł `dis` służy do rozłączania połączeń sieciowych (dis - disconnect).",
+          "Funkcja `dis.dis(func)` wypisuje zdekompilowany kod bajtowy (OPcodes) funkcji; używana do optymalizacji kodu, zrozumienia działania kompilacji i analizy różnic wydajnościowych między pozornie podobnymi konstruktami.",
+          "Służy do statycznej analizy typów - jest alternatywą dla narzędzia mypy.",
+          "Dezasembler modułu `dis` wymaga kompilacji rozszerzenia C i nie jest dostępny w standardowej instalacji."
+        ],
+        "answer": 1,
+        "explanation": "Przykład: `dis.dis(lambda x: x*2)` pokaże instrukcje LOAD_FAST, LOAD_CONST, BINARY_MULTIPLY, RETURN_VALUE. Pomaga zrozumieć dlaczego `''.join(list)` jest szybsze niż konkatenacja `str+str`, ponieważ można porównać ilość i typy generowanych OPcodes."
+      }
+    ]
+  },
+  "php": {
+    "basics": [
+      {
+        "id": "php_basics_1",
+        "question": "Który ze sposobów deklarowania zmiennych w PHP wywoła błąd składniowy?",
+        "options": [
+          "$variable = 10;",
+          "$_varName = 'value';",
+          "$1stVariable = true;",
+          "$variable_2 = [1, 2];"
+        ],
+        "answer": 2,
+        "explanation": "W PHP nazwy zmiennych muszą zaczynać się od znaku dolara (`$`), po którym następuje litera lub znak podkreślenia `_`. Nazwa zmiennej nie może zaczynać się bezpośrednio od cyfry."
+      },
+      {
+        "id": "php_basics_2",
+        "question": "Jaka jest różnica między instrukcjami `include` a `require` w PHP w przypadku braku pliku docelowego?",
+        "options": [
+          "`include` i `require` zachowają się identycznie i rzucą krytyczny błąd.",
+          "`include` generuje ostrzeżenie typu Warning, a skrypt kontynuuje działanie. `require` rzuca krytyczny błąd Fatal Error i natychmiast przerywa działanie skryptu.",
+          "`require` generuje ostrzeżenie Warning, a `include` natychmiastowo przerywa przetwarzanie.",
+          "Zarówno `include` jak i `require` ignorują brak pliku i kontynuują parsowanie."
+        ],
+        "answer": 1,
+        "explanation": "`include` służy do dołączania plików opcjonalnych (brak pliku nie uszkadza działania reszty kodu), natomiast `require` jest krytyczny dla integralności aplikacji (np. dołączanie bibliotek głównych lub konfiguracji)."
+      },
+      {
+        "id": "php_basics_3",
+        "question": "Jaki będzie wynik działania poniższego kodu PHP?\n```php\n$a = '5';\n$b = 5;\nvar_dump($a == $b);\nvar_dump($a === $b);\n```",
+        "options": [
+          "bool(true)\nbool(true)",
+          "bool(false)\nbool(false)",
+          "bool(true)\nbool(false)",
+          "bool(false)\nbool(true)"
+        ],
+        "answer": 2,
+        "explanation": "Operator słabego porównania `==` dokonuje niejawnej konwersji typów (rzutuje string '5' na int 5), stąd `true`. Operator ścisłego dopasowania `===` weryfikuje również typ danych, co daje `false`, ponieważ jeden element to string, a drugi int."
+      },
+      {
+        "id": "php_basics_4",
+        "question": "W jaki sposób w PHP 8 zadeklarować pole klasy tak, aby jego wartość mogła być przypisana wyłącznie raz podczas inicjalizacji?",
+        "options": [
+          "Używając słowa kluczowego `readonly`.",
+          "Oznaczając pole atrybutem `@immutable`.",
+          "Deklarując pole jako `const` bez wartości.",
+          "PHP nie obsługuje takich właściwości."
+        ],
+        "answer": 0,
+        "explanation": "Po wprowadzeniu w PHP 8.1 właściwości `readonly` (tylko do odczytu), pole oznaczone tym słowem kluczowym może być przypisane tylko raz (np. w konstruktorze). Próba kolejnych modyfikacji rzuci `Error`."
+      },
+      {
+        "id": "php_basics_5",
+        "question": "Do czego służą superglobalne tablice w języku PHP t.j. `$_GET`, `$_POST`, `$_SESSION` itp.?",
+        "options": [
+          "Służą do przechowywania stałych konfiguracji serwera Apache.",
+          "Są asocjacyjnymi tablicami automatycznie definiowanymi przez silnik PHP, dostępnymi w każdym zasięgu (scope) bez deklarowania klucza `global`.",
+          "To specjalne tablice obiektowe przeznaczone wyłącznie do zapytań SQL.",
+          "Umożliwiają integrację kodu PHP ze skryptami JavaScript po stronie przeglądarki."
+        ],
+        "answer": 1,
+        "explanation": "Zmienne superglobalne są zawsze aktywne i dostępne w każdym pliku, klasie czy funkcji niezależnie od zasięgu. Uruchamiane są automatycznie po wykryciu parametrów zapytania sieciowego lub aktywacji sesji."
+      },
+      {
+        "id": "php_basics_6",
+        "question": "Który z poniższych protokołów/mechanizmów służy do profesjonalnego zarządzania zależnościami (pakietami zewnętrznymi) w świecie PHP?",
+        "options": [
+          "NPM",
+          "PIP",
+          "Composer",
+          "Maven"
+        ],
+        "answer": 2,
+        "explanation": "Composer to standardowy i powszechny system zarządzania bibliotekami w PHP. Konfiguruje się go plikiem `composer.json`, a instalacja następuje komendą `composer install`."
+      },
+      {
+        "id": "php_basics_7",
+        "question": "Jak działa mechanizm autopozycjonowania klas (Autoloading) standardu PSR-4 w PHP?",
+        "options": [
+          "Skanuje i ładuje wszystkie pliki PHP z całego dysku komputera co kilka minut.",
+          "Mapuje przestrzenie nazw (Namespaces) klas bezpośrednio na strukturę ścieżek katalogów i plików, automatycznie dołączając potrzebne pliki w locie.",
+          "Wyszukuje pliki klas na zewnętrznym serwerze hostingowym.",
+          "Wymaga dodania instrukcji `include` dla każdej klasy na początku dokumentu."
+        ],
+        "answer": 1,
+        "explanation": "PSR-4 to standard rekomendowany przez PHP-FIG. Pozwala Composerowi oraz silnikowi aplikacji automatycznie odszukać i załadować plik klasy w momencie jej pierwszej inicjalizacji (operator `new`), bazując na schemacie ścieżki zgodnym z namespace."
+      },
+      {
+        "id": "php_basics_8",
+        "question": "Co oznacza pojęcie 'strict_types' zadeklarowane na początku pliku PHP?",
+        "options": [
+          "Ogranicza kodowanie plików wyłącznie do formatów UTF-8.",
+          "Wymusza ścisłą kontrolę typów (Strict Typing) — blokuje niejawną konwersję (coercion) typów w argumentach funkcji i wartościach zwracanych.",
+          "Służy wyłącznie do blokowania dostępu do pliku dla niezalogowanych sesyjnie.",
+          "Zmusza serwer do szybszego kompilowania skryptów."
+        ],
+        "answer": 1,
+        "explanation": "Umieszczenie `declare(strict_types=1);` gwarantuje, że jeśli zdefiniowaliśmy funkcję oczekującą `int` (np. `function foo(int $x)`), to przekazanie wartości `'5'` (string) wywoła krytyczny `TypeError` zamiast cichego rzutowania."
+      },
+      {
+        "id": "php_basics_9",
+        "question": "Która funkcja wbudowana w PHP służy do bezpiecznego szyfrowania (hashingu) haseł użytkowników zgodnie z aktualnymi standardami bezpieczeństwa?",
+        "options": [
+          "md5()",
+          "sha1()",
+          "crypt()",
+          "password_hash()"
+        ],
+        "answer": 3,
+        "explanation": "`password_hash()` jest dedykowaną, nowoczesną i wysoce zalecaną funkcją. Domyślnie używa silnego algorytmu Bcrypt lub Argon2, automatycznie generując kryptograficzną sól (salt) chroniącą przed atakami słownikowymi."
+      },
+      {
+        "id": "php_basics_10",
+        "question": "Jaki będzie wynik działania poniższego kodu PHP wykorzystującego mechanizm operatora wyłączenia błędów?\n```php\n$val = @$undefined_variable;\n```",
+        "options": [
+          "Rzucenie krytycznego Fatal Error o niezdefiniowanej zmiennej.",
+          "Działanie skryptu zostanie wstrzymane z komunikatem ValueError.",
+          "Wartość `null` zostanie przypisana do `$val`, a ewentualne ostrzeżenie Notice zostanie stłumione przez operator `@`.",
+          "Zmienna `$val` zostanie usunięta z pamięci operacyjnej."
+        ],
+        "answer": 2,
+        "explanation": "Operator `@` (at) w PHP służy do ignorowania i tłumienia ostrzeżeń, komunikatów notice czy warning generowanych przez konkretne wyrażenie. UWAGA: Nadużywanie operatora `@` jest uznawane za złą praktykę, ponieważ utrudnia debugowanie aplikacji."
+      },
+      {
+        "id": "php_basics_11",
+        "question": "Czym różni się konstrukcja warunkowa `match` (wprowadzona w PHP 8.0) od tradycyjnej instrukcji `switch`?",
+        "options": [
+          "`match` nie obsługuje dopasowań wieloliniowych.",
+          "`match` zwraca wartość (jest wyrażeniem, a nie tylko instrukcją sterującą), realizuje wyłącznie ścisłe porównania (`===`), nie pozwala na niebezpieczne przenikanie przypadków (brak fall-through i brak wymogu instrukcji `break`) oraz wymaga pełnego pokrycia wszystkich wariantów lub podania gałęzi `default`.",
+          "Instrukcja `match` służy wyłącznie do przeszukiwania wyrażeń regularnych regex.",
+          "W przeciwieństwie do `switch`, `match` może porównywać tylko wartości zmiennych typu boolean."
+        ],
+        "answer": 1,
+        "explanation": "Wyrażenie `match` poprawia bezpieczeństwo kodu poprzez rygorystyczną kontrolę typu (`===`) zamiast luźnego rzutowania w `switch` (`==`), oszczędza pisania powtarzalnych konstrukcji `break` i rzuca błąd `UnhandledMatchError` w przypadku niedopasowania wartości przy braku sekcji `default`."
+      },
+      {
+        "id": "php_basics_12",
+        "question": "W jaki sposób w tradycyjnych funkcjach anonimowych (closures / anonymous functions) w PHP deklaruje się chęć skorzystania (bindowania) ze zmiennej poziomu nadrzędnego?",
+        "options": [
+          "Deklarując zmienną z dopiskiem `global` na początku pliku.",
+          "Wskazując zmienne w dyrektywie `use ($var1, $var2)` bezpośrednio po liście argumentów funkcji anonimowej.",
+          "Poprzez automatyczne dziedziczenie (PHP natywnie importuje wszystkie zmienne z closure w tradycyjnych funkcjach anonimowych).",
+          "Wskazując zmienną słowem kluczowym `parent`."
+        ],
+        "answer": 1,
+        "explanation": "Funkcje anonimowe w PHP (tzw. długie dymki) nie dziedziczą automatycznie zmiennych z otaczającego kontekstu (scope'u). Wymagane jest jawne wymienienie ich za pomocą słowa kluczowego `use ($zmienna)`. Wyjątkiem są strzałkowe funkcje krótkie `fn() => ...` (wprowadzone w PHP 7.4), które dziedziczą zmienne lokalne przez wartość automatycznie."
+      },
+      {
+        "id": "php_basics_13",
+        "question": "Jak zachowuje się operator rozpakowania tablicy `...` (splat / array unpacking) dla tablic asocjacyjnych (z kluczami tekstowymi) w PHP 8.1 w porównaniu ze starszymi wersjami PHP?",
+        "options": [
+          "W PHP 8.1 operator ten przestał być w ogóle obsługiwany dla tablic.",
+          "Wywołuje błąd SyntaxError, ponieważ asocjacja wymaga dedykowanej funkcji systemowej `array_merge()`.",
+          "Począwszy od PHP 8.1 wspierane jest pełne rozpakowywanie tablic o kluczach tekstowych (np. `['a' => 1, ...$anotherAssocArray]`), zachowując nadpisywanie wartości według kolejności, podczas gdy w starszych wersjach było to dozwolone tylko dla kluczy numerycznych.",
+          "Operator automatycznie konwertuje wszystkie klucze tekstowe na liczby losowe."
+        ],
+        "answer": 2,
+        "explanation": "Wersja PHP 8.1 przyniosła niezwykle wygodne rozpakowywanie tablic asocjacyjnych za pomocą operatora `...`. Nowsze klucze w tablicy automatycznie nadpisują starsze o tej samej nazwie (podobnie do działania `array_merge` lub mechanizmów znanych z JavaScript/ES6)."
+      },
+      {
+        "id": "php_basics_14",
+        "question": "Czym są typy unii (Union Types) oraz typy skrzyżowań (Intersection Types) wprowadzone kolejno w PHP 8.0 i 8.1?",
+        "options": [
+          "Są mechanizmami służącymi wyłącznie do optymalizacji indeksów w relacyjnych bazach danych.",
+          "Union Types pozwalają określić, że argument/wynik może mieć jeden z kilku alternatywnych typów (np. `int|float`), a Intersection Types sprawdzają, czy obiekt implementuje jednocześnie wiele interfejsów (np. `Iterator&Countable`).",
+          "Konwertują one wszystkie obiekty klas bazowych do formatu JSON przy pomocy biblioteki standardowej.",
+          "Służą do wyłączania wyjątków bezpieczeństwa w aplikacjach deweloperskich."
+        ],
+        "answer": 1,
+        "explanation": "Zapis `int|float` (Union Types) deklaruje, że zmienna może przyjmować jeden z tych typów. Z kolei typ skrzyżowania (Intersection Types) zapisywany jako `A&B` rygorystycznie wymaga, aby przekazana instancja obiektu spełniała kontrakty wszystkich połączonych typów naraz."
+      },
+      {
+        "id": "php_basics_15",
+        "question": "Jaka jest zasadnicza różnica między użyciem `self` a `static` przy odwoływaniu się do zmiennych lub metod statycznych w klasie (tzw. Late Static Binding)?",
+        "options": [
+          "`self` rzuca wyjątek w pętlach, a `static` działa w całym systemie.",
+          "`self` odwołuje się ściśle do klasy, w której fizycznie został napisany dany kod (bindowanie na etapie kompilacji), podczas gdy `static` odwołuje się do klasy, na rzecz której kod został faktycznie wywołany (bindowanie w czasie wykonywania, co wspiera polimorfizm dziedziczenia).",
+          "Nie ma żadnej różnicy - programiści stosują te słowa wymiennie według upodobania.",
+          "`self` jest przeznaczony wyłącznie dla interfejsów, podczas gdy `static` dla cech (traits)."
+        ],
+        "answer": 1,
+        "explanation": "Mechanizm Late Static Binding (późne wiązanie statyczne) pozwala klasom potomnym nadpisać metody statyczne rodzica. Jeśli w rodzicu użyjemy `self::foo()`, zawsze wywoła się funkcja z rodzica. Z kolei zastosowanie `static::foo()` dynamicznie odpyta i uruchomi zaimplementowaną metodę z klasy dziedziczącej."
+      },
+      {
+        "id": "php_basics_16",
+        "question": "Co robi wyrażenie `match` (PHP 8.0) i czym różni się od `switch`?",
+        "options": [
+          "Jest to alias dla `switch` z identycznym zachowaniem.",
+          "`match` używa ścisłego porównania (`===`), zwraca wartość (jest wyrażeniem), nie wymaga instrukcji `break`, rzuca `UnhandledMatchError` gdy nie dopasuje żadnej gałęzi, i każda gałąź musi zwracać wartość.",
+          "`match` jest wolniejszy od `switch` ponieważ kompiluje wyrażenia dynamicznie.",
+          "`match` obsługuje wyłącznie typy całkowite (int)."
+        ],
+        "answer": 1,
+        "explanation": "W przeciwieństwie do `switch` (który używa luźnego `==` i pozwala na fall-through), `match` jest bezpieczny typologicznie. Rzuca `UnhandledMatchError` zamiast cicho pominąć nieobsłużone przypadki, co zapobiega niewidocznym błędom logiki."
+      },
+      {
+        "id": "php_basics_17",
+        "question": "Czym są argumenty nazwane (Named Arguments) wprowadzone w PHP 8.0?",
+        "options": [
+          "Argumentami wymaganymi, które muszą być przekazane do funkcji w kolejności definicji.",
+          "Pozwalają na przekazywanie argumentów do funkcji przez nazwę parametru (`func(param: wartość)`), umożliwiając pominięcie argumentów opcjonalnych lub przekazanie ich w dowolnej kolejności.",
+          "Jest to alternatywna nazwa dla argumentów domyślnych.",
+          "Argumenty nazwane są dostępne wyłącznie w metodach klasowych, nie w funkcjach globalnych."
+        ],
+        "answer": 1,
+        "explanation": "Argumenty nazwane poprawiają czytelność kodu: `array_slice(array: $arr, offset: 0, length: 5, preserve_keys: true)` zamiast `array_slice($arr, 0, 5, true)`. Umożliwiają też pomijanie parametrów opcjonalnych między innymi."
+      },
+      {
+        "id": "php_basics_18",
+        "question": "Do czego służy operator nullsafe (`?->`) wprowadzony w PHP 8.0?",
+        "options": [
+          "Jest to alternatywna notacja operatora trójargumentowego `?:`.",
+          "Pozwala na bezpieczne łańcuchowe wywołania metod i dostęp do właściwości, gdy obiekt może być null - jeśli lewa strona to null, całe wyrażenie zwraca null bez rzucania wyjątku.",
+          "Sprawdza czy metoda istnieje zanim ją wywoła i zwraca false jeśli nie.",
+          "Operator ten konwertuje null na pusty string."
+        ],
+        "answer": 1,
+        "explanation": "Przed PHP 8: `$user ? $user->getAddress() ? $user->getAddress()->getCity() : null : null`. Z nullsafe: `$user?->getAddress()?->getCity()`. Znacznie czytelniejszy i bezpieczniejszy kod."
+      },
+      {
+        "id": "php_basics_19",
+        "question": "Czym są Enumeracje (Enums) wprowadzone w PHP 8.1 i jakie mają rodzaje?",
+        "options": [
+          "Są aliasem dla stałych `const` w klasach.",
+          "Enumy to typy wartościowane z predefiniowanym zestawem przypadków. Istnieją Pure Enums (bez wartości) oraz Backed Enums (z typem string lub int jako wartością bazową).",
+          "Enumy zastępują interfejsy i pozwalają na dziedziczenie wielokrotne.",
+          "PHP 8.1 Enums mogą przechowywać dowolne typy wartości, nie tylko string i int."
+        ],
+        "answer": 1,
+        "explanation": "Pure Enum: `enum Status { case Active; case Inactive; }`. Backed Enum: `enum Status: string { case Active = 'active'; case Inactive = 'inactive'; }`. Backed Enum pozwala na konwersję: `Status::from('active')` i `Status::tryFrom('unknown')`."
+      },
+      {
+        "id": "php_basics_20",
+        "question": "Jak PHP 8.1 rozszerza obsługę tablic przy rozpakowywaniu (`...$spread`) o nową funkcjonalność?",
+        "options": [
+          "PHP 8.1 usunął obsługę operatora rozpakowywania tablic.",
+          "PHP 8.1 dodał wsparcie dla rozpakowywania tablic asocjacyjnych (z kluczami tekstowymi) za pomocą operatora `...`, eliminując ograniczenie z poprzednich wersji gdzie działało tylko dla tablic numerycznych.",
+          "PHP 8.1 umożliwił rozpakowywanie tablic zagnieżdżonych z automatycznym flatteningiem.",
+          "Rozpakowywanie tablic w PHP 8.1 działa wyłącznie w konstruktorach klas."
+        ],
+        "answer": 1,
+        "explanation": "Przed PHP 8.1, `[...$assoc1, ...$assoc2]` rzucało błąd dla kluczy tekstowych. Od PHP 8.1 możliwe jest scalanie tablic asocjacyjnych: `$merged = [...$defaults, ...$overrides]`, co jest elegancką alternatywą dla `array_merge()`."
+      },
+      {
+        "id": "php_basics_21",
+        "question": "Jakie nowe funkcje do sprawdzania zawartości stringów zostały dodane w PHP 8.0, eliminując konieczność używania `strpos()`?",
+        "options": [
+          "Dodano `string_search()`, `string_prefix()` i `string_suffix()`.",
+          "Dodano `str_contains()`, `str_starts_with()` i `str_ends_with()`, które zwracają bool - znacznie czytelniejsze niż `strpos() !== false`.",
+          "W PHP 8.0 nie dodano żadnych nowych funkcji stringowych.",
+          "Dodano `str_match()` i `str_compare()` jako uproszczenie `preg_match()`."
+        ],
+        "answer": 1,
+        "explanation": "Przed PHP 8.0 sprawdzanie `if (strpos($haystack, $needle) !== false)` było nieintuicyjne i podatne na błędy (strpos może zwrócić 0 co jest truthy-false). Nowe funkcje: `str_contains($h, $n)`, `str_starts_with($h, $n)`, `str_ends_with($h, $n)` są czytelne i bezpieczne."
+      },
+      {
+        "id": "php_basics_22",
+        "question": "Jaka jest różnica między `array_map()`, `array_filter()` a `array_reduce()` w PHP?",
+        "options": [
+          "Są identyczne i wykonują tę samą operację - jedynie ich nazwy się różnią.",
+          "`array_map()` transformuje każdy element (zwraca nową tablicę tej samej długości), `array_filter()` odrzuca elementy niespełniające warunku (zwraca podzbiór), `array_reduce()` akumuluje wartości do jednego wyniku (skalar/obiekt).",
+          "`array_filter()` może zmieniać wartości elementów, a `array_map()` tylko je filtruje.",
+          "`array_reduce()` działa tylko z tablicami numerycznymi, pozostałe z asocjacyjnymi."
+        ],
+        "answer": 1,
+        "explanation": "Przykłady: `array_map(fn($x) => $x*2, [1,2,3])` → `[2,4,6]`. `array_filter([1,2,3,4], fn($x) => $x%2===0)` → `[2,4]`. `array_reduce([1,2,3], fn($carry, $x) => $carry+$x, 0)` → `6`."
+      },
+      {
+        "id": "php_basics_23",
+        "question": "Co to jest PDO (PHP Data Objects) i dlaczego jest preferowane nad `mysqli_*`?",
+        "options": [
+          "PDO to framework webowy zastępujący Laravel w lekkich aplikacjach.",
+          "PDO to abstrakcyjna warstwa dostępu do bazy danych obsługująca wiele silników (MySQL, PostgreSQL, SQLite itp.) przez jednolite API. Obsługuje Prepared Statements i pozwala na zmianę bazy danych bez przepisywania zapytań.",
+          "PDO jest przestarzałe - `mysqli_*` jest nowszym i zalecanym standardem.",
+          "PDO obsługuje wyłącznie bazy danych SQLite w trybie plikowym."
+        ],
+        "answer": 1,
+        "explanation": "`mysqli_*` obsługuje tylko MySQL/MariaDB. PDO oferuje jednolite API dla 12+ sterowników. Kod używający PDO można przenieść np. z MySQL do PostgreSQL zmienią jedynie DSN. Oba oferują Prepared Statements, ale PDO jest bardziej przenośne."
+      },
+      {
+        "id": "php_basics_24",
+        "question": "Jak w PHP 8.0+ uproszczono definiowanie Konstruktora z automatycznym przypisaniem właściwości (Constructor Property Promotion)?",
+        "options": [
+          "Należy dodać atrybut `#[AutoPromote]` nad klasą.",
+          "Dodając modyfikator dostępu (`public`, `private`, `protected`, lub `readonly`) przed typem i nazwą parametru konstruktora automatycznie deklaruje się właściwość klasy i przypisuje wartość bez osobnej deklaracji.",
+          "Konieczne jest użycie słowa kluczowego `auto` zamiast modyfikatora dostępu.",
+          "Constructor Property Promotion wymaga dziedziczenia po wbudowanej klasie `PromotableClass`."
+        ],
+        "answer": 1,
+        "explanation": "Przed PHP 8.0: `private string $name; public function __construct(string $name) { $this->name = $name; }`. Z PHP 8.0: `public function __construct(private string $name) {}`. Zwięzłość ta jest szczególnie doceniana w klasach DTO i Value Objects."
+      },
+      {
+        "id": "php_basics_25",
+        "question": "Jak włączyć rygorystyczne sprawdzanie typów (strict mode) w pliku PHP i jaki to ma efekt?",
+        "options": [
+          "Dodając dyrektywę `error_reporting(E_ALL)` na początku skryptu.",
+          "Dodając deklarację `declare(strict_types=1);` jako pierwszą instrukcję pliku. Wyłącza wtedy automatyczną koercję typów - przekazanie złego typu do funkcji z deklaracją typów rzuci `TypeError`.",
+          "Strict mode jest zawsze aktywny w PHP 8 i nie wymaga deklaracji.",
+          "Dodając `ini_set('type_strict', 'on')` w pliku php.ini."
+        ],
+        "answer": 1,
+        "explanation": "Bez `strict_types=1`: `function add(int $a, int $b)` wywoływana z `add('5', '3')` automatycznie skonwertuje stringi na ints. Z `strict_types=1`: ta sama operacja rzuci `TypeError`. Strict mode dotyczy tylko pliku, w którym jest zadeklarowany."
+      }
+    ],
+    "frameworks": [
+      {
+        "id": "php_fw_1",
+        "question": "W jaki sposób Laravel obsługuje warstwę mapowania relacyjnoobiektowego (ORM)?",
+        "options": [
+          "Wykorzystując system Doctrine ORM z tradycyjną konfiguracją XML.",
+          "Przez wbudowany system Eloquent ORM oparty o wzorzec Active Record.",
+          "Wyłącznie poprzez bezpośrednie pisanie surowych zapytań SQL w PDO.",
+          "Laravel nie posiada warstwy ORM."
+        ],
+        "answer": 1,
+        "explanation": "Eloquent ORM implementuje wzorzec Active Record. Każdy model w architekturze bezpośrednio koresponduje z tabelą w bazie danych, a pojedyncza instancja modelu odpowiada za reprezentację i modyfikację konkretnego wiersza."
+      },
+      {
+        "id": "php_fw_2",
+        "question": "Jak nazywa się niezwykle popularny, elegancki silnik szablonów wbudowany natywnie we framework Laravel?",
+        "options": [
+          "Twig",
+          "Blade",
+          "Jinja",
+          "Smarty"
+        ],
+        "answer": 1,
+        "explanation": "Silnik Blade jest częścią składową Laravela. Pliki szablonów mają rozszerzenie `.blade.php`. Pozwala na łatwe dziedziczenie, tworzenie komponentów, proste pętle i instrukcje warunkowe bez narzutu na wydajność (jest kompilowany do czystego PHP)."
+      },
+      {
+        "id": "php_fw_3",
+        "question": "Jak nazywa się narzędzie CLI (interfejs konsolowy) dostarczane razem z Laravelem do wykonywania komend administracyjnych?",
+        "options": [
+          "Laravel CLI",
+          "Artisan",
+          "Composer-Pro",
+          "ConsoleHelper"
+        ],
+        "answer": 1,
+        "explanation": "Artisan to silnik CLI Laravela. Pozwala na uruchamianie poleceń administracyjnych typu `php artisan migrate`, `php artisan make:controller`, generowanie tras, czyszczenie pamięci podręcznej i budowanie skryptów cron."
+      },
+      {
+        "id": "php_fw_4",
+        "question": "Do czego służą pliki 'Migrations' (migracje) w nowoczesnych frameworkach PHP takich jak Symfony czy Laravel?",
+        "options": [
+          "Do przenoszenia kodu aplikacji z jednego hostingu na inny.",
+          "Działają jak system kontroli wersji dla bazy danych, umożliwiając definiowanie, edycję i wycofywanie struktury (schematu) bazy za pomocą kodu PHP.",
+          "Służą do importowania plików XML z danymi zewnętrznymi.",
+          "Do asynchronicznego kompilowania assetów CSS."
+        ],
+        "answer": 1,
+        "explanation": "Migracje ułatwiają współpracę zespołową i wdrażanie kodu na różnych środowiskach (np. produkcja, staging). Zamiast surowych eksportów `.sql`, baza danych jest tworzona i zmieniana przyrostowo poprzez usystematyzowane obiekty klas migracji."
+      },
+      {
+        "id": "php_fw_5",
+        "question": "W jaki sposób framework Symfony realizuje wzorzec wstrzykiwania zależności (Dependency Injection)?",
+        "options": [
+          "Nie posiada takiego wzorca - programista musi ręcznie dopisywać połączenia w konstruktorze.",
+          "Za pomocą potężnego kontenera usług (Service Container) kontrolującego życie obiektów i konfigurującego je deklaratywnie (YAML/Attributes).",
+          "Wstrzykuje zasoby wyłącznie poprzez globalne sesje PHP.",
+          "Zaimplementowano go tylko dla plików szablonów HTML."
+        ],
+        "answer": 1,
+        "explanation": "Symfony Service Container jest jednym z najbardziej zaawansowanych kontenerów DI w PHP. Wspiera autowiring (automatyczne dopasowanie typu argumentu do zarejestrowanego serwisu) oraz autoconfiguration."
+      },
+      {
+        "id": "php_fw_6",
+        "question": "Które narzędzie stanowi domyślny, niezwykle wszechstronny silnik szablonów dostarczany i rekomendowany dla frameworku Symfony?",
+        "options": [
+          "Blade",
+          "Twig",
+          "Plate",
+          "Latte"
+        ],
+        "answer": 1,
+        "explanation": "Twig to elastyczny, szybki i wysoce bezpieczny silnik szablonów opracowany we współpracy z twórcami Symfony. Jego składnia jest czysta, czytelna i silnie zabezpiecza aplikację przed atakami XSS."
+      },
+      {
+        "id": "php_fw_7",
+        "question": "Czym są tzw. 'Service Providers' w architekturze frameworku Laravel?",
+        "options": [
+          "Zewnętrznymi dostawcami hostingu certyfikowanymi przez Laravel.",
+          "Centralnym punktem inicjalizacji i wiązania wszystkich usług aplikacji z kontenerem Laravel (Service Container).",
+          "Skryptami odpowiedzialnymi wyłącznie za asynchroniczne wysyłanie e-maili.",
+          "Są to kontrolery parsujące odpowiedzi JSON."
+        ],
+        "answer": 1,
+        "explanation": "Service Providers odpowiadają za uruchomienie (bootstrapping) kluczowych komponentów Laravela. Wywoływane są za pomocą metod `register()` (bindowanie elementów w kontenerze) oraz `boot()` (wyzwalanie logiki po aktywacji usług)."
+      },
+      {
+        "id": "php_fw_8",
+        "question": "W jaki sposób w Symfony realizuje się aktualnie definowanie tras routingu (routes)?",
+        "options": [
+          "Wymagane jest exclusively instalowanie zewnętrznego pakietu RouteManager.",
+          "Wyłącznie poprzez dedykowany konfiguracyjny plik XML na poziomie katalogu głównego.",
+          "Zalecanym nowoczesnym sposobem są atrybuty PHP (`#[Route('/path', name: 'app_path')]`) bezpośrednio nad metodami kontrolerów.",
+          "Aplikacja nie posiada routingu, wszystkie żądania przekierowywane są do index.php."
+        ],
+        "answer": 2,
+        "explanation": "Symfony od wersji 5+ i w pełni w wersji 6/7 rekomenduje wykorzystanie natywnych atrybutów języka PHP 8. Pozwala to na deklarowanie definicji tras, ich nazw oraz filtracji parametrów bezpośrednio w kodzie kontrolera."
+      },
+      {
+        "id": "php_fw_9",
+        "question": "Który wzorzec bindowania bazy danych i mapowania obiektowego wdraża moduł 'Doctrine' używany w Symfony?",
+        "options": [
+          "Active Record",
+          "Data Mapper",
+          "Table Gateway",
+          "Query Object Pattern"
+        ],
+        "answer": 1,
+        "explanation": "Doctrine ORM opiera się na wzorcu Data Mapper. Oznacza to, że instancje encji są całkowicie oddzielone od warstwy bazy danych i nie posiadają metod typu `save()` czy `delete()`. Za interakcję z bazą odpowiada zewnętrzny bezpieczny manager: `EntityManager`."
+      },
+      {
+        "id": "php_fw_10",
+        "question": "Czym jest 'Middleware' we frameworku Laravel?",
+        "options": [
+          "Wtyczką bazodanową kompresującą zapytania typu SELECT.",
+          "Warstwą filtrującą i kontrolującą zapytania HTTP wchodzące do systemu (np. weryfikacja logowania, autoryzacja roli, CORS, czyszczenie spacji).",
+          "Klasą z biblioteki graficznej generującą interaktywne formularze.",
+          "Metodą testującą poprawność kontrolerów w kompilacji."
+        ],
+        "answer": 1,
+        "explanation": "Middleware w Laravelu dają możliwość analizowania i modyfikowania przychodzących żądań. Mogą np. sprawdzić, czy zalogowany użytkownik ma uprawnienia admina i jeśli nie - przekierować go na stronę błędu przed uruchomieniem powiązanego kontrolera."
+      },
+      {
+        "id": "php_fw_11",
+        "question": "Do czego służy komponent Symfony Messenger w ekosystemie Symfony?",
+        "options": [
+          "Do wysyłania e-maili reklamowych do użytkowników.",
+          "Do asynchronicznego przesyłania wiadomości, integracji z systemami kolejek (np. RabbitMQ, Redis, Amazon SQS) oraz obsługi logiki w architekturze Command Bus / Message Bus.",
+          "Służy wyłącznie jako wewnętrzny komunikator czatowy dla zespołu deweloperów.",
+          "Odpowiada za renderowanie powiadomień JavaScript na front-endzie."
+        ],
+        "answer": 1,
+        "explanation": "Symfony Messenger to potężna biblioteka ułatwiająca budowę asynchronicznej i rozproszonej architektury. Przechwytywane komendy i zdarzenia mogą być natychmiast serializowane i przekazywane do wybranych systemów kolejkowych w celu odciążenia głównego wątku HTTP."
+      },
+      {
+        "id": "php_fw_12",
+        "question": "W jaki sposób można skutecznie rozwiązać częsty problem wydajnościowy nazywany pytaniem N+1 (N+1 query problem) w Eloquent ORM we frameworku Laravel?",
+        "options": [
+          "Problem ten nie występuje w programach napisanych w PHP 8.",
+          "Poprzez zastosowanie techniki Eager Loading (pobożnego ładowania) powiązań przy pomocy metody `with()` (np. `Book::with('author')->get()`), co redukuje całkowitą ilość zapytań bazodanowych do dwóch.",
+          "Zwiększając moc procesora na głównym serwerze bazodanowym MySQL.",
+          "Poprzez usunięcie wszystkich kluczy obcych z bazy danych."
+        ],
+        "answer": 1,
+        "explanation": "Problem N+1 pojawia się, gdy pobieramy listę rekordów (np. 100 książek), a następnie wewnątrz pętli odpytujemy bazę o relację (np. autora każdej książki). Prowadzi to do wykonania 101 zapytań SQL. Wywołanie Eager Loadingu za pomocą `with()` pobiera od razu wszystkich powiązanych autorów w jednym, dużym zapytaniu `IN (...)`."
+      },
+      {
+        "id": "php_fw_13",
+        "question": "Czym charakteryzuje się i do czego służy biblioteka Livewire w nowoczesnym ekosystemie Laravel?",
+        "options": [
+          "To biblioteka PHP służąca wyłącznie do szyfrowania połączeń FTP.",
+          "Umożliwia budowę dynamicznych, reaktywnych interfejsów użytkownika (zbliżonych działaniem do Vue lub Reacta) przy pisaniu kodu wyłącznie w PHP i Blade, bez konieczności tworzenia dedykowanych API i pisania kodu w JS.",
+          "To system do asynchronicznego streamowania wideo z serwera Laravela.",
+          "Jest to serwer deweloperski zastępujący natywnego systemowego Nginxa."
+        ],
+        "answer": 1,
+        "explanation": "Livewire łączy back-end i front-end w niespotykanie prosty sposób. Zmiany dokonywane na stronie wyzwalają asynchroniczne zapytania AJAX pod maską, wywołujące logikę we wskazanym komponencie Livewire (PHP), który odsyła wyrenderowany kod HTML i inteligentnie podmienia tylko zmodyfikowane części DOM."
+      },
+      {
+        "id": "php_fw_14",
+        "question": "Jak działa mechanizm 'First-level Cache' (Unit of Work) implementowany przez moduł Doctrine ORM w Symfony?",
+        "options": [
+          "Służy wyłącznie do zapisywania wygenerowanych widoków HTML w przeglądarce.",
+          "Gwarantuje, że w ramach jednego żądania HTTP, wielokrotne pobranie tego samego rekordu o identycznym ID zawsze zwróci dokładnie tę samą instancję tego samego obiektu w PHP, zapobiegając nadmiarowym zapytaniom SELECT.",
+          "Ogranicza prędkość zapisu do bazy danych w celach bezpieczeństwa.",
+          "Automatycznie przenosi najstarsze nieużywane tabele do pamięci tymczasowej Redis."
+        ],
+        "answer": 1,
+        "explanation": "Doctrine zarządza encjami poprzez mechanizm Unit of Work. Każdy zarejestrowany obiekt o unikalnym identyfikatorze jest śledzony przez EntityManager. Jeśli raz pobierzesz użytkownika o ID 1, kolejne wywołania `find(User::class, 1)` w tym samym request-cie nie dotkną bazy danych - Doctrine od razu odda referencję do już istniejącego w pamięci obiektu PHP."
+      },
+      {
+        "id": "php_fw_15",
+        "question": "Jak we frameworku Laravel najwygodniej zrealizować hermetyzację logiki walidacji formularzy i autoryzacji operacji w osobnym obiekcie (poza samym kontrolerem)?",
+        "options": [
+          "Należy dopisać walidację w pliku index.php bazy.",
+          "Wykorzystując dedykowane klasy żądań zwanymi 'Form Requests', które generuje się poleceniem `php artisan make:request`.",
+          "Wykorzystując globalne metody pomocnicze ze standardowej biblioteki `PHPSafe`.",
+          "Laravel nie zezwala na wyciąganie walidacji poza ciele metody kontrolera."
+        ],
+        "answer": 1,
+        "explanation": "Form Requests to wyspecjalizowane klasy żądań rozszerzające standardowe `FormRequest`. Zawierają metodę `authorize()` (do sprawdzania uprawnień użytkownika) oraz `rules()` (z zestawem reguł walidacyjnych). Jeśli warunki nie są spełnione, Laravel automatycznie cofnie użytkownika z odpowiednim zestawem błędów, odciążając kontroler."
+      },
+      {
+        "id": "php_fw_16",
+        "question": "Do czego służy komponent Symfony EventDispatcher i jak implementuje wzorzec Observer?",
+        "options": [
+          "Służy wyłącznie do zarządzania kolejnością ładowania assetów CSS/JS.",
+          "Pozwala definiować zdarzenia (Events) i rejestrować listenery/subskrybentów, którzy są wywoływani gdy zdarzenie jest wyzwalane - luźne powiązanie modułów aplikacji bez bezpośrednich zależności.",
+          "Jest to alternatywa dla systemu routingu w aplikacjach bez przeglądarki.",
+          "EventDispatcher w Symfony zastępuje mechanizm wyjątków PHP."
+        ],
+        "answer": 1,
+        "explanation": "EventDispatcher implementuje wzorzec Publish/Subscribe. Przykład: po zapisaniu zamówienia (`$dispatcher->dispatch(new OrderPlaced($order))`) listenerzy niezależnie wysyłają e-mail, aktualizują stock i logują zdarzenie - każdy nieświadom pozostałych."
+      },
+      {
+        "id": "php_fw_17",
+        "question": "Jak w Laravelu poprawnie zdefiniować zadanie w tle (Job) i wysłać je do kolejki?",
+        "options": [
+          "Tworząc klasę implementującą `Runnable` i wywołując `Queue::run(new MyJob())`.",
+          "Generując klasę `php artisan make:job MyJob` (która implementuje `ShouldQueue`) i dyspatching-ując ją przez `dispatch(new MyJob($data))` lub `MyJob::dispatch($data)`.",
+          "Laravel nie posiada wbudowanego systemu kolejkowania zadań.",
+          "Zadania w tle wymagają konfiguracji serwera Apache do obsługi cron."
+        ],
+        "answer": 1,
+        "explanation": "Interfejs `ShouldQueue` sygnalizuje Laravelowi, że job ma być dodany do kolejki (Redis, SQS, baza). Workery uruchamia się poleceniem `php artisan queue:work`. Klasa job może definiować `$tries`, `$timeout` i metodę `failed()` obsługującą awarie."
+      },
+      {
+        "id": "php_fw_18",
+        "question": "Czym różni się Doctrine QueryBuilder od DQL (Doctrine Query Language)?",
+        "options": [
+          "QueryBuilder i DQL są identyczne pod maską - różnią się tylko stylem programowania.",
+          "QueryBuilder buduje zapytania metodami łańcuchowymi (fluent interface), dając wsparcie IDE i autocomplete. DQL to język zapytań zbliżony do SQL, operujący na encjach i ich polach PHP zamiast na tabelach i kolumnach bazy.",
+          "DQL jest wolniejszy od QueryBuilder przez dodatkową warstwę parsowania.",
+          "QueryBuilder działa tylko z MySQL, a DQL jest niezależny od bazy danych."
+        ],
+        "answer": 1,
+        "explanation": "Oba kompilują się do tego samego SQL pod maską. DQL: `SELECT u FROM App\\Entity\\User u WHERE u.age > :age`. QueryBuilder: `->from(User::class, 'u')->where('u.age > :age')`. DQL jest bardziej czytelny dla złożonych zapytań, QueryBuilder lepiej komponuje zapytania dynamicznie."
+      },
+      {
+        "id": "php_fw_19",
+        "question": "Do czego służą Observers (Obserwatorzy) w Laravel Eloquent i jak je rejestruje się w aplikacji?",
+        "options": [
+          "Służą wyłącznie do monitorowania ruchu sieciowego w logach Nginx.",
+          "Obserwatorzy grupują zdarzenia cyklu życia modelu Eloquent (np. `creating`, `created`, `updating`, `deleted`) w jednej klasie - rejestruje się je przez `User::observe(UserObserver::class)` w Service Provider.",
+          "Zastępują migracje i automatycznie tworzą strukturę bazy danych.",
+          "Są to specjalne middleware działające wyłącznie na żądania DELETE."
+        ],
+        "answer": 1,
+        "explanation": "Obserwatorzy (Observers) pomagają zachować czystość modeli. Zamiast wkładać logikę audytu, powiadomień czy cache-invalidation do `boot()` modelu, umieszczamy je w dedykowanych klasach: `php artisan make:observer UserObserver --model=User`."
+      },
+      {
+        "id": "php_fw_20",
+        "question": "Czym jest Symfony Security Voter i kiedy go używamy zamiast standardowych ról?",
+        "options": [
+          "Voter to mechanizm walidacji formularzy HTML.",
+          "Voter implementuje logikę autoryzacji dla konkretnych operacji na obiektach (np. czy użytkownik może edytować konkretny Post) - bardziej granularna kontrola niż role (ROLE_ADMIN, ROLE_USER), bo uwzględnia kontekst obiektu.",
+          "Security Voter jest zamienną nazwą dla Middleware w ekosystemie Symfony.",
+          "Votery służą do delegowania zapytań bazodanowych na osobne repliki read-only."
+        ],
+        "answer": 1,
+        "explanation": "Role sprawdzają 'kto jesteś' (`ROLE_ADMIN`). Votery sprawdzają 'co możesz zrobić z tym obiektem' (`can user X edit post Y`). Voter implementuje metodę `vote(TokenInterface $token, $subject, array $attributes)` i decyduje: GRANT, DENY lub ABSTAIN."
+      },
+      {
+        "id": "php_fw_21",
+        "question": "Jaka jest kluczowa różnica między Laravel Sanctum a Laravel Passport w kontekście uwierzytelniania API?",
+        "options": [
+          "Sanctum i Passport są identyczne - to aliasy tej samej biblioteki.",
+          "Sanctum to lekkie uwierzytelnianie oparte na tokenach sesji/API dla własnych SPA i mobile. Passport to pełna implementacja OAuth2.0 dla zewnętrznych klientów i third-party autoryzacji.",
+          "Passport obsługuje tylko aplikacje mobilne, a Sanctum wyłącznie aplikacje webowe.",
+          "Sanctum wymaga zewnętrznej bazy Redis, podczas gdy Passport używa tylko MySQL."
+        ],
+        "answer": 1,
+        "explanation": "Wybór zależy od potrzeb: własna SPA lub aplikacja mobilna → Sanctum (prostszy, szybszy w konfiguracji). Zewnętrzna integracja OAuth2 z grantem typu `authorization_code`, personal access tokens dla third-party → Passport (pełna implementacja RFC 6749)."
+      },
+      {
+        "id": "php_fw_22",
+        "question": "Jak w PHPUnit stworzyć 'Data Provider' (dostawcę danych) do uruchomienia testu z wieloma zestawami danych?",
+        "options": [
+          "Używając adnotacji `@dataProvider nazwametody` lub atrybutu `#[DataProvider('nazwaMetody')]` nad testem i definiując statyczną metodę zwracającą tablicę zestawów danych.",
+          "Wkładając pętlę foreach z wywołaniem `$this->test()` wewnątrz metody testowej.",
+          "PHPUnit nie obsługuje parametryzacji testów - każdy przypadek wymaga osobnej metody.",
+          "Używając dekoratora `@repeat(10)` z losowymi wartościami generowanymi przez faker."
+        ],
+        "answer": 0,
+        "explanation": "Metoda Data Provider musi być `public` i `static`, zwracać tablicę zestawów lub iterator. PHP 8+ preferuje atrybuty: `#[DataProvider('additionProvider')]`. PHPUnit wywoła test dla każdego zestawu danych, raportując je jako osobne przypadki testowe."
+      },
+      {
+        "id": "php_fw_23",
+        "question": "Do czego służy klasa `Collection` w Laravelu i jaką zaletę oferuje nad zwykłymi tablicami PHP?",
+        "options": [
+          "Collection to klucz bazodanowy przyspieszający indeksowanie tabel.",
+          "Oferuje fluent interface z dziesiątkami metod (map, filter, reduce, pluck, groupBy, sortBy itp.) do przetwarzania danych - czytelniejsze i wygodniejsze niż chain wywołań array_map/array_filter.",
+          "Collection to klasa abstrakcyjna wymagająca implementacji interfejsu `Collectable`.",
+          "Jest to nakładka na tablicę PHP wyłącznie do parsowania danych JSON z API."
+        ],
+        "answer": 1,
+        "explanation": "Eloquent domyślnie zwraca wyniki jako Collection. Przykład: `User::all()->filter(fn($u) => $u->active)->sortBy('name')->pluck('email')` - każda metoda zwraca nową Collection, co umożliwia chaining. Lazy Collections (`LazyCollection`) obsługują ogromne zestawy danych bez ładowania wszystkiego do RAM."
+      },
+      {
+        "id": "php_fw_24",
+        "question": "Jak stworzyć własną komendę konsolową w Symfony (Command) i jak ją zarejestrować?",
+        "options": [
+          "Tworząc plik `.sh` w katalogu `bin/` projektu Symfony.",
+          "Rozszerzając klasę `Symfony\\Component\\Console\\Command\\Command`, implementując metody `configure()` (nazwa, opis, argumenty) i `execute()` (logika). Symfony automatycznie wykrywa komendy przez autowiring przy użyciu atrybutu `#[AsCommand]`.",
+          "Komendy Symfony wymagają rejestracji w pliku `config/routes.yaml`.",
+          "Nie można tworzyć własnych komend - Symfony dostarcza wyłącznie predefiniowany zestaw."
+        ],
+        "answer": 1,
+        "explanation": "Od Symfony 6 zalecany jest atrybut PHP `#[AsCommand(name: 'app:send-report')]`. Metoda `execute()` otrzymuje `InputInterface` i `OutputInterface` pozwalające na odczyt argumentów i wyświetlanie komunikatów. Komendy uruchamia się przez `php bin/console app:send-report`."
+      },
+      {
+        "id": "php_fw_25",
+        "question": "Jakie zdarzenia cyklu życia encji oferuje Doctrine ORM (lifecycle callbacks) i jak je definiować?",
+        "options": [
+          "Doctrine nie posiada zdarzeń cyklu życia encji.",
+          "Zdarzenia cyklu życia: `prePersist`, `postPersist`, `preUpdate`, `postUpdate`, `preRemove`, `postRemove`, `postLoad`. Definiuje się je metodami w encji z atrybutem `#[ORM\\HasLifecycleCallbacks]` na klasie i `#[ORM\\PrePersist]` nad metodą.",
+          "Doctrine oferuje wyłącznie jedno zdarzenie `onFlush` do wszystkich operacji.",
+          "Zdarzenia cyklu życia są dostępne tylko przy konfiguracji XML, nie przy atrybutach PHP."
+        ],
+        "answer": 1,
+        "explanation": "Lifecycle callbacks pozwalają automatycznie wykonywać logikę przy operacjach bazodanowych. Przykład: `#[ORM\\PrePersist]` może automatycznie ustawiać `createdAt = new DateTime()`. Dla bardziej złożonej logiki niezwiązanej bezpośrednio z encją, lepiej użyć Doctrine Event Listeners/Subscribers."
+      }
+    ],
+    "recruitment": [
+      {
+        "id": "php_rec_1",
+        "question": "[REKRUTACJA - JUNIOR] Jaki mechanizm w PHP najlepiej i najpewniej chroni aplikacje webowe przed podatnością SQL Injection w bazach danych?",
+        "options": [
+          "Używanie funkcji `addslashes()` do filtrowania każdego parametru.",
+          "Szyfrowanie haseł w algorytmie MD5 na etapie zapisu.",
+          "Wykorzystanie techniki bindowania parametrów w Prepared Statements (np. za pomocą PDO lub SQLSafe).",
+          "Ręczna zamiana wszystkich spacji na znaki podkreślenia w ciągach SQL."
+        ],
+        "answer": 2,
+        "explanation": "Prepared Statements oddzielają strukturę zapytania SQL od samych danych. Silnik bazy otrzymuje najpierw szablon zapytania, a następnie parametry, które są traktowane ściśle jako wartości, co uniemożliwia modyfikację komend SQL."
+      },
+      {
+        "id": "php_rec_2",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jaka jest różnica w działaniu i wyniku między operatorem Ternary elvis (`$a ?: $b`) a Null Coalescing (`$a ?? $b`)?",
+        "options": [
+          "Operator `??` rzuca ostrzeżeniem Notice, gdy zmienna `$a` nie istnieje.",
+          "Elvis (`?:`) rzutuje lewą stronę do wartości logicznej (zwróci `$b` np. dla pustego stringu, zera, false). Null Coalescing (`??`) sprawdza wyłącznie czy wartość nie jest `null` oraz czy zmienna jest zadeklarowana bez generowania Notice.",
+          "Zachowują się całkowicie identycznie w każdej sytuacji.",
+          "Elvis działa wyłącznie w pętlach, a Null Coalescing w klasach."
+        ],
+        "answer": 1,
+        "explanation": "Null Coalescing reprezentuje `isset($a) ? $a : $b`, natomiast Elvis reprezentuje `$a ? $a : $b`. Przykładowo, gdy `$a = 0;`, Elvis zwróci `$b` (bo 0 rzutuje na false), a `??` zwróci `0` (bo 0 to zadeklarowana wartość, różna od null)."
+      },
+      {
+        "id": "php_rec_3",
+        "question": "[REKRUTACJA - MID] Co się stanie, gdy klasa PHP używa dwóch Cecha (Traits), które definiują metodę o dokładnie takiej samej sygnaturze i nazwie?",
+        "options": [
+          "Klasa automatycznie wybierze metodę z Traitu zadeklarowanego jako pierwszy.",
+          "Zostanie zgłoszony krytyczny błąd kompilacji (Fatal Error) z powodu konfliktu nazw metod.",
+          "Silnik PHP połączy kody obu metod i wykona je kolejno po sobie.",
+          "Konflikty w Traitach są automatycznie ignorowane przez serwer."
+        ],
+        "answer": 1,
+        "explanation": "Jeśli wystąpi konflikt nazw metod w używanych cechach, PHP rzuci Fatal Error. Aby go rozwiązać, programista musi ręcznie zdefiniować pierwszeństwo w ciele klasy używając operatora `insteadof` oraz ewentualnie aliasu `as`."
+      },
+      {
+        "id": "php_rec_4",
+        "question": "[REKRUTACJA - MID] Który z poniższych oficjalnych standardów PSR (PHP Standards Recommendations) określa szczegółowe wytyczne odnośnie formatowania kodu (kodowania i stylu)?",
+        "options": [
+          "PSR-3 (Logowanie zdarzeń)",
+          "PSR-4 (Autoloading klas)",
+          "PSR-12 / PSR-PER (Coding Style)",
+          "PSR-7 (Interfejsy HTTP)"
+        ],
+        "answer": 2,
+        "explanation": "Standard PSR-12 (idący aktualnie w stronę ewoluującego PSR-PER) ustanawia ścisłe reguły organizowania kodu, tabulacji, spacji w nawiasach, łamania linii i dekorowania metod, co zapewnia jednolitą estetykę kodu PHP w zespołach."
+      },
+      {
+        "id": "php_rec_5",
+        "question": "[REKRUTACJA - SENIOR] Czym są mechanizmy Fibers (Włókna) wprowadzone natywnie w PHP 8.1?",
+        "options": [
+          "Nową biblioteką kompresującą pliki graficzne na serwerach Nginx.",
+          "Lekkimi strukturami kontroli przepływu (asynchroniczność typu cooperative/non-preemptive threads), umożliwiającymi wstrzymywanie i wznawianie wykonania określonego bloku kodu PHP.",
+          "Zewnętrznym systemem bezpieczeństwa eliminującym ataki XSS.",
+          "Inną nazwą dla tradycyjnych generatorów opartych na słowie `yield`."
+        ],
+        "answer": 1,
+        "explanation": "Fibers zezwalają na tworzenie asynchronicznego kodu w PHP bez konieczności rezygnacji z czytelnego kodu synchronicznego (brak tzw. callback-hell). Są używane pod maską przez najnowsze frameworki asynchroniczne (jak Revolt, Amp, ReactPHP)."
+      },
+      {
+        "id": "php_rec_6",
+        "question": "[REKRUTACJA - SENIOR] Do czego służy struktura `WeakMap` (Słaba mapa) dodana w PHP 8.0 w kontekście zarządzania pamięcią?",
+        "options": [
+          "Do tworzenia słowników, z których elementy są automatycznie usuwane przy braku miejsca na dysku.",
+          "Pozwala przechowywać klucze będące obiektami w taki sposób, że nie uniemożliwiają one usunięcia tych obiektów przez Garbage Collector, zapobiegając wyciekom pamięci.",
+          "Służy wyłącznie jako wolniejsza alternatywa dla tablic asocjacyjnych.",
+          "To element biblioteki szyfrującej wrażliwe zmienne sesyjne."
+        ],
+        "answer": 1,
+        "explanation": "Słaba mapa (`WeakMap`) nie zwiększa licznika referencji obiektów użytych jako klucze. Gdy obiekt-klucz zostanie zniszczony w programie, jego wpis w `WeakMap` jest automatycznie usuwany. Niezwykle przydatne przy mapowaniu powiązań w ORM/cache."
+      },
+      {
+        "id": "php_rec_7",
+        "question": "[REKRUTACJA - MID/SENIOR] Kiedy z punktu widzenia dobrych praktyk projektowych (SOLID) powinieneś wybrać Klasę Abstrakcyjną zamiast Interfejsu w PHP?",
+        "options": [
+          "Zawsze wybieraj klasę abstrakcyjną, ponieważ interfejsy nie są obsługiwane w PHP 8.",
+          "Gdy oprócz samych sygnatur metod chcesz dostarczyć wspólną implementację bazową (kod metod / stan / pola), którą klasy potomne będą współdzielić i dziedziczyć.",
+          "Interfejsu należy używać tylko do nawiązywania bezpośrednich połączeń z bazami danych.",
+          "Gdy projektujesz aplikację w pełni asynchroniczną i rozproszoną."
+        ],
+        "answer": 1,
+        "explanation": "Interfejs w PHP opisuje wyłącznie czysty kontrakt (brak stanu i implementacji). Klasa abstrakcyjna pozwala na zdefiniowanie cech wspólnych i domyślnego zachowania (np. szablony Template Method) przy jednoczesnym wymuszeniu implementacji części metod."
+      },
+      {
+        "id": "php_rec_8",
+        "question": "[REKRUTACJA - SENIOR] Jak działa mechanizm kompilacji JIT (Just-In-Time) zaimplementowany w OPcache od wersji PHP 8.0?",
+        "options": [
+          "Kompiluje kod skryptu PHP do kodu maszynowego procesora w locie, omijając interpretację kodu bajtowego (szczególnie wydajny w zadaniach CPU-bound).",
+          "Służy do automatycznego przesyłania skompilowanych plików bezpośrednio na platformy AWS/Azure.",
+          "Sprawia, że błędy składniowe są ukrywane przed użytkownikiem końcowym.",
+          "Uruchamia skrypty PHP bezpośrednio wewnątrz przeglądarki użytkownika bez udziału serwera."
+        ],
+        "answer": 0,
+        "explanation": "Tradycyjnie OPcache przechowuje prekompilowany kod bajtowy (bytecode). JIT idzie o krok dalej: najczęściej wykonywane fragmenty bytecode'u kompiluje bezpośrednio na kod maszynowy (x86/ARM), co drastycznie przyspiesza obliczenia czysto matematyczne i CPU-bound."
+      },
+      {
+        "id": "php_rec_9",
+        "question": "[REKRUTACJA - MID/SENIOR] Jaka jest korzyść z wykorzystania Generatorów (`yield`) przy odczycie pliku CSV zawierającego 2 miliony linii w PHP?",
+        "options": [
+          "Algorytm odczyta plik o 50% szybciej dzięki kompresji ZIP w locie.",
+          "Pozwala na leniwy odczyt linia po linii (lazy loading), dzięki czemu zużycie pamięci RAM pozostaje na stałym, minimalnym poziomie (np. kilka kilobajtów) zamiast ładowania całego pliku do pamięci.",
+          "Ratuje serwer przed uszkodzeniem sektorów na dyskach SSD.",
+          "Generatory automatycznie tłumaczą dane z pliku CSV na format XML."
+        ],
+        "answer": 1,
+        "explanation": "Generatory nie przechowują całego zestawu danych w pamięci RAM. Zamiast tego dostarczają wartości po jednej w pętli. Dzięki temu przetwarzanie ogromnych plików lub kolekcji nie grozi przekroczeniem limitu memory_limit serwera PHP."
+      },
+      {
+        "id": "php_rec_10",
+        "question": "[REKRUTACJA - SENIOR] Czym jest funkcja Preloading (wstępne ładowanie) w OPcache PHP 7.4+ i jak wpływa na wydajność serwera produkcyjnego PHP-FPM?",
+        "options": [
+          "Służy do rezerwowania wolnego transferu sieciowego dla aplikacji webowej.",
+          "Umożliwia załadowanie wybranych klas/plików frameworka do pamięci systemowej przy starcie serwera PHP-FPM raz na zawsze; klasy są trwale dostępne dla każdego zapytania bez konieczności ponownego kompilowania plików w locie.",
+          "Jest to mechanizm optymalizujący wczytywanie skryptów reklamowych Google AdSense.",
+          "Wyłącza wszystkie zabezpieczenia sesji przed atakami typu CSRF/XSS."
+        ],
+        "answer": 1,
+        "explanation": "Dzięki preloadingowi wybrane pliki i klasy są ładowane przy uruchomieniu usługi PHP-FPM i stają się permanentną częścią pamięci serwera. Skrajnie przyspiesza to czas odpowiedzi (Response Time), ale wymaga restartu PHP-FPM przy każdej zmianie kodu."
+      },
+      {
+        "id": "php_rec_11",
+        "question": "[REKRUTACJA - MID/SENIOR] Jak silnik PHP 8 traktuje natywne Atrybuty (Attributes) w porównaniu do tradycyjnych adnotacji w komentarzach PHPDoc, i w jaki sposób można je odczytać w locie?",
+        "options": [
+          "Atrybuty są ignorowane podczas kompilacji i nie da się ich w ogóle odczytać.",
+          "Atrybuty są częścią drzewa AST (Abstract Syntax Tree), parsowanego bezpośrednio przez silnik języka, co czyni je znacznie szybszymi i bezpieczniejszymi niż komentarze; do ich odzyskania służy wbudowane Reflection API (`ReflectionMethod::getAttributes()`, itp.).",
+          "Atrybuty wymagają zainstalowania zewnętrznego rozszerzenia php_attributes.so.",
+          "Służą wyłącznie do definiowania stylów CSS w widokach Blade."
+        ],
+        "answer": 1,
+        "explanation": "Przed PHP 8 adnotacje były jedynie ciągami tekstowymi w komentarzach (wymagały skomplikowanego i wolnego parsowania regexami). Wprowadzone w PHP 8 natywne atrybuty (zapisywane składnią `#[Attribute]`) są pełnowartościową i wydajną metadaną struktury klas dostępną natywnie przez API Refleksji."
+      },
+      {
+        "id": "php_rec_12",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jakie zalecane ustawienie w pliku php.ini chroni plik ciasteczka autoryzacyjnego sesji (PHPSESSID) przed kradzieżą poprzez wstrzyknięcie złośliwego kodu JavaScript (ataki XSS)?",
+        "options": [
+          "Ustawienie `session.security_level = max`.",
+          "Ustawienie flagi `session.cookie_httponly = On`.",
+          "Zablokowanie obsługi JavaScript we wszystkich formularzach HTML.",
+          "Ustawienie `session.use_trans_sid = On`."
+        ],
+        "answer": 1,
+        "explanation": "Po włączeniu `session.cookie_httponly` przeglądarka internetowa kategorycznie blokuje próby dostępu do ciasteczka sesyjnego za pośrednictwem skryptów JavaScript (np. polecenia `document.cookie`). Chroni to użytkowników przed hijackingiem sesji w przypadku podatności Cross-Site Scripting (XSS)."
+      },
+      {
+        "id": "php_rec_13",
+        "question": "[REKRUTACJA - SENIOR] Dlaczego stosowanie przekazywania argumentów przez referencję (`&$variable`) w zwykłych wywołaniach funkcji w PHP 8 może spowolnić działanie programu (naruszenie mechanizmu Copy-on-Write)?",
+        "options": [
+          "Referencje wymagają zapisu danych do pliku na dysku twardym.",
+          "PHP stosuje optymalizację Copy-On-Write (COW): zmienne przekazane zwyczajnie przez wartość nie są dublowane w pamięci dopóki nie zostaną zmodyfikowane. Wymuszenie referencji wyłącza tę optymalizację i zmusza silnik do rozparowania wewnętrznych struktur pamięci (złów) i wyłączenia współdzielenia zasobów w zval.",
+          "Referencje zostały całkowicie zastąpione przez dynamiczne generatory w PHP 8.4.",
+          "Zmuszają procesor do przejścia na asynchroniczne jednowątkowe wykonywanie kodu."
+        ],
+        "answer": 1,
+        "explanation": "Przekazywanie przez referencję nie jest darmowe i rzadko stanowi optymalizację pamięciową w PHP. Przez mechanizm Copy-on-Write, dwie zmienne wskazują na to samo zval dopóki jedna z nich się nie zmieni. Wymuszenie referencji psuje zval-sharing, wymagając alokacji nowej struktury referencyjnej, co powoduje narzut wydajnościowy."
+      },
+      {
+        "id": "php_rec_14",
+        "question": "[REKRUTACJA - JUNIOR/MID] Na czym polega mechanizm 'Constructor Property Promotion' wprowadzony w PHP 8.0?",
+        "options": [
+          "Na automatycznym promowaniu zmiennych lokalnych do zmiennych sesyjnych.",
+          "Pozwala na jednoczesną deklarację właściwości klasy (pól), typów oraz przypisanie ich wartości bezpośrednio w argumentach konstruktora (np. `public function __construct(private string $name) {}`), co eliminuje redundancję dopisywania tych właściwości w sekcji pól klasy i przypisywania `this->name = name`.",
+          "Na automatycznym wywoływaniu konstruktora klasy nadrzędnej bez użycia instrukcji `parent::__construct()`.",
+          "Na kompilowaniu właściwości klasy do obiektów statycznych baz danych."
+        ],
+        "answer": 1,
+        "explanation": "Constructor Property Promotion eliminuje pisanie zbędnego szablonu (boilerplate code). Zamiast pisać deklarację pola, argument w konstruktorze oraz przypisanie `this->x = x`, robimy to w jednej zwięzłej linijce parametrów sygnatury konstruktora."
+      },
+      {
+        "id": "php_rec_15",
+        "question": "[REKRUTACJA - SENIOR] Jaka rygorystyczna zasada dotyczy dziedziczenia klas tylko-do-odczytu (`readonly classes`) wprowadzonych w PHP 8.2?",
+        "options": [
+          "readonly klasa w PHP 8.2 nie może pod żadnym pozorem dziedziczyć po innej klasie.",
+          "Klasa dziedzicząca po readonly klasie nadrzędnej musi sama być obowiązkowo oznaczona słowem kluczowym `readonly` (integralność statusu readonly).",
+          "Nie można tworzyć instancji klasy dziedziczącej po readonly klasie rodzica.",
+          "Dziedziczenie readonly klas wymaga asynchronicznego kontenera swoistych interfejsów."
+        ],
+        "answer": 1,
+        "explanation": "W PHP 8.2 oznaczenie całej klasy jako `readonly` automatycznie nakłada status readonly na wszystkie jej właściwości i blokuje dodawanie dynamicznych pól. Aby zachować tę integralność, każda podklasa dziedzicząca po readonly klasie rodzica również musi zostać zadeklarowana jako `readonly`."
+      },
+      {
+        "id": "php_rec_16",
+        "question": "[REKRUTACJA - SENIOR] Jaka jest kluczowa różnica między Fibers (PHP 8.1) a generatorami opartymi na `yield`?",
+        "options": [
+          "Nie ma żadnej różnicy - Fibers to tylko inna nazwa dla generatorów.",
+          "Generatory mogą zawieszać działanie wyłącznie w miejscu `yield` (jeden punkt kontynuacji). Fibers mogą być zawieszone z dowolnego miejsca w stosie wywołań funkcji (pełny stos), co umożliwia integrację synchronicznego kodu z asynchroniczną pętlą zdarzeń.",
+          "Fibers są wolniejsze od generatorów ze względu na zarządzanie pełnym stosem.",
+          "Fibers mogą być używane tylko wewnątrz konstruktorów klas abstrakcyjnych."
+        ],
+        "answer": 1,
+        "explanation": "Generator może tylko yieldo-wać w miejscu gdzie `yield` jest wpisane. Fiber może zatrzymać całe drzewo wywołań funkcji wywołując `Fiber::suspend()` z dowolnego miejsca, nawet z głęboko zagnieżdżonej funkcji, co jest niemożliwe z generatorami."
+      },
+      {
+        "id": "php_rec_17",
+        "question": "[REKRUTACJA - MID] Jak rozwiązać konflikt nazw metod między dwoma Traitami w PHP?",
+        "options": [
+          "Należy usunąć jeden z traitów i napisać jego metodę ręcznie w klasie.",
+          "Używając składni `insteadof` wewnątrz `use` traitu w klasie: `A::method insteadof B` wybiera metodę z Traitu A. Opcjonalnie `B::method as aliasMethod` tworzy alias dla metody z Traitu B.",
+          "PHP automatycznie rozwiązuje konflikty wybierając metodę z traitu importowanego później.",
+          "Konflikty między traitami wymagają aktualizacji PHP do wersji 9."
+        ],
+        "answer": 1,
+        "explanation": "Kompletny przykład: `use TraitA, TraitB { TraitA::hello insteadof TraitB; TraitB::hello as helloFromB; }`. Teraz klasa ma metodę `hello()` z TraitA i `helloFromB()` z TraitB, bez konfliktu."
+      },
+      {
+        "id": "php_rec_18",
+        "question": "[REKRUTACJA - JUNIOR] Do czego służy plik `composer.lock` i dlaczego NIE należy go wykluczać z repozytorium git?",
+        "options": [
+          "Plik `composer.lock` jest plikiem tymczasowym Composera i powinien być zawsze w `.gitignore`.",
+          "Plik `composer.lock` zamraża dokładne wersje wszystkich zainstalowanych zależności (łącznie z tranzytywnymi) - commitowanie go gwarantuje, że każdy deweloper i serwer produkcyjny zainstaluje dokładnie te same wersje pakietów.",
+          "Plik lock zawiera zaszyfrowane klucze API do zewnętrznych serwisów.",
+          "Służy do synchronizacji konfiguracji PHP-FPM między środowiskami."
+        ],
+        "answer": 1,
+        "explanation": "`composer.json` określa zakres wersji (np. `^5.0`). `composer.lock` zapisuje dokładne wersje (np. `5.2.3`). Dzięki `composer install` (nie `update`) każde środowisko ma identyczne wersje. Brak lock file w repo prowadzi do subtelnych błędów 'u mnie działa'."
+      },
+      {
+        "id": "php_rec_19",
+        "question": "[REKRUTACJA - JUNIOR/MID] Jak działa standard PSR-4 i jakie narzędzie go implementuje dla projektów PHP?",
+        "options": [
+          "PSR-4 definiuje standard REST API dla aplikacji PHP.",
+          "PSR-4 to standard automatycznego ładowania klas (autoloading), mapujący przestrzeń nazw (namespace) na strukturę katalogów. Composer implementuje go generując zoptymalizowany autoloader.",
+          "PSR-4 jest standardem szyfrowania połączeń bazodanowych.",
+          "PSR-4 definiuje strukturę pliku composer.json bez związku z ładowaniem klas."
+        ],
+        "answer": 1,
+        "explanation": "PSR-4: klasa `App\\Service\\UserService` musi znajdować się w pliku `src/Service/UserService.php` gdy mapowanie `App\\` → `src/` jest zarejestrowane w `composer.json`. Po `composer dump-autoload` jest generowany wydajny mapa-autoloader."
+      },
+      {
+        "id": "php_rec_20",
+        "question": "[REKRUTACJA - MID/SENIOR] Czym jest wzorzec Repository i jak oddziela on logikę domenową od warstwy persystencji w PHP?",
+        "options": [
+          "Repository to klasa przechowująca konfigurację połączenia z bazą danych.",
+          "Wzorzec Repository abstrakcjonalizuje dostęp do danych - domenowe klasy (np. Order) korzystają z interfejsu `OrderRepositoryInterface` bez wiedzy o SQL. Implementacja może używać Doctrine, Eloquent lub PDO - domenowy kod nie musi się zmieniać przy zmianie ORM.",
+          "Repository to specjalny rodzaj kontrolera obsługujący pliki lokalne.",
+          "Wzorzec Repository jest stosowany wyłącznie w systemach CQRS i nie ma zastosowania w standardowych aplikacjach CRUD."
+        ],
+        "answer": 1,
+        "explanation": "Domena zna tylko kontrakt: `$orders = $this->orderRepo->findByStatus('pending')`. Implementacja może ukrywać kompleksowe zapytania SQL, cache'owanie wyników lub logowanie. Zamiana bazy MySQL na MongoDB wymaga tylko nowej implementacji interfejsu - domena pozostaje nienaruszona."
+      },
+      {
+        "id": "php_rec_21",
+        "question": "[REKRUTACJA - SENIOR] Jak skonfigurować PHP-FPM pool dla aplikacji produkcyjnej z dużym ruchem - co oznaczają parametry `pm.max_children`, `pm.start_servers`?",
+        "options": [
+          "Parametry te dotyczą wewnętrznych limitów OPcache i nie wpływają na równoległość.",
+          "`pm.max_children` to maksymalna liczba równoległych procesów roboczych PHP (worker). `pm.start_servers` (dla trybu `dynamic`) to liczba workerów startujących przy uruchomieniu. Zbyt mała wartość max_children powoduje kolejkowanie żądań.",
+          "Parametry te konfigurują wyłącznie limit wielkości pliku uploadu.",
+          "`pm.max_children` to limit jednoczesnych połączeń TCP do serwera MySQL."
+        ],
+        "answer": 1,
+        "explanation": "Obliczanie: `pm.max_children = dostępna RAM / średnia RAM jednego procesu PHP`. Przy 4GB RAM i 50MB/proces → max 80 workerów. Tryb `pm = dynamic` skaluje liczbę procesów. Tryb `pm = static` utrzymuje stałą liczbę. `pm = ondemand` tworzy procesy na żądanie."
+      },
+      {
+        "id": "php_rec_22",
+        "question": "[REKRUTACJA - MID/SENIOR] Jak w Doctrine ORM prawidłowo uniknąć problemu N+1 queries przy ładowaniu kolekcji relacji w Symfony?",
+        "options": [
+          "Wyłączając lazy loading globalnie w konfiguracji Doctrine.",
+          "Używając `JOIN FETCH` w DQL lub `addSelect` w QueryBuilder, lub konfigurując Eager Loading (`EAGER` fetch type) dla konkretnej relacji. Alternatywnie można użyć `$em->getRepository()->findBy()` z własnym joiném.",
+          "Problem N+1 nie istnieje w Doctrine - EntityManager automatycznie wykrywa i naprawia.",
+          "Przebudowując schemat bazy aby denormalizować dane do pojedynczej tabeli."
+        ],
+        "answer": 1,
+        "explanation": "Domyślnie Doctrine używa Lazy Loading - dostęp do `$order->getItems()` generuje osobne SELECT dla każdego zamówienia. Z `JOIN FETCH` w DQL: `SELECT o, i FROM Order o JOIN FETCH o.items i WHERE o.status = 'active'` pobiera wszystkie dane jednym zapytaniem."
+      },
+      {
+        "id": "php_rec_23",
+        "question": "[REKRUTACJA - SENIOR] Co to jest wzorzec CQRS (Command Query Responsibility Segregation) i jaki problem rozwiązuje?",
+        "options": [
+          "Jest to wzorzec szyfrowania połączeń SSL dla frameworków PHP.",
+          "CQRS rozdziela operacje modyfikujące stan (Commands) od operacji odczytujących dane (Queries) na osobne modele i ścieżki kodu. Rozwiązuje problem jednego przeciążonego modelu obsługującego zarówno złożone zapisy jak i zoptymalizowane odczyty.",
+          "CQRS to protokół synchronizacji baz danych Master-Slave.",
+          "Jest to wzorzec tylko dla systemów Event Sourcing - bez ES nie ma sensu użycia CQRS."
+        ],
+        "answer": 1,
+        "explanation": "Odczyt (Query) może używać zoptymalizowanych denormalizowanych widoków bazodanowych, cache lub Read Replicas. Zapis (Command) przechodzi przez walidację domenową, agregaty i logikę biznesową. Symfony Messenger idealnie wspiera ten wzorzec."
+      },
+      {
+        "id": "php_rec_24",
+        "question": "[REKRUTACJA - MID] Jaka jest różnica między `interface` a `abstract class` w PHP z perspektywy projektowania API?",
+        "options": [
+          "Klasa abstrakcyjna i interfejs są identyczne z punktu widzenia systemu typów PHP.",
+          "Interfejs definiuje czysty kontrakt (tylko sygnatury metod + stałe), klasa może implementować wiele interfejsów. Klasa abstrakcyjna może zawierać implementację metod i stan (pola), ale PHP pozwala dziedziczyć tylko po jednej klasie abstrakcyjnej.",
+          "Interfejsy mogą zawierać implementację metod od PHP 8.0.",
+          "Klasy abstrakcyjne nie mogą implementować interfejsów."
+        ],
+        "answer": 1,
+        "explanation": "Strategia: interfejsy dla kontraktów wielokrotnego użycia (`Serializable`, `Countable`, `LoggerInterface`). Klasy abstrakcyjne gdy chcesz dostarczyć wspólną bazową implementację z Template Method (np. `AbstractController`). PHP pozwala na `class X extends AbstractBase implements IfaceA, IfaceB`."
+      },
+      {
+        "id": "php_rec_25",
+        "question": "[REKRUTACJA - SENIOR] Jakie są najlepsze praktyki konfiguracji OPcache w środowisku produkcyjnym PHP dla aplikacji Symfony/Laravel?",
+        "options": [
+          "OPcache należy wyłączyć na produkcji - może powodować problemy z pamięcią.",
+          "Kluczowe ustawienia: `opcache.enable=1`, `opcache.memory_consumption=256`, `opcache.max_accelerated_files=20000`, `opcache.validate_timestamps=0` (wyłączone sprawdzanie zmian pliku - wymaga restart PHP-FPM przy deploy), `opcache.preload=preload.php` dla wstępnego ładowania klas frameworka.",
+          "Na produkcji OPcache powinien mieć `memory_consumption=1` w celu oszczędności RAM.",
+          "Wystarczy dodać `opcache.enable=1` w php.ini - pozostałe ustawienia są automatycznie optymalizowane."
+        ],
+        "answer": 1,
+        "explanation": "`validate_timestamps=0` na produkcji eliminuje kosztowne sprawdzanie `stat()` pliku dla każdego zapytania. `preload` ładuje klasy frameworka przy starcie PHP-FPM. `max_accelerated_files` musi być większe od liczby plików PHP projektu (użyj `find . -name '*.php' | wc -l` do sprawdzenia)."
+      }
+    ]
+  }
+}

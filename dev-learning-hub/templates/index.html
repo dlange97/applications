@@ -1,0 +1,2005 @@
+<!doctype html>
+<html lang="pl" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev Learning Hub 🚀 | Python & PHP</title>
+    <!-- Tailwind CSS (v3) CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome (v6) Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts (Inter) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["Fira Code", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .code-container pre {
+        font-family: "Fira Code", monospace;
+      }
+      .step-transition {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes shine {
+        100% {
+          left: 125%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200"
+  >
+    <!-- Header -->
+    <header
+      class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40"
+    >
+      <div
+        class="max-w-6xl w-full mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20"
+          >
+            <i class="fa-solid fa-graduation-cap text-lg text-white"></i>
+          </div>
+          <div>
+            <h1
+              class="text-md md:text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-200 via-purple-300 to-pink-200 bg-clip-text text-transparent"
+            >
+              Dev Learning Hub
+            </h1>
+            <p class="text-[10px] md:text-xs text-slate-400">
+              Interaktywny system nauki Python & PHP
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3 text-xs">
+          <span
+            class="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800"
+          >
+            <span
+              class="h-2 w-2 rounded-full bg-indigo-500 animate-pulse"
+            ></span>
+            Strefa Kodera
+          </span>
+          <button
+            onclick="confirmReset()"
+            class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg border border-transparent hover:border-rose-900/30 hover:bg-rose-950/20 step-transition"
+            title="Resetuj wszystkie postępy"
+          >
+            <i class="fa-solid fa-trash-can text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+      <!-- Statystyki u góry -->
+      <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <!-- Odpowiedzi -->
+        <div
+          class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl shadow-xl hover:border-slate-700/60 step-transition"
+        >
+          <p
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1"
+          >
+            Odpowiedzi
+          </p>
+          <div class="flex items-baseline gap-2">
+            <span
+              id="stat-total"
+              class="text-2xl md:text-3xl font-extrabold text-white"
+              >{{ progress.total_answered }}</span
+            >
+            <span class="text-xs text-slate-400">łącznych prób</span>
+          </div>
+          <div class="text-[11px] text-slate-500 mt-2">
+            Poprawne:
+            <span class="text-emerald-400 font-semibold" id="val-correct"
+              >{{ progress.correct_answers }}</span
+            >
+            | Błędne:
+            <span class="text-rose-400 font-semibold" id="val-incorrect"
+              >{{ progress.incorrect_answers }}</span
+            >
+          </div>
+        </div>
+
+        <!-- Skuteczność -->
+        <div
+          class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl shadow-xl hover:border-slate-700/60 step-transition"
+        >
+          <p
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1"
+          >
+            Skuteczność
+          </p>
+          <div class="flex items-baseline gap-2">
+            <span
+              id="stat-rate"
+              class="text-2xl md:text-3xl font-extrabold text-indigo-400"
+              >{{ success_rate }}%</span
+            >
+          </div>
+          <div
+            class="w-full bg-slate-950 rounded-full h-1.5 mt-3.5 border border-slate-800/50"
+          >
+            <div
+              id="stat-rate-bar"
+              class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1.5 rounded-full transition-all duration-500"
+              style="width: {{ success_rate }}%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Obecny Streak -->
+        <div
+          class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl shadow-xl hover:border-slate-700/60 step-transition"
+        >
+          <p
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1"
+          >
+            Aktualna Seria 🔥
+          </p>
+          <div class="flex items-baseline gap-2">
+            <span
+              id="stat-streak"
+              class="text-2xl md:text-3xl font-extrabold text-amber-500"
+              >{{ progress.streak }}</span
+            >
+            <span class="text-xs text-slate-400">odpowiedzi z rzędu</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">
+            Przełam barierę i utrzymaj płomień!
+          </p>
+        </div>
+
+        <!-- Maksymalny Streak -->
+        <div
+          class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl shadow-xl hover:border-slate-700/60 step-transition"
+        >
+          <p
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1"
+          >
+            Maksymalny Streak 🏆
+          </p>
+          <div class="flex items-baseline gap-2">
+            <span
+              id="stat-max-streak"
+              class="text-2xl md:text-3xl font-extrabold text-emerald-400"
+              >{{ progress.max_streak }}</span
+            >
+            <span class="text-xs text-slate-400">najlepszy wynik</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">
+            Ukończone quizy:
+            <span class="font-semibold text-slate-300" id="stat-quizzes"
+              >{{ progress.completed_quizzes_count }}</span
+            >
+          </p>
+        </div>
+      </section>
+
+      <!-- Nawigacja główna aplikacji (Zakładki) -->
+      <div class="flex gap-4 border-b border-slate-800/80 pb-3 mb-8">
+        <button
+          id="tab-btn-quiz"
+          onclick="switchActiveTab('quiz')"
+          class="flex items-center gap-2 px-4 py-2.5 text-sm font-bold rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/5 duration-300"
+        >
+          <i class="fa-solid fa-graduation-cap text-base"></i>
+          Quizy & Wiedza
+        </button>
+        <button
+          id="tab-btn-challenges"
+          onclick="switchActiveTab('challenges')"
+          class="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl text-slate-400 hover:text-white border border-transparent hover:border-slate-800/80 hover:bg-slate-900/40 duration-300"
+        >
+          <i class="fa-solid fa-laptop-code text-base"></i>
+          Wyzwania Kodowania 💻
+        </button>
+        <button
+          id="tab-btn-library"
+          onclick="switchActiveTab('library')"
+          class="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl text-slate-400 hover:text-white border border-transparent hover:border-slate-800/80 hover:bg-slate-900/40 duration-300"
+        >
+          <i class="fa-solid fa-book-open text-base text-emerald-400"></i>
+          Biblioteka Wiedzy 📚
+        </button>
+      </div>
+
+      <div id="view-quiz">
+        <!-- Trzypanelowy grid główny -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Lewa część: Moduły i wybór nauki -->
+          <div class="space-y-6 lg:col-span-1">
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5"
+            >
+              <h3 class="text-md font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-indigo-500"></i>
+                Parametry Treningu
+              </h3>
+
+              <!-- Language Selection -->
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+                  >Język Programowania</label
+                >
+                <div class="grid grid-cols-2 gap-2">
+                  <button
+                    id="lang-btn-python"
+                    onclick="selectLanguage('python')"
+                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-800 hover:border-indigo-500/60 bg-slate-950/60 text-sm font-semibold text-slate-300 hover:text-white transition-all"
+                  >
+                    <i class="fa-brands fa-python text-lg text-yellow-500"></i>
+                    Python
+                  </button>
+                  <button
+                    id="lang-btn-php"
+                    onclick="selectLanguage('php')"
+                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-800 hover:border-indigo-500/60 bg-slate-950/60 text-sm font-semibold text-slate-300 hover:text-white transition-all"
+                  >
+                    <i class="fa-brands fa-php text-lg text-indigo-400"></i>
+                    PHP
+                  </button>
+                </div>
+              </div>
+
+              <!-- Category Selection -->
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-semibold"
+                  >Poziom / Zakres</label
+                >
+                <select
+                  id="select-category"
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-300 focus:outline-none focus:border-indigo-500 focus:text-white text-sm step-transition"
+                >
+                  <option value="all">
+                    Wszystki zakres (Podstawy, Frameworki i Rekrutacja)
+                  </option>
+                  <option value="basics">
+                    Podstawy Języka (Składnia, Typy, OOP)
+                  </option>
+                  <option value="frameworks">Zaawansowane Frameworki</option>
+                  <option value="recruitment">
+                    Pytania rekrutacyjne (Junior / Mid / Senior)
+                  </option>
+                </select>
+              </div>
+
+              <!-- Size Selection -->
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+                  >Rozmiar sesji</label
+                >
+                <select
+                  id="select-size"
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-300 focus:outline-none focus:border-indigo-500 focus:text-white text-sm step-transition"
+                >
+                  <option value="5">Szybki strzał (5 pytań)</option>
+                  <option value="10" selected>
+                    Klasyczny maraton (10 pytań)
+                  </option>
+                  <option value="15">Wielki test (15 pytań)</option>
+                </select>
+              </div>
+
+              <!-- Start Button -->
+              <button
+                type="button"
+                onclick="startQuiz()"
+                class="w-full relative overflow-hidden bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl py-3.5 px-6 font-bold text-sm shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 duration-300 active:scale-[0.99] flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-play text-base"></i>
+                Rozpocznij Naukę ⚡
+              </button>
+            </div>
+
+            <!-- Postęp w poszczególnych kategoriach -->
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4"
+            >
+              <h3
+                class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2"
+              >
+                <i class="fa-solid fa-chart-bar text-purple-500"></i>
+                Opanowanie Zakresu
+              </h3>
+              <div class="space-y-3.5 text-xs">
+                <!-- Python Basics -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-yellow-500 duration-200"
+                      >Python: Podstawy</span
+                    >
+                    <span
+                      id="cat-py-basics-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-py-basics-bar"
+                      class="bg-yellow-500 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Python Frameworks -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-yellow-400 duration-200"
+                      >Python: Frameworki</span
+                    >
+                    <span
+                      id="cat-py-fw-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-py-fw-bar"
+                      class="bg-yellow-400 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Python Recruitment -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-amber-500 duration-200"
+                      >Python: Rekrutacja</span
+                    >
+                    <span
+                      id="cat-py-recruitment-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-py-recruitment-bar"
+                      class="bg-amber-500 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- PHP Basics -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-indigo-400 duration-200"
+                      >PHP: Podstawy</span
+                    >
+                    <span
+                      id="cat-php-basics-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-php-basics-bar"
+                      class="bg-indigo-500 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- PHP Frameworks -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-purple-400 duration-200"
+                      >PHP: Frameworki</span
+                    >
+                    <span
+                      id="cat-php-fw-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-php-fw-bar"
+                      class="bg-purple-500 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- PHP Recruitment -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between items-center text-slate-400">
+                    <span class="font-medium hover:text-pink-500 duration-200"
+                      >PHP: Rekrutacja</span
+                    >
+                    <span
+                      id="cat-php-recruitment-perf"
+                      class="font-mono text-[11px] text-slate-300"
+                      >0/0 poprawnych</span
+                    >
+                  </div>
+                  <div
+                    class="w-full bg-slate-950 rounded-full h-2 border border-slate-800/10"
+                  >
+                    <div
+                      id="cat-php-recruitment-bar"
+                      class="bg-pink-550 h-2 rounded-full duration-500"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Środkowa / Prawa część: Sekcja Quizu -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Ekran domyślny / Przywitanie (Szkielet) -->
+            <div
+              id="welcome-view"
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-2xl text-center flex flex-col justify-center items-center h-full min-h-[480px]"
+            >
+              <div
+                class="h-20 w-20 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-3xl flex items-center justify-center text-white text-4xl mb-6 shadow-2xl shadow-indigo-500/10 animate-bounce"
+              >
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">
+                Witaj w interaktywnym Quizie programisty!
+              </h2>
+              <p class="text-slate-400 text-sm max-w-lg mb-8 leading-relaxed">
+                Sprawdź swoją wiedzę z języka <strong>Python</strong> (składnia,
+                OOP, asynchroniczność) oraz <strong>PHP</strong> (przestrzenie
+                nazw, PHP 8, OOP), a także najpopularniejszych frameworków
+                takich jak
+                <strong>FastAPI, Flask, Django, Laravel oraz Symfony</strong>.
+              </p>
+              <div
+                class="flex flex-col sm:flex-row gap-3 w-full max-w-md justify-center"
+              >
+                <button
+                  onclick="quickStart('python')"
+                  class="flex-1 bg-slate-950 border border-slate-800 hover:border-yellow-500 text-yellow-500 font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 transition-all"
+                >
+                  <i class="fa-brands fa-python"></i> Start Python
+                </button>
+                <button
+                  onclick="quickStart('php')"
+                  class="flex-1 bg-slate-950 border border-slate-800 hover:border-indigo-400 text-indigo-450 font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 transition-all"
+                >
+                  <i class="fa-brands fa-php"></i> Start PHP
+                </button>
+              </div>
+            </div>
+
+            <!-- Widok aktywnego Quizu -->
+            <div
+              id="quiz-view"
+              class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl space-y-6"
+            >
+              <!-- Progress Header -->
+              <div class="flex justify-between items-center text-xs md:text-sm">
+                <div class="flex items-center gap-2 text-slate-400">
+                  <span
+                    class="px-2.5 py-1 bg-slate-800 border border-slate-700/50 rounded-lg text-[11px] font-bold tracking-wide uppercase text-indigo-300"
+                    id="badge-quiz-tech"
+                    >Python</span
+                  >
+                  <span
+                    class="px-2.5 py-1 bg-slate-800 border border-slate-700/50 rounded-lg text-[11px] font-bold tracking-wide uppercase text-slate-300"
+                    id="badge-quiz-cat"
+                    >Basics</span
+                  >
+                </div>
+                <div class="text-right">
+                  <span
+                    class="text-indigo-400 font-bold font-mono"
+                    id="current-question-num"
+                    >1</span
+                  >
+                  <span class="text-slate-500 font-mono">/</span>
+                  <span
+                    class="text-slate-500 font-mono"
+                    id="total-questions-num"
+                    >10</span
+                  >
+                </div>
+              </div>
+
+              <!-- Progress bar -->
+              <div
+                class="w-full bg-slate-950 rounded-full h-1.5 border border-slate-800/60"
+              >
+                <div
+                  id="quiz-progress-bar"
+                  class="bg-indigo-500 h-1.5 rounded-full transition-all duration-300"
+                  style="width: 0%"
+                ></div>
+              </div>
+
+              <!-- Question Container -->
+              <div class="space-y-4">
+                <h4
+                  id="question-text"
+                  class="text-lg md:text-xl font-bold leading-relaxed text-slate-100 whitespace-pre-wrap"
+                >
+                  Wczytywanie pytania...
+                </h4>
+              </div>
+
+              <!-- Options Grid -->
+              <div class="grid grid-cols-1 gap-3.5" id="options-holder">
+                <!-- Dynamic Options rendered here -->
+              </div>
+
+              <!-- Question Feedback (Hidden by default, shown on select) -->
+              <div
+                id="feedback-holder"
+                class="hidden border rounded-xl p-5 step-transition"
+              >
+                <div class="flex items-start gap-3">
+                  <div
+                    id="feedback-icon"
+                    class="h-8 w-8 rounded-full flex items-center justify-center text-base mt-0.5 shrink-0"
+                  ></div>
+                  <div class="space-y-1">
+                    <h5 id="feedback-title" class="font-bold text-sm">
+                      Poprawna odpowiedź!
+                    </h5>
+                    <p
+                      id="feedback-desc"
+                      class="text-xs text-slate-300 leading-relaxed"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center justify-between pt-2">
+                <button
+                  id="btn-quit-quiz"
+                  onclick="exitQuiz()"
+                  class="text-slate-400 hover:text-rose-400 text-xs font-semibold flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-rose-950/20 transition-colors"
+                >
+                  <i class="fa-solid fa-arrow-left-long"></i> Przerwij sesję
+                </button>
+                <button
+                  id="btn-next-question"
+                  onclick="nextQuestion()"
+                  class="hidden bg-slate-800 hover:bg-slate-755 text-white border border-slate-700 font-bold text-sm px-6 py-3 rounded-xl transition-all flex items-center gap-2"
+                >
+                  Następne pytanie <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Podsumowanie sesji (Skończony quiz) -->
+            <div
+              id="summary-view"
+              class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-2xl text-center flex flex-col justify-center items-center h-full min-h-[440px]"
+            >
+              <div
+                class="h-16 w-16 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center text-3xl mb-5"
+              >
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <h3 class="text-2xl font-extrabold text-white mb-2">
+                Quiz Ukończony! 🔥
+              </h3>
+              <p class="text-slate-400 text-sm max-w-md mb-6">
+                Sesja quizowa została pomyślnie zapisana w historii profilu i
+                połączona z postępami lokalnymi.
+              </p>
+              loc
+
+              <div class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8">
+                <div
+                  class="bg-slate-950 border border-slate-800 rounded-xl p-4"
+                >
+                  <p
+                    class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1"
+                  >
+                    Poprawne
+                  </p>
+                  <p
+                    class="text-2xl font-bold text-emerald-400"
+                    id="summary-correct"
+                  >
+                    0
+                  </p>
+                </div>
+                <div
+                  class="bg-slate-950 border border-slate-800 rounded-xl p-4"
+                >
+                  <p
+                    class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1"
+                  >
+                    Wynik %
+                  </p>
+                  <p
+                    class="text-2xl font-bold text-indigo-400"
+                    id="summary-percent"
+                  >
+                    0%
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onclick="returnToMainMenu()"
+                class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition-colors min-w-[200px]"
+              >
+                Wróć do menu głównego
+              </button>
+            </div>
+
+            <!-- Dolna część: Historia sesji -->
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4"
+            >
+              <h3
+                class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2"
+              >
+                <i class="fa-solid fa-history text-slate-400"></i>
+                Historia Twoich Quizów
+              </h3>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left text-slate-400">
+                  <thead
+                    class="text-[10px] uppercase font-bold text-slate-500 border-b border-slate-800"
+                  >
+                    <tr>
+                      <th scope="col" class="pb-3 pr-2">Kiedy</th>
+                      <th scope="col" class="pb-3 px-2">Język</th>
+                      <th scope="col" class="pb-3 px-2">Zakres</th>
+                      <th scope="col" class="pb-3 px-2 text-center">
+                        Poprawne
+                      </th>
+                      <th scope="col" class="pb-3 pl-2 text-right">
+                        Skuteczność
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="history-rows">
+                    {% if not progress.history %}
+                    <tr>
+                      <td
+                        colspan="5"
+                        class="py-6 text-center text-slate-500 italic"
+                      >
+                        Brak dotychczasowej historii. Czas rozpocząć naukę!
+                      </td>
+                    </tr>
+                    {% else %} {% for row in progress.history %}
+                    <tr
+                      class="border-b border-slate-800/50 hover:bg-slate-950/20"
+                    >
+                      <td
+                        class="py-3 pr-2 font-mono whitespace-nowrap text-[11px]"
+                      >
+                        {{ row.timestamp }}
+                      </td>
+                      <td class="py-3 px-2 font-semibold text-slate-300">
+                        {% if row.language == 'PYTHON' %}
+                        <span class="text-yellow-500 flex items-center gap-1"
+                          ><i class="fa-brands fa-python"></i> PYTHON</span
+                        >
+                        {% else %}
+                        <span class="text-indigo-400 flex items-center gap-1"
+                          ><i class="fa-brands fa-php"></i> PHP</span
+                        >
+                        {% endif %}
+                      </td>
+                      <td class="py-3 px-2">
+                        <span
+                          class="px-2 py-0.5 bg-slate-950 border border-slate-800 rounded-md text-[10px]"
+                          >{{ row.category }}</span
+                        >
+                      </td>
+                      <td
+                        class="py-3 px-2 text-center font-semibold text-slate-300"
+                      >
+                        {{ row.correct }}/{{ row.total }}
+                      </td>
+                      <td
+                        class="py-3 pl-2 text-right font-bold text-indigo-400 font-mono"
+                      >
+                        {{ ((row.correct / row.total) * 100)|round(1) }}%
+                      </td>
+                    </tr>
+                    {% endfor %} {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of view-quiz wrapper -->
+
+      <!-- Widok Wyzwań Kodowania -->
+      <div id="view-challenges" class="hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Lewa część: Lista wyzwań -->
+          <div class="space-y-4 lg:col-span-1">
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4"
+            >
+              <h3 class="text-md font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-laptop-code text-indigo-500"></i>
+                Wybierz Zadanie
+              </h3>
+              <p class="text-slate-400 text-[11px] leading-relaxed">
+                Zadania o różnym stopniu trudności. Napisz kod w edytorze po
+                prawej, a nasz kompilator sprawdzi go w locie pod kątem asercji
+                i poprawności logicznej!
+              </p>
+
+              <!-- Challenge filters -->
+              <div class="flex gap-2">
+                <button
+                  onclick="filterChallenges('all')"
+                  id="ch-filter-all"
+                  class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-indigo-600/30 border border-indigo-500/30 text-indigo-300 transition-all font-semibold"
+                >
+                  Wszystko
+                </button>
+                <button
+                  onclick="filterChallenges('python')"
+                  id="ch-filter-python"
+                  class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all font-semibold"
+                >
+                  <i class="fa-brands fa-python text-yellow-500 mr-0.5"></i> Py
+                </button>
+                <button
+                  onclick="filterChallenges('php')"
+                  id="ch-filter-php"
+                  class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all font-semibold"
+                >
+                  <i class="fa-brands fa-php text-indigo-400 mr-0.5"></i> PHP
+                </button>
+              </div>
+
+              <!-- List holder -->
+              <div
+                id="challenges-list"
+                class="space-y-2.5 max-h-[450px] overflow-y-auto pr-1"
+              >
+                <!-- Dynamically populated challenges cards -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Prawa część: Edytor i wyniki -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Ekran przed wyborem wyzwania -->
+            <div
+              id="challenge-placeholder"
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-2xl text-center flex flex-col justify-center items-center h-full min-h-[480px]"
+            >
+              <div
+                class="h-16 w-16 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center text-3xl mb-5"
+              >
+                <i class="fa-solid fa-terminal animate-pulse"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">
+                Wybierz zadanie z listy po lewej
+              </h3>
+              <p class="text-slate-400 text-xs max-w-sm leading-relaxed">
+                Wybierz wyzwanie programistyczne, uzupełnij brakujące części
+                funkcji w edytorze kodu i sprawdź poprawność implementacji!
+              </p>
+            </div>
+
+            <!-- Panel edytora wyzwania -->
+            <div
+              id="challenge-editor-pane"
+              class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl space-y-5"
+            >
+              <!-- Header info -->
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span
+                      id="ch-lang-badge"
+                      class="px-2 py-0.5 text-[10px] font-bold rounded uppercase"
+                    ></span>
+                    <span
+                      id="ch-diff-badge"
+                      class="px-2 py-0.5 text-[10px] font-bold rounded uppercase"
+                    ></span>
+                  </div>
+                  <h3
+                    id="ch-title"
+                    class="text-lg md:text-xl font-extrabold text-white"
+                  ></h3>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div
+                id="ch-desc"
+                class="text-slate-300 text-xs md:text-sm leading-relaxed p-4 bg-slate-950/40 border border-slate-800/60 rounded-xl whitespace-pre-wrap font-sans"
+              ></div>
+
+              <!-- Editor container -->
+              <div class="space-y-1.5">
+                <div
+                  class="flex justify-between items-center text-xs text-slate-500 pr-1"
+                >
+                  <span>Edytor kodu (Monospace z obsługą Tab)</span>
+                  <span id="editor-lang-indicator" class="font-mono text-[10px]"
+                    >main.py</span
+                  >
+                </div>
+
+                <div
+                  class="relative rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden focus-within:border-indigo-500"
+                >
+                  <textarea
+                    id="challenge-code-area"
+                    class="w-full h-80 bg-slate-950 text-indigo-300 font-mono text-xs md:text-sm p-4 focus:outline-none resize-none leading-relaxed select-text"
+                    spellcheck="false"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Action button and info -->
+              <div
+                class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2"
+              >
+                <p class="text-[11px] text-slate-500">
+                  Kod zostanie uruchomiony na serwerze i zweryfikowany z
+                  zestawem niewidocznych testów asercji.
+                </p>
+                <button
+                  id="btn-validate-challenge"
+                  onclick="validateChallengeCode()"
+                  class="bg-indigo-600 hover:bg-indigo-500 text-white border border-indigo-500/20 font-bold text-xs md:text-sm px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-xl shadow-indigo-500/10 hover:shadow-indigo-500/20 active:scale-[0.99]"
+                >
+                  <i class="fa-solid fa-circle-check"></i>
+                  Waliduj i Uruchom Testy ⚡
+                </button>
+              </div>
+
+              <!-- Result status block (Hidden by default) -->
+              <div
+                id="ch-result"
+                class="hidden border rounded-xl p-5 step-transition"
+              >
+                <div class="flex items-start gap-3">
+                  <div
+                    id="ch-result-icon"
+                    class="h-8 w-8 rounded-full flex items-center justify-center text-base mt-0.5 shrink-0"
+                  ></div>
+                  <div class="space-y-1.5 w-full">
+                    <h5 id="ch-result-title" class="font-bold text-sm"></h5>
+                    <p
+                      id="ch-result-desc"
+                      class="text-xs text-slate-300 leading-relaxed"
+                    ></p>
+
+                    <!-- Code debug stacktrace if fails -->
+                    <div
+                      id="ch-result-terminal-box"
+                      class="hidden mt-3 p-3 bg-slate-950 border border-slate-800/80 rounded-lg text-rose-400 font-mono text-[11px] leading-normal overflow-x-auto whitespace-pre-wrap select-text max-h-48"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widok Biblioteki Wiedzy -->
+      <div id="view-library" class="hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Lewa część: Lista artykułów -->
+          <div class="space-y-4 lg:col-span-1">
+            <div
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4"
+            >
+              <h3 class="text-md font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-emerald-400"></i>
+                Kompendia i Artykuły
+              </h3>
+              <p class="text-slate-400 text-[11px] leading-relaxed">
+                Przeglądaj interaktywne artykuły i kompendia wiedzy technicznej.
+                Wybierz język oraz poziom trudności poniżej, aby filtrować
+                zasoby.
+              </p>
+
+              <!-- Język filter -->
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+                  >Język</label
+                >
+                <div class="flex gap-2">
+                  <button
+                    onclick="filterLibraryLang('all')"
+                    id="lib-filter-lang-all"
+                    class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 transition-all cursor-pointer"
+                  >
+                    Wszystkie
+                  </button>
+                  <button
+                    onclick="filterLibraryLang('python')"
+                    id="lib-filter-lang-python"
+                    class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all cursor-pointer"
+                  >
+                    <i class="fa-brands fa-python text-yellow-500 mr-0.5"></i>
+                    Python
+                  </button>
+                  <button
+                    onclick="filterLibraryLang('php')"
+                    id="lib-filter-lang-php"
+                    class="flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all cursor-pointer"
+                  >
+                    <i class="fa-brands fa-php text-indigo-400 mr-0.5"></i> PHP
+                  </button>
+                </div>
+              </div>
+
+              <!-- Poziom filter -->
+              <div>
+                <label
+                  class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+                  >Poziom / Zakres</label
+                >
+                <div class="grid grid-cols-1 gap-2">
+                  <button
+                    onclick="filterLibraryLevel('all')"
+                    id="lib-filter-level-all"
+                    class="w-full text-left text-xs py-2 px-3 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-300 font-semibold cursor-pointer"
+                  >
+                    🚀 Wszystkie poziomy
+                  </button>
+                  <button
+                    onclick="filterLibraryLevel('podstawy')"
+                    id="lib-filter-level-podstawy"
+                    class="w-full text-left text-xs py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/30 text-slate-400 font-semibold hover:text-white transition-all cursor-pointer"
+                  >
+                    🌱 Podstawy języka
+                  </button>
+                  <button
+                    onclick="filterLibraryLevel('zaawansowane')"
+                    id="lib-filter-level-zaawansowane"
+                    class="w-full text-left text-xs py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/30 text-slate-400 font-semibold hover:text-white transition-all cursor-pointer"
+                  >
+                    🔥 Zaawansowane mechanizmy
+                  </button>
+                  <button
+                    onclick="filterLibraryLevel('frameworki')"
+                    id="lib-filter-level-frameworki"
+                    class="w-full text-left text-xs py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/30 text-slate-400 font-semibold hover:text-white transition-all cursor-pointer"
+                  >
+                    ⚙️ Frameworki i ORM
+                  </button>
+                </div>
+              </div>
+
+              <!-- List holder -->
+              <div
+                id="library-list"
+                class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1"
+              >
+                <!-- Dynamically populated articles cards -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Prawa część: Przeglądarka Artykułów -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Ekran przed wyborem artykułu -->
+            <div
+              id="library-placeholder"
+              class="bg-slate-900 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-2xl text-center flex flex-col justify-center items-center h-full min-h-[480px]"
+            >
+              <div
+                class="h-16 w-16 bg-emerald-500/10 border border-emerald-500/20 text-emerald-450 rounded-2xl flex items-center justify-center text-3xl mb-5"
+              >
+                <i
+                  class="fa-solid fa-book-open animate-pulse text-emerald-400"
+                ></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">
+                Wybierz artykuł z listy po lewej
+              </h3>
+              <p class="text-slate-400 text-xs max-w-sm leading-relaxed">
+                Skorzystaj z filtrów wyszukiwania, wybierz kompendium wiedzy i
+                pogłęb swoją wiedzę z zakresu Pythona, PHP oraz wiodących
+                frameworków branżowych!
+              </p>
+            </div>
+
+            <!-- Panel artykułu -->
+            <div
+              id="library-article-pane"
+              class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl space-y-5"
+            >
+              <!-- Header info -->
+              <div
+                class="flex justify-between items-start border-b border-slate-800 pb-4"
+              >
+                <div>
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      id="lib-lang-badge"
+                      class="px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide"
+                    ></span>
+                    <span
+                      id="lib-level-badge"
+                      class="px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide"
+                    ></span>
+                  </div>
+                  <h3
+                    id="lib-art-title"
+                    class="text-xl md:text-2xl font-extrabold text-white"
+                  ></h3>
+                  <p
+                    id="lib-art-subtitle"
+                    class="text-xs text-slate-400 mt-1"
+                  ></p>
+                </div>
+              </div>
+
+              <!-- Summary bar -->
+              <div
+                id="lib-art-summary"
+                class="p-4 bg-emerald-500/5 border-l-4 border-emerald-500 text-slate-300 text-xs md:text-sm leading-relaxed rounded-r-xl"
+              ></div>
+
+              <!-- Article Content -->
+              <div
+                id="lib-art-content"
+                class="text-slate-300 text-xs md:text-sm leading-relaxed space-y-4 font-sans select-text overflow-y-auto max-h-[500px] pr-2"
+              ></div>
+
+              <!-- Key Takeaways (Podsumowanie) -->
+              <div
+                class="bg-slate-950/60 border border-slate-800/80 p-5 rounded-xl space-y-3"
+              >
+                <h4
+                  class="text-emerald-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 font-mono"
+                >
+                  <i class="fa-solid fa-lightbulb"></i> Kluczowe Wnioski (Cheat
+                  Sheet):
+                </h4>
+                <ul
+                  id="lib-art-takeaways"
+                  class="space-y-2 text-slate-400 text-xs leading-relaxed list-disc list-inside col-span-1"
+                ></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Dialog resetowania (Modal) -->
+    <div
+      id="reset-modal"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+    >
+      <div
+        class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl"
+      >
+        <div
+          class="h-14 w-16 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl animate-pulse"
+        >
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Potwierdź Reset</h3>
+        <p class="text-slate-400 text-xs mb-6 leading-relaxed">
+          Czy na pewno chcesz usunąć wszystkie zgromadzone postępy nauki,
+          statusy oraz wyczyścić historię? Tej operacji nie można cofnąć!
+        </p>
+        <div class="flex gap-4">
+          <button
+            onclick="closeResetModal()"
+            class="flex-1 bg-slate-800 hover:bg-slate-750 text-white rounded-xl py-2.5 text-xs font-semibold"
+          >
+            Anuluj
+          </button>
+          <button
+            onclick="performReset()"
+            class="flex-1 bg-rose-600 hover:bg-rose-500 text-white rounded-xl py-2.5 text-xs font-semibold shadow-xl"
+          >
+            Wymaż Dane
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="border-t border-slate-900 bg-slate-950 mt-12 py-6 text-center text-xs text-slate-500"
+    >
+      <p>© 2026 Dev Learning Hub - Zbudowany z pasji do niezawodnego kodu.</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+      // State variables
+      let selectedSelectedLanguage = null; // null, 'python', 'php'
+      let currentQuizState = {
+          active: false,
+          questions: [],
+          currentIndex: 0,
+          answersCount: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+          sessionLang: "",
+          sessionCat: ""
+      };
+
+      // Cache category stats from backend
+      const initialCategoryStats = {{ progress.category_stats|tojson|safe }};
+
+      function updateCategoryBars(stats) {
+          const mapping = {
+              "python:basics": "py-basics",
+              "python:frameworks": "py-fw",
+              "python:recruitment": "py-recruitment",
+              "php:basics": "php-basics",
+              "php:frameworks": "php-fw",
+              "php:recruitment": "php-recruitment"
+          };
+
+          for (const [cat, idSuffix] of Object.entries(mapping)) {
+              const info = stats[cat] || {answered: 0, correct: 0};
+              const perfText = document.getElementById(`cat-${idSuffix}-perf`);
+              const bar = document.getElementById(`cat-${idSuffix}-bar`);
+
+              if (perfText && bar) {
+                  perfText.textContent = `${info.correct}/${info.answered} poprawnych`;
+
+                  let percent = 0;
+                  if (info.answered > 0) {
+                      percent = Math.round((info.correct / info.answered) * 100);
+                  }
+                  bar.style.width = `${percent}%`;
+              }
+          }
+      }
+
+      // Initialize category charts on start
+      updateCategoryBars(initialCategoryStats);
+
+      function selectLanguage(lang) {
+          selectedSelectedLanguage = lang;
+          const pyBtn = document.getElementById("lang-btn-python");
+          const phpBtn = document.getElementById("lang-btn-php");
+
+          if (lang === 'python') {
+              pyBtn.classList.add("border-yellow-500/80", "bg-yellow-500/5", "text-yellow-400");
+              pyBtn.classList.remove("border-slate-800", "bg-slate-950/60", "text-slate-300");
+              phpBtn.classList.remove("border-indigo-400/80", "bg-indigo-400/5", "text-indigo-300");
+              phpBtn.classList.add("border-slate-800", "bg-slate-950/60", "text-slate-300");
+          } else {
+              phpBtn.classList.add("border-indigo-400/80", "bg-indigo-400/5", "text-indigo-300");
+              phpBtn.classList.remove("border-slate-800", "bg-slate-950/60", "text-slate-300");
+              pyBtn.classList.remove("border-yellow-500/80", "bg-yellow-500/5", "text-yellow-400");
+              pyBtn.classList.add("border-slate-800", "bg-slate-950/60", "text-slate-300");
+          }
+      }
+
+      // Helper to quickly select and start quiz from welcome board
+      function quickStart(lang) {
+          selectLanguage(lang);
+          startQuiz();
+      }
+
+      function startQuiz() {
+          if (!selectedSelectedLanguage) {
+              alert("Wybierz język programowania (Python lub PHP)!");
+              return;
+          }
+
+          const cat = document.getElementById("select-category").value;
+          const size = parseInt(document.getElementById("select-size").value);
+
+          // Fetch questions from API
+          fetch(`/api/questions?language=${selectedSelectedLanguage}&category=${cat}`)
+              .then(res => res.json())
+              .then(data => {
+                  let questions = data.questions || [];
+                  if (questions.length === 0) {
+                      alert("Brak dostępnych pytań dla wybranej konfiguracji.");
+                      return;
+                  }
+
+                  // Randomize questions list
+                  questions.sort(() => Math.random() - 0.5);
+
+                  // Cap to requested session size
+                  questions = questions.slice(0, size);
+
+                  // Initialize state
+                  currentQuizState = {
+                      active: true,
+                      questions: questions,
+                      currentIndex: 0,
+                      answersCount: 0,
+                      correctCount: 0,
+                      incorrectCount: 0,
+                      sessionLang: selectedSelectedLanguage,
+                      sessionCat: cat
+                  };
+
+                  // Toggle views
+                  document.getElementById("welcome-view").classList.add("hidden");
+                  document.getElementById("summary-view").classList.add("hidden");
+                  document.getElementById("quiz-view").classList.remove("hidden");
+
+                  renderQuestion();
+              })
+              .catch(err => {
+                  console.error("Error starting quiz:", err);
+                  alert("Nie udało się załadować pytań testowych.");
+              });
+      }
+
+      function renderQuestion() {
+          const state = currentQuizState;
+          const q = state.questions[state.currentIndex];
+
+          // Badges & Counter
+          const techBadge = document.getElementById("badge-quiz-tech");
+          techBadge.textContent = q.language.toUpperCase();
+          if (q.language === "python") {
+              techBadge.className = "px-2.5 py-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-lg text-[11px] font-bold tracking-wide uppercase";
+          } else {
+              techBadge.className = "px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-lg text-[11px] font-bold tracking-wide uppercase";
+          }
+
+          document.getElementById("badge-quiz-cat").textContent = q.category === 'basics' ? 'Podstawy' : 'Frameworki';
+          document.getElementById("current-question-num").textContent = state.currentIndex + 1;
+          document.getElementById("total-questions-num").textContent = state.questions.length;
+
+          // Bar update
+          const barPercent = Math.round((state.currentIndex / state.questions.length) * 100);
+          document.getElementById("quiz-progress-bar").style.width = `${barPercent}%`;
+
+          // Text
+          const questionText = document.getElementById("question-text");
+          // Check for Markdown-style code block
+          let htmlContent = q.question;
+          const codeBlockRegex = /```(python|php)?\n([\s\S]*?)```/g;
+          htmlContent = htmlContent.replace(codeBlockRegex, function(match, lang, code) {
+              return `<div class="bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-xs text-blue-400 my-3 leading-relaxed overflow-x-auto whitespace-pre-wrap select-text code-container"><pre><code>${escapeHtml(code)}</code></pre></div>`;
+          });
+          questionText.innerHTML = htmlContent;
+
+          // Clear feedback container
+          document.getElementById("feedback-holder").classList.add("hidden");
+          document.getElementById("btn-next-question").classList.add("hidden");
+
+          // Options list
+          const holder = document.getElementById("options-holder");
+          holder.innerHTML = "";
+          q.options.forEach((opt, idx) => {
+              const btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = "w-full text-left bg-slate-950/60 border border-slate-800 hover:border-slate-700/80 hover:bg-slate-900 rounded-xl p-4 text-xs md:text-sm transition-all duration-200 cursor-pointer flex gap-3 text-slate-300 hover:text-white";
+              btn.onclick = () => selectOption(idx, btn);
+              btn.innerHTML = `
+                  <span class="flex items-center justify-center font-bold px-2.5 py-1 bg-slate-900 border border-slate-800 text-xs text-slate-400 rounded-lg shrink-0 uppercase">${String.fromCharCode(65 + idx)}</span>
+                  <span class="mt-0.5 leading-relaxed">${escapeHtml(opt)}</span>
+              `;
+              holder.appendChild(btn);
+          });
+      }
+
+      function selectOption(selectedIdx, selectedBtn) {
+          const state = currentQuizState;
+          const q = state.questions[state.currentIndex];
+
+          // Avoid selecting multiple times
+          const buttons = document.querySelectorAll("#options-holder button");
+          buttons.forEach(b => {
+              b.onclick = null; // Disable clicking
+              b.classList.remove("hover:bg-slate-900", "cursor-pointer", "hover:border-slate-700/80");
+          });
+
+          // Call API to evaluate
+          fetch("/api/submit-answer", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                  question_id: q.id,
+                  selected_option: selectedIdx
+              })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  const isCorrect = data.correct;
+                  const correctIdx = data.correct_option;
+
+                  // Colorize choices
+                  buttons.forEach((btn, idx) => {
+                      if (idx === correctIdx) {
+                          btn.classList.add("border-emerald-500/80", "bg-emerald-500/5", "text-emerald-400");
+                          btn.classList.remove("border-slate-800", "bg-slate-950/60", "text-slate-300");
+                          // Add checkmark
+                          btn.querySelector("span:first-of-type").className = "flex items-center justify-center font-bold px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 rounded-lg shrink-0";
+                      } else if (idx === selectedIdx && !isCorrect) {
+                          btn.classList.add("border-rose-500/80", "bg-rose-500/5", "text-rose-400");
+                          btn.classList.remove("border-slate-800", "bg-slate-950/60", "text-slate-300");
+                          // Add X
+                          btn.querySelector("span:first-of-type").className = "flex items-center justify-center font-bold px-2 py-1 bg-rose-500/10 border border-rose-500/20 text-xs text-rose-400 rounded-lg shrink-0";
+                      }
+                  });
+
+                  // Build feedback panel
+                  const fbHolder = document.getElementById("feedback-holder");
+                  const fbIcon = document.getElementById("feedback-icon");
+                  const fbTitle = document.getElementById("feedback-title");
+                  const fbDesc = document.getElementById("feedback-desc");
+
+                  fbHolder.classList.remove("hidden");
+                  if (isCorrect) {
+                      state.correctCount++;
+                      fbHolder.className = "border rounded-xl p-5 step-transition border-emerald-500/20 bg-emerald-500/5";
+                      fbIcon.className = "h-8 w-8 rounded-full flex items-center justify-center text-sm shrink-0 bg-emerald-500/10 text-emerald-400";
+                      fbIcon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                      fbTitle.className = "font-bold text-sm text-emerald-400";
+                      fbTitle.innerHTML = "Wspaniale! Dobra odpowiedź.";
+                  } else {
+                      state.incorrectCount++;
+                      fbHolder.className = "border rounded-xl p-5 step-transition border-rose-500/20 bg-rose-500/5";
+                      fbIcon.className = "h-8 w-8 rounded-full flex items-center justify-center text-sm shrink-0 bg-rose-500/10 text-rose-400";
+                      fbIcon.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                      fbTitle.className = "font-bold text-sm text-rose-400";
+                      fbTitle.innerHTML = "Niestety błąd...";
+                  }
+
+                  fbDesc.textContent = data.explanation;
+
+                  // Update Top Counters dynamically
+                  document.getElementById("stat-total").textContent = parseInt(document.getElementById("stat-total").textContent) + 1;
+                  if (isCorrect) {
+                      document.getElementById("val-correct").textContent = parseInt(document.getElementById("val-correct").textContent) + 1;
+                      document.getElementById("stat-streak").textContent = parseInt(document.getElementById("stat-streak").textContent) + 1;
+                      const currStreak = parseInt(document.getElementById("stat-streak").textContent);
+                      const maxStreak = parseInt(document.getElementById("stat-max-streak").textContent);
+                      if (currStreak > maxStreak) {
+                          document.getElementById("stat-max-streak").textContent = currStreak;
+                      }
+                  } else {
+                      document.getElementById("val-incorrect").textContent = parseInt(document.getElementById("val-incorrect").textContent) + 1;
+                      document.getElementById("stat-streak").textContent = "0";
+                  }
+
+                  // Recalculate success rate in UI
+                  const totAns = parseInt(document.getElementById("val-correct").textContent) + parseInt(document.getElementById("val-incorrect").textContent);
+                  if (totAns > 0) {
+                      const newRate = Math.round((parseInt(document.getElementById("val-correct").textContent) / totAns) * 100);
+                      document.getElementById("stat-rate").textContent = `${newRate}%`;
+                      document.getElementById("stat-rate-bar").style.width = `${newRate}%`;
+                  }
+
+                  // Show next button
+                  const nextBtn = document.getElementById("btn-next-question");
+                  nextBtn.classList.remove("hidden");
+                  if (state.currentIndex === state.questions.length - 1) {
+                      nextBtn.innerHTML = `Zakończ test i zobacz wynik <i class="fa-solid fa-flag-checkered text-xs"></i>`;
+                  } else {
+                      nextBtn.innerHTML = `Następne pytanie <i class="fa-solid fa-arrow-right"></i>`;
+                  }
+              }
+          })
+          .catch(err => {
+              console.error("Error submitting answer:", err);
+          });
+      }
+
+      function nextQuestion() {
+          const state = currentQuizState;
+          if (state.currentIndex < state.questions.length - 1) {
+              state.currentIndex++;
+              renderQuestion();
+          } else {
+              finishQuizSession();
+          }
+      }
+
+      function finishQuizSession() {
+          const state = currentQuizState;
+
+          // Post dynamic activity payload to backend
+          fetch("/api/submit-quiz-session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                  language: state.sessionLang,
+                  category: state.sessionCat,
+                  total: state.questions.length,
+                  correct: state.correctCount
+              })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  // Update session UI
+                  document.getElementById("summary-correct").textContent = `${state.correctCount} / ${state.questions.length}`;
+
+                  const scorePerc = Math.round((state.correctCount / state.questions.length) * 100);
+                  document.getElementById("summary-percent").textContent = `${scorePerc}%`;
+
+                  // Update UI views
+                  document.getElementById("quiz-view").classList.add("hidden");
+                  document.getElementById("summary-view").classList.remove("hidden");
+
+                  // Reload page to reflect history and stats inside tables
+                  // (But let the user view summary-view first! We can dynamically load table contents on page reload or do it inline.)
+              }
+          })
+          .catch(err => {
+              console.error("Error finalizing quiz:", err);
+          });
+      }
+
+      function returnToMainMenu() {
+          // Simply trigger a reload so stats and HTML updates load natively from progress.json
+          window.location.reload();
+      }
+
+      function exitQuiz() {
+          if (confirm("Czy na pewno chcesz przerwać aktualną sesję szkoleniową? Postępy z tej serii nie zostaną odnotowane.")) {
+              window.location.reload();
+          }
+      }
+
+      // Reset dialog handlers
+      function confirmReset() {
+          document.getElementById("reset-modal").classList.remove("hidden");
+      }
+
+      function closeResetModal() {
+          document.getElementById("reset-modal").classList.add("hidden");
+      }
+
+      function performReset() {
+          fetch("/api/reset", { method: "POST" })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.success) {
+                      window.location.reload();
+                  }
+              })
+              .catch(err => console.error("Error: ", err));
+      }
+
+      // TAB SELECTION LOGIC
+      let allChallenges = [];
+      let selectedChallenge = null;
+      let activeChallengeFilter = 'all';
+
+      // LIBRARY SELECTION LOGIC
+      let allLibraryArticles = {};
+      let selectedArticle = null;
+      let activeLibraryLang = 'all';
+      let activeLibraryLevel = 'all';
+
+      function switchActiveTab(tab) {
+          const quizTabBtn = document.getElementById("tab-btn-quiz");
+          const chTabBtn = document.getElementById("tab-btn-challenges");
+          const libTabBtn = document.getElementById("tab-btn-library");
+          const viewQuiz = document.getElementById("view-quiz");
+          const viewChallenges = document.getElementById("view-challenges");
+          const viewLibrary = document.getElementById("view-library");
+
+          const activeClass = "flex items-center gap-2 px-4 py-2.5 text-sm font-bold rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/5 duration-300";
+          const inactiveClass = "flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-xl text-slate-400 hover:text-white border border-transparent hover:border-slate-800/80 hover:bg-slate-900/40 duration-300";
+
+          // Reset all
+          quizTabBtn.className = inactiveClass;
+          chTabBtn.className = inactiveClass;
+          if (libTabBtn) libTabBtn.className = inactiveClass;
+
+          viewQuiz.classList.add("hidden");
+          viewChallenges.classList.add("hidden");
+          if (viewLibrary) viewLibrary.classList.add("hidden");
+
+          if (tab === 'quiz') {
+              quizTabBtn.className = activeClass;
+              viewQuiz.classList.remove("hidden");
+          } else if (tab === 'challenges') {
+              chTabBtn.className = activeClass;
+              viewChallenges.classList.remove("hidden");
+              if (allChallenges.length === 0) {
+                  loadChallenges();
+              }
+          } else if (tab === 'library') {
+              if (libTabBtn) libTabBtn.className = activeClass;
+              if (viewLibrary) viewLibrary.classList.remove("hidden");
+              loadLibrary();
+          }
+      }
+
+      function loadLibrary() {
+          const listHolder = document.getElementById("library-list");
+          listHolder.innerHTML = `<div class="text-center py-4 text-xs text-slate-500 italic"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Ładowanie artykułów...</div>`;
+
+          fetch('/api/library')
+              .then(res => res.json())
+              .then(data => {
+                  allLibraryArticles = data || {};
+                  renderLibraryList();
+              })
+              .catch(err => {
+                  console.error("Error fetching library articles:", err);
+                  listHolder.innerHTML = `<div class="text-center py-4 text-xs text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Nie udało się wczytać biblioteki.</div>`;
+              });
+      }
+
+      function renderLibraryList() {
+          const listHolder = document.getElementById("library-list");
+          listHolder.innerHTML = "";
+
+          let articlesToRender = [];
+
+          Object.keys(allLibraryArticles).forEach(lang => {
+              if (activeLibraryLang !== 'all' && activeLibraryLang !== lang) return;
+              allLibraryArticles[lang].forEach(art => {
+                  if (activeLibraryLevel !== 'all' && activeLibraryLevel !== art.level) return;
+                  articlesToRender.push({ ...art, language: lang });
+              });
+          });
+
+          if (articlesToRender.length === 0) {
+              listHolder.innerHTML = `<div class="text-center py-4 text-xs text-slate-500 italic">Brak artykułów dla podanych filtrów.</div>`;
+              return;
+          }
+
+          articlesToRender.forEach(art => {
+              const div = document.createElement("div");
+              const isSelected = selectedArticle && selectedArticle.id === art.id;
+
+              const langColor = art.language === 'python' ? 'border-yellow-500/20 hover:border-yellow-500/60' : 'border-indigo-400/20 hover:border-indigo-400/60';
+              const selectionStyle = isSelected
+                  ? 'border-emerald-500 bg-slate-950/90 text-white shadow-lg shadow-emerald-500/5'
+                  : `bg-slate-950/40 border ${langColor} text-slate-300 hover:text-white`;
+
+              div.className = `p-4 rounded-xl cursor-pointer transition-all duration-205 ${selectionStyle}`;
+              div.onclick = () => selectArticleItem(art);
+
+              let levelBadge = '';
+              if (art.level === 'podstawy') {
+                  levelBadge = `<span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md uppercase">Podstawy</span>`;
+              } else if (art.level === 'zaawansowane') {
+                  levelBadge = `<span class="px-2 py-0.5 text-[9px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-md uppercase">Zaawansowane</span>`;
+              } else {
+                  levelBadge = `<span class="px-2 py-0.5 text-[9px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-md uppercase">Frameworki</span>`;
+              }
+
+              div.innerHTML = `
+                  <div class="flex items-center gap-1.5 mb-1.5">
+                      <span class="px-1.5 py-0.5 text-[9px] font-bold rounded uppercase ${art.language === 'python' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-indigo-500/10 text-indigo-400'}">
+                          ${art.language.toUpperCase()}
+                      </span>
+                      ${levelBadge}
+                  </div>
+                  <h4 class="font-bold text-xs md:text-sm line-clamp-1">${escapeHtml(art.title)}</h4>
+                  <p class="text-[10px] text-slate-400 line-clamp-2 mt-1 leading-normal">${escapeHtml(art.summary)}</p>
+              `;
+
+              listHolder.appendChild(div);
+          });
+      }
+
+      function selectArticleItem(art) {
+          selectedArticle = art;
+          renderLibraryList();
+
+          document.getElementById("library-placeholder").classList.add("hidden");
+          const pane = document.getElementById("library-article-pane");
+          pane.classList.remove("hidden");
+
+          document.getElementById("lib-art-title").textContent = art.title;
+          document.getElementById("lib-art-subtitle").textContent = art.subtitle;
+          document.getElementById("lib-art-summary").textContent = art.summary;
+
+          const langB = document.getElementById("lib-lang-badge");
+          langB.textContent = art.language.toUpperCase();
+          if (art.language === 'python') {
+              langB.className = "px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-yellow-500/20 text-yellow-500 border border-yellow-500/30";
+          } else {
+              langB.className = "px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-indigo-500/20 text-indigo-400 border border-indigo-400/30";
+          }
+
+          const levelB = document.getElementById("lib-level-badge");
+          levelB.textContent = art.level.toUpperCase();
+          if (art.level === 'podstawy') {
+              levelB.className = "px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+          } else if (art.level === 'zaawansowane') {
+              levelB.className = "px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-amber-500/10 text-amber-500 border border-amber-500/20";
+          } else {
+              levelB.className = "px-2.5 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide bg-purple-500/10 text-purple-400 border border-purple-500/20";
+          }
+
+          const contentHolder = document.getElementById("lib-art-content");
+          contentHolder.innerHTML = renderMarkdown(art.content);
+
+          const takeawaysHolder = document.getElementById("lib-art-takeaways");
+          takeawaysHolder.innerHTML = "";
+          if (art.key_takeaways && art.key_takeaways.length > 0) {
+              art.key_takeaways.forEach(tk => {
+                  const li = document.createElement("li");
+                  li.className = "ml-1 text-slate-350 text-xs leading-relaxed flex items-start gap-1 p-0.5";
+                  li.innerHTML = `<span class="text-emerald-400 font-bold mr-1 select-none font-mono">▸</span><span>${escapeHtml(tk)}</span>`;
+                  takeawaysHolder.appendChild(li);
+              });
+          } else {
+              takeawaysHolder.innerHTML = `<li class="text-slate-500 text-xs italic">Brak zdefiniowanych wniosków.</li>`;
+          }
+      }
+
+      function filterLibraryLang(lang) {
+          activeLibraryLang = lang;
+
+          const buttons = {
+              'all': document.getElementById("lib-filter-lang-all"),
+              'python': document.getElementById("lib-filter-lang-python"),
+              'php': document.getElementById("lib-filter-lang-php")
+          };
+
+          Object.keys(buttons).forEach(key => {
+              if (buttons[key]) {
+                  if (key === lang) {
+                      buttons[key].className = "flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 transition-all cursor-pointer";
+                  } else {
+                      buttons[key].className = "flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all cursor-pointer";
+                  }
+              }
+          });
+
+          renderLibraryList();
+      }
+
+      function filterLibraryLevel(level) {
+          activeLibraryLevel = level;
+
+          const levels = ['all', 'podstawy', 'zaawansowane', 'frameworki'];
+          levels.forEach(key => {
+              const btn = document.getElementById(`lib-filter-level-${key}`);
+              if (btn) {
+                  if (key === level) {
+                      btn.className = "w-full text-left text-xs py-2 px-3 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-300 font-semibold cursor-pointer";
+                  } else {
+                      btn.className = "w-full text-left text-xs py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/30 text-slate-400 font-semibold hover:text-white transition-all cursor-pointer";
+                  }
+              }
+          });
+
+          renderLibraryList();
+      }
+
+      function renderMarkdown(text) {
+          if (!text) return "";
+          let html = text;
+
+          html = escapeHtml(html);
+
+          // Code blocks: ```python ... ```
+          const codeBlockRegex = /```(python|php)?\n([\s\S]*?)```/g;
+          html = html.replace(codeBlockRegex, function(match, lang, code) {
+              const cleanCode = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+              const langClass = lang === 'php' ? 'text-indigo-400 border-indigo-900/40' : 'text-yellow-400 border-yellow-900/40';
+              return `<div class="bg-indigo-950/20 border border-slate-800/80 rounded-xl p-4 font-mono text-xs ${langClass} my-4 leading-relaxed overflow-x-auto whitespace-pre select-text relative code-container"><pre><code>${escapeHtml(cleanCode)}</code></pre></div>`;
+          });
+
+          // Inline code: `code`
+          html = html.replace(/`([^`]+)`/g, '<code class="bg-slate-950 text-indigo-300 font-mono text-[11px] px-1.5 py-0.5 rounded border border-slate-800/80 font-bold">$1</code>');
+
+          // Headings: ### Title
+          html = html.replace(/^### (.*?)$/gm, '<h3 class="text-sm md:text-base font-bold text-white tracking-wide mt-5 mb-2 font-mono flex items-center gap-1.5"><i class="fa-solid fa-terminal text-emerald-400 text-[10px]"></i> $1</h3>');
+
+          // Bold text: **test**
+          html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-emerald-400 font-semibold">$1</strong>');
+
+          // Bullet lists: * Item
+          html = html.replace(/^\* (.*?)$/gm, '<li class="ml-4 list-disc list-inside text-slate-300 text-xs md:text-sm">$1</li>');
+
+          // Newlines -> br
+          html = html.replace(/\n/g, "<br>");
+
+          return html;
+      }
+
+      function loadChallenges() {
+          const listHolder = document.getElementById("challenges-list");
+          listHolder.innerHTML = `<div class="text-center py-4 text-xs text-slate-500 italic"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Ładowanie zadań...</div>`;
+
+          fetch('/api/challenges')
+              .then(res => res.json())
+              .then(data => {
+                  allChallenges = data.challenges || [];
+                  renderChallengesList();
+              })
+              .catch(err => {
+                  console.error("Error fetching challenges:", err);
+                  listHolder.innerHTML = `<div class="text-center py-4 text-xs text-rose-400"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Nie udało się wczytać wyzwań.</div>`;
+              });
+      }
+
+      function renderChallengesList() {
+          const listHolder = document.getElementById("challenges-list");
+          listHolder.innerHTML = "";
+
+          const filtered = allChallenges.filter(ch => {
+              if (activeChallengeFilter === 'all') return true;
+              return ch.language === activeChallengeFilter;
+          });
+
+          if (filtered.length === 0) {
+              listHolder.innerHTML = `<div class="text-center py-6 text-xs text-slate-500 italic">Brak zadań w wybranym języku.</div>`;
+              return;
+          }
+
+          filtered.forEach(ch => {
+              const card = document.createElement("button");
+              card.type = "button";
+
+              // Highlight active selected card
+              const isSelected = selectedChallenge && selectedChallenge.id === ch.id;
+              const borderClass = isSelected ? "border-indigo-500 bg-indigo-500/10" : "border-slate-800 bg-slate-950/40 hover:border-slate-700/80";
+
+              card.className = `w-full text-left p-3.5 rounded-xl border ${borderClass} step-transition text-slate-300 flex flex-col gap-1.5`;
+              card.onclick = () => selectChallenge(ch.id);
+
+              const langIcon = ch.language === 'python' ? 'fa-brands fa-python text-yellow-500' : 'fa-brands fa-php text-indigo-400';
+              const langLabel = ch.language === 'python' ? 'Python' : 'PHP';
+
+              let diffBadgeClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+              if (ch.difficulty === 'mid') {
+                  diffBadgeClass = "bg-amber-500/10 text-amber-500 border border-amber-500/20";
+              } else if (ch.difficulty === 'senior') {
+                  diffBadgeClass = "bg-rose-500/10 text-rose-400 border border-rose-500/20";
+              }
+
+              card.innerHTML = `
+                  <div class="flex items-center justify-between w-full">
+                      <span class="flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
+                          <i class="${langIcon}"></i> ${langLabel}
+                      </span>
+                      <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase rounded ${diffBadgeClass}">${ch.difficulty}</span>
+                  </div>
+                  <h4 class="text-xs md:text-sm font-bold text-white leading-snug line-clamp-1">${escapeHtml(ch.title)}</h4>
+              `;
+              listHolder.appendChild(card);
+          });
+      }
+
+      function filterChallenges(lang) {
+          activeChallengeFilter = lang;
+
+          // Update button states
+          ['all', 'python', 'php'].forEach(l => {
+              const btn = document.getElementById(`ch-filter-${l}`);
+              if (l === lang) {
+                  btn.className = "flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-indigo-600/30 border border-indigo-500/30 text-indigo-300 transition-all font-semibold";
+              } else {
+                  btn.className = "flex-1 text-[11px] font-bold py-1.5 px-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 transition-all font-semibold";
+              }
+          });
+
+          renderChallengesList();
+      }
+
+      function selectChallenge(id) {
+          const ch = allChallenges.find(c => c.id === id);
+          if (!ch) return;
+
+          selectedChallenge = ch;
+
+          // Refresh list to highlight selected card
+          renderChallengesList();
+
+          // Hide placeholder, show editor pane
+          document.getElementById("challenge-placeholder").classList.add("hidden");
+          const pane = document.getElementById("challenge-editor-pane");
+          pane.classList.remove("hidden");
+
+          // Fill values
+          document.getElementById("ch-title").textContent = ch.title;
+          document.getElementById("ch-desc").innerHTML = ch.description.replace(/\n/g, "<br>");
+
+          const codeArea = document.getElementById("challenge-code-area");
+          codeArea.value = ch.boilerplate;
+
+          // Badges
+          const chLangBadge = document.getElementById("ch-lang-badge");
+          chLangBadge.textContent = ch.language === 'python' ? 'Python' : 'PHP 8';
+          chLangBadge.className = ch.language === 'python' ? "px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-yellow-500/10 text-yellow-500 border border-yellow-500/20" : "px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/20";
+
+          const chDiffBadge = document.getElementById("ch-diff-badge");
+          chDiffBadge.textContent = ch.difficulty;
+          if (ch.difficulty === 'junior') {
+              chDiffBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+          } else if (ch.difficulty === 'mid') {
+              chDiffBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-amber-500/10 text-amber-500 border border-amber-550/20";
+          } else {
+              chDiffBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-rose-500/10 text-rose-450 border border-rose-550/20";
+          }
+
+          document.getElementById("editor-lang-indicator").textContent = ch.language === 'python' ? 'solution.py' : 'solution.php';
+
+          // Clear previous validation outputs
+          document.getElementById("ch-result").classList.add("hidden");
+
+          // Setup TAB key capture for textarea
+          setupTabKeySupport(codeArea);
+      }
+
+      function setupTabKeySupport(textarea) {
+          textarea.onkeydown = function(e) {
+              if (e.key === 'Tab') {
+                  e.preventDefault();
+                  const start = this.selectionStart;
+                  const end = this.selectionEnd;
+                  // Set textarea value to: text before caret + 4 spaces + text after caret
+                  this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                  // Put caret in right position
+                  this.selectionStart = this.selectionEnd = start + 4;
+              }
+          };
+      }
+
+      function validateChallengeCode() {
+          if (!selectedChallenge) return;
+
+          const code = document.getElementById("challenge-code-area").value;
+          const btn = document.getElementById("btn-validate-challenge");
+
+          btn.disabled = true;
+          btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Kompilowanie & Walidacja...`;
+
+          fetch('/api/submit-challenge', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  challenge_id: selectedChallenge.id,
+                  code: code
+              })
+          })
+          .then(res => res.json())
+          .then(data => {
+              btn.disabled = false;
+              btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Waliduj i Uruchom Testy ⚡`;
+
+              const resBox = document.getElementById("ch-result");
+              const resIcon = document.getElementById("ch-result-icon");
+              const resTitle = document.getElementById("ch-result-title");
+              const resDesc = document.getElementById("ch-result-desc");
+              const terminalBox = document.getElementById("ch-result-terminal-box");
+
+              resBox.classList.remove("hidden");
+
+              if (data.success) {
+                  if (data.correct) {
+                      resBox.className = "border rounded-xl p-5 step-transition border-emerald-500/20 bg-emerald-500/5";
+                      resIcon.className = "h-8 w-8 rounded-full flex items-center justify-center text-sm shrink-0 bg-emerald-500/10 text-emerald-400";
+                      resIcon.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+                      resTitle.className = "font-extrabold text-sm text-emerald-400";
+                      resTitle.textContent = "SZALONY SUKCES! 🎉";
+                      resDesc.textContent = "Twój kod przeszedł pomyślnie wszystkie automatyczne testy jednostkowe i asercje weryfikujące. Świetna robota!";
+                      terminalBox.classList.add("hidden");
+
+                      // Update score counters in top panel dynamically
+                      document.getElementById("stat-total").textContent = parseInt(document.getElementById("stat-total").textContent) + 1;
+                      document.getElementById("val-correct").textContent = parseInt(document.getElementById("val-correct").textContent) + 1;
+                      document.getElementById("stat-streak").textContent = parseInt(document.getElementById("stat-streak").textContent) + 1;
+                      const strCount = parseInt(document.getElementById("stat-streak").textContent);
+                      const maxStr = parseInt(document.getElementById("stat-max-streak").textContent);
+                      if (strCount > maxStr) {
+                          document.getElementById("stat-max-streak").textContent = strCount;
+                      }
+
+                      // Success rate recalculation
+                      const updatedTot = parseInt(document.getElementById("val-correct").textContent) + parseInt(document.getElementById("val-incorrect").textContent);
+                      if (updatedTot > 0) {
+                          const updatedRate = Math.round((parseInt(document.getElementById("val-correct").textContent) / updatedTot) * 100);
+                          document.getElementById("stat-rate").textContent = `${updatedRate}%`;
+                          document.getElementById("stat-rate-bar").style.width = `${updatedRate}%`;
+                      }
+                  } else {
+                      resBox.className = "border rounded-xl p-5 step-transition border-rose-500/20 bg-rose-500/5";
+                      resIcon.className = "h-8 w-8 rounded-full flex items-center justify-center text-sm shrink-0 bg-rose-500/10 text-rose-400";
+                      resIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+                      resTitle.className = "font-extrabold text-sm text-rose-400";
+                      resTitle.textContent = "BŁĄD WERYFIKACJI KODU ❌";
+                      resDesc.textContent = "Kod został uruchomiony na serwerze, ale zgłosił błąd wykonania lub nie spełnił warunków testowych asercji. Przeanalizuj poniższy log i popraw błędną logikę:";
+
+                      terminalBox.classList.remove("hidden");
+                      terminalBox.innerHTML = escapeHtml(data.error_msg);
+
+                      // Update score counters
+                      document.getElementById("stat-total").textContent = parseInt(document.getElementById("stat-total").textContent) + 1;
+                      document.getElementById("val-incorrect").textContent = parseInt(document.getElementById("val-incorrect").textContent) + 1;
+                      document.getElementById("stat-streak").textContent = "0";
+
+                      // Recalculate success rate
+                      const updatedTot = parseInt(document.getElementById("val-correct").textContent) + parseInt(document.getElementById("val-incorrect").textContent);
+                      if (updatedTot > 0) {
+                          const updatedRate = Math.round((parseInt(document.getElementById("val-correct").textContent) / updatedTot) * 100);
+                          document.getElementById("stat-rate").textContent = `${updatedRate}%`;
+                          document.getElementById("stat-rate-bar").style.width = `${updatedRate}%`;
+                      }
+                  }
+              } else {
+                  // Internal Server Error
+                  resBox.className = "border rounded-xl p-5 step-transition border-yellow-500/20 bg-yellow-500/5";
+                  resIcon.className = "h-8 w-8 rounded-full flex items-center justify-center text-sm shrink-0 bg-yellow-500/10 text-yellow-400";
+                  resIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+                  resTitle.className = "font-extrabold text-sm text-yellow-500";
+                  resTitle.textContent = "BŁĄD SERWERA ⚠️";
+                  resDesc.textContent = "Nie udało się przeprowadzić weryfikacji ze względu na błąd techniczny silnika: " + data.error;
+                  terminalBox.classList.add("hidden");
+              }
+          })
+          .catch(err => {
+              btn.disabled = false;
+              btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Waliduj i Uruchom Testy ⚡`;
+              console.error("Error validating challenge:", err);
+              alert("Wystąpił błąd podczas próby komunikacji z serwerem.");
+          });
+      }
+
+      // Safe characters escape helper
+      function escapeHtml(text) {
+          return text
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+      }
+    </script>
+  </body>
+</html>
